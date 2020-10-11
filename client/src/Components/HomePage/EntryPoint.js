@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import {useAuth0} from '@auth0/auth0-react';
 import LogOutButton from '../LogButtons/logout-button';
 import LoginButton from '../LogButtons/login-button';
-
-const AuthLogin = () => {
-  const {isAuthenticated} = useAuth0();
-  return <>{!isAuthenticated ? <LoginButton /> : <LogOutButton />}</>;
-};
+import {useHistory} from 'react-router-dom';
 
 const EntryPoint = ({data}) => {
+  const {isAuthenticated} = useAuth0();
+  let history = useHistory();
+  const loginHandler = () => {
+    history.push('/client/signup');
+  };
   return (
     <SubCategory>
       <IconAndTitle>
@@ -19,7 +20,11 @@ const EntryPoint = ({data}) => {
       <ServiceDetail>
         <SubTitle>{data.subTitle}</SubTitle>
         <Description>{data.description}</Description>
-        <AuthLogin></AuthLogin>
+        {!isAuthenticated ? (
+          <LoginButton onClick={loginHandler} />
+        ) : (
+          <LogOutButton />
+        )}
       </ServiceDetail>
     </SubCategory>
   );
@@ -53,14 +58,6 @@ const SubTitle = styled.h3``;
 
 const Description = styled.p`
   margin: 0;
-`;
-const BtnRow = styled.div`
-  text-align: center;
-`;
-
-const EntryBtn = styled.button`
-  width: 50%;
-  font-size: 1.25em;
 `;
 
 export default EntryPoint;
