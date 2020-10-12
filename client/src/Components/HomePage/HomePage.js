@@ -2,13 +2,11 @@ import React from 'react';
 import EntryPoint from './EntryPoint';
 import styled from 'styled-components';
 import {HomePageData} from './HomePageData';
-import ClientPage from '../Client/ClientPage';
 import {useAuth0} from '@auth0/auth0-react';
 import Loading from '../Loading';
-import {useHistory} from 'react-router-dom';
+import ClientPage from '../Client/ClientPage';
 
 function HomePage() {
-  let history = useHistory();
   const {isAuthenticated} = useAuth0();
   const {isLoading} = useAuth0();
 
@@ -25,7 +23,7 @@ function HomePage() {
           })}
         </Entries>
       ) : (
-        history.push('/client')
+        <ClientPage />
       )}
     </>
   );
