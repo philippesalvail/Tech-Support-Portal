@@ -1,9 +1,15 @@
 import React from 'react';
 import {Auth0Provider} from '@auth0/auth0-react';
+const path = require('path');
+
+require('dotenv').config({path: '../../../Tech-Support-Portal/.env'});
 
 const Auth0ProviderWithHistory = ({children}) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+
+  console.log('domain: ', domain);
+  console.log('clientId: ', clientId);
 
   return (
     <Auth0Provider
