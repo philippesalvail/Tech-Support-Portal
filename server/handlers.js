@@ -5,13 +5,12 @@ require("dotenv").config();
 
 const {MONGO_URI} = process.env;
 
-// const options = {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// };
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
 
 const getClientAccount = (req, res) => {
-  console.log("getClientAccount");
   res.status(200).send({message: "this is a message", name: "phil"});
 };
 
