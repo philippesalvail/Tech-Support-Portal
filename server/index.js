@@ -10,7 +10,7 @@ const PORT = 5678;
 
 const app = express();
 
-express()
+app
   .use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Methods",
@@ -22,15 +22,12 @@ express()
     );
     next();
   })
-  .use(morgan("tiny"))
-  .use(express.static("./server/assets"))
+  .use(morgan("dev"))
   .use(bodyParser.json())
   .use(express.urlencoded({extended: false}))
-  .use("/", express.static(__dirname + "/"));
-
-app.use(express.json());
-app.use(morgan("dev"));
-app.use("/", require("./routes"));
+  .use("/", express.static(__dirname + "/"))
+  .use(express.json())
+  .use(require("./routes"));
 
 const server = app.listen(PORT, function () {
   console.log("listening on port " + server.address().port);
