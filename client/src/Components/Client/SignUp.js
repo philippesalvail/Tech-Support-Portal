@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 function SignUp() {
-  return <div>SignUp</div>;
+  return <div>You do not have an account with us</div>;
 }
 
 export default SignUp;
