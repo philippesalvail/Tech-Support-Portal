@@ -1,8 +1,14 @@
+// cannot use undeclared variables
+
 "use strict";
 const express = require("express");
+// middleware node module
+
 const bodyParser = require("body-parser");
+// parses all request bodies
+
 const morgan = require("morgan");
-require("dotenv").config({path: "../client/.env"});
+// express middleware, logger
 
 const {MONGO_URI} = process.env;
 
