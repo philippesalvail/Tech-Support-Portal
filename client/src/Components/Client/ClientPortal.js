@@ -1,9 +1,9 @@
 import React from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 
 const ClientPortal = () => {
   let location = useLocation();
-  const {userName} = location.state;
-  console.log("userName in ClientPortal: ", userName);
+  let params = useParams();
   return <div>Welcome </div>;
 };
+export default ClientPortal;
