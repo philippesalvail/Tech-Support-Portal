@@ -7,11 +7,11 @@ const ClientDirection = () => {
   console.log("user: ", user);
   let history = useHistory();
   React.useEffect(() => {
-    fetch(`/client/${user.email}`)
+    fetch(`/client/${user.nickname}`)
       .then((response) => response.json())
       .then((account) => {
         account.userFound
-          ? history.push("/client/portal")
+          ? history.push(`/client/portal/${user.nickname}`)
           : history.push("/client/signup", {user: user});
       })
       .catch((err) => console.log("err: ", err));

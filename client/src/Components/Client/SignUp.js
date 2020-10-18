@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {useLocation, useHistory} from "react-router-dom";
+import {useLocation, useHistory, Redirect} from "react-router-dom";
 import {
   creditCardVerification,
   cscVerification,
@@ -31,6 +31,8 @@ const SignUp = () => {
     picture,
   } = location.state.user;
 
+  const history = useHistory();
+
   const [signUp, setSignUp] = React.useState({
     given_name: given_name,
     family_name: family_name,
@@ -38,6 +40,10 @@ const SignUp = () => {
     email: email,
     picture: picture,
   });
+
+  const routeChange = (nickname) => {
+    history.push(`/client/portal/${nickname}`);
+  };
 
   const registerHandler = (e) => {
     e.preventDefault();
@@ -56,9 +62,9 @@ const SignUp = () => {
         csc: csc,
         selectedDate: selectedDate,
       });
+      routeChange(nickname);
     }
   };
-
   return (
     <SignUpPage>
       <SignUpTitle>Create Your Account</SignUpTitle>
