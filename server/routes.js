@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const {getClientAccount} = require("./handlers");
+const {getClientAccount, registerClient} = require("./handlers");
 
 router.get("/client/:emailId", getClientAccount);
+router.post("/clientCreated", registerClient);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const ClientDirection = () => {
       .then((account) => {
         account.userFound
           ? history.push("/client/portal")
-          : history.push("/client/signup");
+          : history.push("/client/signup", {user: user});
       })
       .catch((err) => console.log("err: ", err));
   }, []);
