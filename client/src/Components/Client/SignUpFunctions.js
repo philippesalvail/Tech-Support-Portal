@@ -44,7 +44,7 @@ export const expVerificationYear = (year) => {
 };
 
 export const createClient = async (signUp, billing) => {
-  let response = await fetch("/clientCreated", {
+  return await fetch("/clientCreated", {
     method: "POST",
     body: JSON.stringify({
       loginInfo: signUp,

@@ -11,11 +11,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/client/signup" component={SignUp} />
-          <Route
-            path="/client/portal/:nickname"
-            exact
-            component={ClientPortal}
-          />
+          <Route path="/client/portal" exact component={ClientPortal} />
         </Switch>
       </Router>
     </>

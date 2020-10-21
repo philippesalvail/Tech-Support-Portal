@@ -12,14 +12,13 @@ const options = {
 
 const getClientAccount = async (req, res) => {
   const {emailId} = req.params;
-
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
     let userFound = await database
       .collection("Clients")
-      .findOne({emailId: emailId});
+      .findOne({username: emailId});
     res.status(200).send({status: "success", userFound: userFound});
   } catch (error) {
     res.status(404).send({status: "error", error: error.message});
@@ -30,7 +29,7 @@ const registerClient = async (req, res) => {
   console.log("req in registerClient ", req.body);
   const {loginInfo, billingInfo} = req.body;
   let newUser = {
-    username: loginInfo.nickname,
+    username: loginInfo.email,
     loginInfo: loginInfo,
     billingInfo: billingInfo,
   };
