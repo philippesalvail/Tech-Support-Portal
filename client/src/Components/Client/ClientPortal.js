@@ -1,9 +1,12 @@
 import React from "react";
 import {useLocation, useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const ClientPortal = () => {
-  let location = useLocation();
-  let params = useParams();
+  const clientAccount = useSelector((state) => state.client);
+
+  console.log("clientAccount in ClientPortal: ", clientAccount);
+
   return <div>Welcome </div>;
 };
 export default ClientPortal;

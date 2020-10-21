@@ -41,8 +41,8 @@ const SignUp = () => {
     picture: picture,
   });
 
-  const routeChange = (nickname) => {
-    history.push(`/client/portal/${nickname}`);
+  const routeChange = (email) => {
+    history.push(`/client/portal/${email}`);
   };
 
   const registerHandler = (e) => {
@@ -56,13 +56,14 @@ const SignUp = () => {
     if (errorMessage) {
       alert(errorMessage);
     } else {
-      createClient(signUp, {
+      let response = createClient(signUp, {
         address: address,
         creditCard: creditCard,
         csc: csc,
         selectedDate: selectedDate,
-      });
-      routeChange(nickname);
+      }).then((response) => console.log("response: ", response.json()));
+
+      routeChange(email);
     }
   };
   return (
