@@ -20,7 +20,7 @@ const ClientDirection = () => {
       .then((account) => {
         account.userFound
           ? dispatch(receiveClientAccount(account.userFound)) &&
-            history.push("/client/portal")
+            history.push("/client/portal/newticket")
           : history.push("/client/signup", {user: user});
       })
       .catch((err) => dispatch(receiveClientAccountError(err.message)));
