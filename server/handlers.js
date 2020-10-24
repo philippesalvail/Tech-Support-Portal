@@ -19,6 +19,7 @@ const getClientAccount = async (req, res) => {
     let userFound = await database
       .collection("Clients")
       .findOne({username: emailId});
+    console.log("getClientAccount userFound: ", userFound);
     res.status(200).send({status: "success", userFound: userFound});
   } catch (error) {
     res.status(404).send({status: "error", error: error.message});

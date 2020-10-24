@@ -14,7 +14,7 @@ const SignUp = () => {
   const [creditCard, setCreditCard] = React.useState("");
   const [csc, setCsc] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState(null);
-  const [isClientCreated, setIsClientCreated] = React.useState(false);
+
   const valid = {
     address: address.length > 5,
     creditCard: creditCard.length == 16,
@@ -56,7 +56,7 @@ const SignUp = () => {
     if (errorMessage) {
       alert(errorMessage);
     } else {
-      let response = createClient(signUp, {
+      createClient(signUp, {
         address: address,
         creditCard: creditCard,
         csc: csc,
