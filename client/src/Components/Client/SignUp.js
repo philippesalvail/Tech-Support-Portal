@@ -5,7 +5,7 @@ import {
   creditCardVerification,
   cscVerification,
   createClient,
-} from "./SignUpFunctions";
+} from "./ClientFunctions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 

@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const {getClientAccount, registerClient} = require("./handlers");
+const {getClientAccount, registerClient, addTicket} = require("./handlers");
 
 router.get("/client/:emailId", getClientAccount);
-router.post("/clientCreated", registerClient);
+router.post("/client/clientCreated", registerClient);
+router.post("/client/ticketCreated", addTicket);
 
 module.exports = router;
