@@ -11,3 +11,5 @@ const ProductTypeDropDown = () => {
     </select>
   );
 };
+
+export default ProductTypeDropDown;

@@ -1,29 +1,24 @@
 import aboutUs from "../../Images/aboutUs.jpeg";
 import Support from "../../Images/SupportImage.png";
 import whyUs from "../../Images/whyUs.jpeg";
+import helpdesk from "../../Images/techSupport.jpeg";
+import user from "../../Images/user.jpeg";
 
 export const HomePageData = [
-    {
-        title: "About Us",
-        subTitle: "We Are",
-        description: "Of our expertise and customer focus",
-        image: aboutUs,
-        buttonText: "About Us"
-    },
-    {
-        title: "Support Portal",
-        subTitle: "We Provide",
-        description: "Online services by email to address any technical issues reported by our customers",
-        image: Support,
-        buttonText: "Support"
-    },
-    {
-        title: "Why Us",
-        subTitle: "We Are Chosen Because",
-        description: "We are not a one size fits all solution. We listen to understand your needs",
-        image: whyUs,
-        buttonText: "Sales Rep"
-    },
-]
-
-
+  {
+    title: "Customer Portal",
+    subTitle: "Technical Issue ",
+    description:
+      "If you are a customer in need technical asistance, please connect here.",
+    image: user,
+    buttonText: "Connect",
+    userType: "Customer",
+  },
+  {
+    title: "HelpDesk Portal",
+    subTitle: "Service Now",
+    description: "If you are a helpdesk agent, please login here",
+    image: helpdesk,
+    userType: "Support",
+  },
+];

@@ -50,9 +50,4 @@ const ViewPending = styled(PaddedLink)``;
 const ViewHistory = styled(PaddedLink)``;
 const ViewAll = styled(PaddedLink)``;
 
-// const PlusImg = styled(plus)``;
-// const HistoryImg = styled(history)``;
-// const PendingImg = styled(toList)``;
-// const AllImg = styled(alignLeft)``;
-
 export default SideBar;

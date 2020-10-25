@@ -1,6 +1,6 @@
 import React from "react";
 import HomePage from "./Components/HomePage/HomePage";
-import ClientPortal from "./Components/Client/ClientPortal";
+import ClientTicket from "./Components/Client/ClientTicket";
 import SignUp from "./Components/Client/SignUp";
 import PendingTickets from "./Components/Client/PendingTickets";
 import ClosedTickets from "./Components/Client/ClosedTickets";
@@ -17,7 +17,7 @@ function App() {
           <Route
             path="/client/portal/newticket"
             exact
-            component={ClientPortal}
+            component={ClientTicket}
           />
           <Route
             path="/client/portal/pendingtickets"

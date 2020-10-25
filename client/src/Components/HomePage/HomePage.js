@@ -4,16 +4,15 @@ import styled from "styled-components";
 import {HomePageData} from "./HomePageData";
 import {useAuth0} from "@auth0/auth0-react";
 import Loading from "../Loading";
-import ClientDirection from "../Client/ClientDirection";
+import UserDirection from "../Client/UserDirection";
 
 function HomePage() {
-  const {isAuthenticated} = useAuth0();
-  const {isLoading} = useAuth0();
+  const {isAuthenticated, user, isLoading} = useAuth0();
 
   if (isLoading) {
     return <Loading />;
   }
-
+  console.log(user);
   return (
     <>
       {!isAuthenticated ? (
@@ -23,7 +22,7 @@ function HomePage() {
           })}
         </Entries>
       ) : (
-        <ClientDirection />
+        <UserDirection />
       )}
     </>
   );

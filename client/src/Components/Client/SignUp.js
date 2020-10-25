@@ -42,7 +42,7 @@ const SignUp = () => {
   });
 
   const routeChange = (email) => {
-    history.push(`/client/portal/${email}`);
+    history.push("/client/portal/");
   };
 
   const registerHandler = (e) => {
