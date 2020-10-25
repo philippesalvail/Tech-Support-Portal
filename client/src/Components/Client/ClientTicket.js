@@ -5,16 +5,29 @@ import {useSelector} from "react-redux";
 import SideBar from "./SideBar";
 
 import {useAuth0} from "@auth0/auth0-react";
+import {createTicket} from "./ClientFunctions";
 
 const ClientTicket = () => {
   const {user, isAuthenticated, isLoading, getTokenSilently} = useAuth0();
-  const [productTypeSelected, setProductTypeSelected] = React.useState(null);
   const clientAccount = useSelector((state) => state.client);
-  const [ticketState, setTicketState] = React.useState("New");
-  const [priority, setPriority] = React.useState("Low");
-  const [risk, setRisk] = React.useState("Low");
-  const [impact, setImpact] = React.useState("Low");
-  const [assGroupSelect, setAssGroupSelected] = React.useState([]);
+  const [productTypeSelected, setProductTypeSelected] = React.useState(
+    "Select Product Type"
+  );
+  const [prioritySelected, setPrioritySelected] = React.useState(
+    "Select Priority Level"
+  );
+  const [impactSelected, setImpactSelected] = React.useState(
+    "Select Impact Level"
+  );
+  const [shortDesc, setShortDesc] = React.useState("");
+  const [desc, setDesc] = React.useState("");
+  const valid = {
+    shortDesc: shortDesc.length > 3,
+    desc: desc.length > 6,
+    priorityLevel: prioritySelected !== "Select Priority Level",
+    impactLevel: impactSelected !== "Select Impact Level",
+    productType: productTypeSelected !== "Select Product Type",
+  };
 
   React.useEffect(() => {
     const doSomething = async () => {
@@ -25,12 +38,39 @@ const ClientTicket = () => {
     }
   }, [isLoading, getTokenSilently]);
 
-  const registerTicket = () => {};
+  const ticketHandler = (e) => {
+    e.preventDefault();
+    let errorMessage = "";
+    for (let key of Object.keys(valid)) {
+      if (!valid[key]) {
+        errorMessage += "Please enter a valid " + key + "\n";
+      }
+    }
+    if (errorMessage) {
+      alert(errorMessage);
+    } else {
+      createTicket({
+        clientInfo: user,
+        productTypeSelected: productTypeSelected,
+        prioritySelected: prioritySelected,
+        shortDesc: shortDesc,
+        desc: desc,
+        impactSelected: impactSelected,
+      });
+
+      alert("Ticket Submitted");
+      setImpactSelected("Select Impact Level");
+      setPrioritySelected("Select Priority Level");
+      setProductTypeSelected("Select Product Type");
+      setShortDesc("");
+      setDesc("");
+    }
+  };
 
   return (
     <Portal>
       <SideBar />
-      <TicketForm onSubmit={registerTicket}>
+      <TicketForm onSubmit={ticketHandler}>
         <SupportTicketBanner>Report an Incident </SupportTicketBanner>
         <TopHalf>
           <TicketNumberProductTypeRow>
@@ -39,11 +79,13 @@ const ClientTicket = () => {
               <DropDownSelect
                 id="productType"
                 name="Product"
-                defaultValue="SelectProduct"
-                onChange={(e) => {}}
+                value="SelectProduct"
+                onChange={(e) => {
+                  setProductTypeSelected(e.target.value);
+                }}
               >
                 <option value="SelectProduct" disabled hidden>
-                  Select Product Type
+                  {productTypeSelected}
                 </option>
                 <option value="Hardware">Hardware</option>
                 <option value="Software">Software</option>
@@ -59,10 +101,12 @@ const ClientTicket = () => {
               <DropDownSelect
                 id="Priority"
                 name="Priority"
-                onChange={(e) => setPriority(e.currentTarget.value)}
-                defaultValue="SelectPriority"
+                onChange={(e) => setPrioritySelected(e.currentTarget.value)}
+                value="SelectPriority"
               >
-                <option value="SelectPriority">Select Priority</option>
+                <option value="SelectPriority" disabled hidden>
+                  {prioritySelected}
+                </option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
@@ -76,11 +120,11 @@ const ClientTicket = () => {
               <DropDownSelect
                 id="Impact"
                 name="Impact"
-                onChange={(e) => setImpact(e.currentTarget.value)}
-                defaultValue="SelectImpact"
+                onChange={(e) => setImpactSelected(e.currentTarget.value)}
+                value="SelectImpact"
               >
                 <option value="SelectImpact" disabled hidden>
-                  Select Impact
+                  {impactSelected}
                 </option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -92,16 +136,23 @@ const ClientTicket = () => {
         <DescriptionRow>
           <ShortDescription>
             <ShortDescriptionLbl>Title of Description </ShortDescriptionLbl>
-
-            <ShortDescriptionTxt />
+            <ShortDescriptionTxt
+              onChange={(e) => setShortDesc(e.target.value)}
+              valid={!shortDesc || valid.shortDesc}
+              value={shortDesc}
+            />
           </ShortDescription>
           <Description>
             <DescriptionLbl>Description</DescriptionLbl>
-            <DescriptionTxt />
+            <DescriptionTxt
+              onChange={(e) => setDesc(e.target.value)}
+              valid={!desc || valid.desc}
+              value={desc}
+            />
           </Description>
         </DescriptionRow>
         <ButtonRow>
-          <ButtonSubmit>Submit</ButtonSubmit>
+          <ButtonSubmit type="submit">Create Ticket</ButtonSubmit>
         </ButtonRow>
       </TicketForm>
     </Portal>
@@ -212,12 +263,16 @@ const ShortDescriptionLbl = styled.label`
 
 const ShortDescriptionTxt = styled.input`
   flex: 3;
+  border: ${(props) => (props.valid ? "1px solid black" : "1px solid red")};
+  outline: none;
 `;
 const DescriptionLbl = styled.label`
   flex: 1;
 `;
 const DescriptionTxt = styled.textarea`
   flex: 3;
+  border: ${(props) => (props.valid ? "1px solid black" : "1px solid red")};
+  outline: none;
 `;
 const ButtonRow = styled.div`
   padding: 1%;

@@ -44,7 +44,7 @@ export const expVerificationYear = (year) => {
 };
 
 export const createClient = async (signUp, billing) => {
-  return await fetch("/clientCreated", {
+  return await fetch("/client/clientCreated", {
     method: "POST",
     body: JSON.stringify({
       loginInfo: signUp,
@@ -54,6 +54,19 @@ export const createClient = async (signUp, billing) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+    },
+  });
+};
+
+export const createTicket = async (ticketInfo) => {
+  return await fetch("/client/ticketCreated", {
+    method: "POST",
+    body: JSON.stringify({
+      ticketInfo: ticketInfo,
+    }),
+    headers: {
+      Accept: "application/json",
+      "Content-type": "application/json",
     },
   });
 };

@@ -39,104 +39,104 @@ const SupportTicket = () => {
         <TopHalf>
           <TicketNumberProductTypeRow>
             <TicketNumber>
-              <TicketNumberLbl>Incident number </TicketNumberLbl>
+              <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
               <TicketNumberTxt />
             </TicketNumber>
             <ProductType>
-              <SelectLbl htmlFor="Products">Product Type </SelectLbl>
+              <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
               <DropDownSelect
                 id="productType"
-                name="Product"
-                defaultValue="SelectProduct"
+                name="product"
+                defaultValue="selectProduct"
               >
-                <option value="SelectProduct" disabled hidden>
+                <option value="selectProduct" disabled hidden>
                   Select Product Type
                 </option>
-                <option value="Hardware">Hardware</option>
-                <option value="Software">Software</option>
-                <option value="CellPhone">CellPhone</option>
-                <option value="Email">Email</option>
+                <option value="hardware">Hardware</option>
+                <option value="software">Software</option>
+                <option value="cellPhone">CellPhone</option>
+                <option value="email">Email</option>
               </DropDownSelect>
             </ProductType>
           </TicketNumberProductTypeRow>
           <RequestorAndStateRow>
             <Requestor>
-              <RequestorLbl>Requested By </RequestorLbl>
+              <RequestorLbl>Requested By &nbsp;</RequestorLbl>
               <RequestorTxt />
             </Requestor>
             <State>
-              <SelectLbl htmlFor="State">State </SelectLbl>
+              <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
               <DropDownSelect
-                id="State"
-                name="State"
+                id="state"
+                name="state"
                 onChange={(e) => setTicketState(e.currentTarget.value)}
               >
-                <option value="New">New</option>
+                <option value="new">New</option>
                 <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
+                <option value="resolved">Resolved</option>
               </DropDownSelect>
             </State>
           </RequestorAndStateRow>
           <PriorityAndAssignmentGroupRow>
             <Priority>
-              <SelectLbl htmlFor="Priority">Priority </SelectLbl>
+              <SelectLbl htmlFor="priority">Priority &nbsp;</SelectLbl>
               <DropDownSelect
-                id="Priority"
-                name="Priority"
+                id="priority"
+                name="priority"
                 onChange={(e) => setPriority(e.currentTarget.value)}
-                defaultValue="SelectPriority"
+                defaultValue="selectPriority"
               >
-                <option value="SelectPriority">Select Priority</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
+                <option value="selectPriority">Select Priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
               </DropDownSelect>
             </Priority>
             <AssignmentGroup>
-              <SelectLbl htmlFor="AssignmentGroup">Assignment group </SelectLbl>
+              <SelectLbl htmlFor="assignmentGroup">Assignment group </SelectLbl>
               <DropDownSelect
-                id="AssignmentGroup"
-                name="AssignmentGroup"
-                defaultValue="SelectAssignmentGroup"
+                id="assignmentGroup"
+                name="assignmentGroup"
+                defaultValue="selectAssignmentGroup"
                 onChange={(e) => assignmentGroupSelected(e.target.value)}
               >
-                <option value="SelectAssignmentGroup" disabled hidden>
+                <option value="selectAssignmentGroup" disabled hidden>
                   Select Assignment Group
                 </option>
-                <option value="HardwareSupport">Desktop Support</option>
-                <option value="ApplicationSupport">Application Support</option>
-                <option value="EmailAndCollaboration">
+                <option value="hardwareSupport">Desktop Support</option>
+                <option value="applicationSupport">Application Support</option>
+                <option value="emailAndCollaboration">
                   Email and Collaboration
                 </option>
-                <option value="MobileSupport">Mobile Support</option>
+                <option value="mobileSupport">Mobile Support</option>
               </DropDownSelect>
             </AssignmentGroup>
           </PriorityAndAssignmentGroupRow>
           <RiskAndAssignTooRow>
             <Risk>
-              <SelectLbl htmlFor="Risk">Risk </SelectLbl>
+              <SelectLbl htmlFor="risk">Risk </SelectLbl>
               <DropDownSelect
-                id="Risk"
-                name="Risk"
+                id="risk"
+                name="risk"
                 onChange={(e) => setRisk(e.currentTarget.value)}
-                defaultValue="SelectRisk"
+                defaultValue="selectRisk"
               >
-                <option value="SelectRisk" disabled hidden>
+                <option value="selectRisk" disabled hidden>
                   Select Risk
                 </option>
-                <option value="Low">Low</option>
-                <option value="Moderate">Medium</option>
-                <option value="Severe">High</option>
+                <option value="low">Low</option>
+                <option value="moderate">Medium</option>
+                <option value="severe">High</option>
               </DropDownSelect>
             </Risk>
             <AssignToo>
-              <SelectLbl htmlFor="Assignee">Select Assignee</SelectLbl>
+              <SelectLbl htmlFor="assignee">Select Assignee</SelectLbl>
               <DropDownSelect
-                id="Assignee"
-                name="Assignee"
-                defaultValue="SelectAssignee"
+                id="assignee"
+                name="assignee"
+                defaultValue="selectAssignee"
               >
-                <option value="SelectAssignee" disabled hidden>
+                <option value="selectAssignee" disabled hidden>
                   Select Assignee
                 </option>
                 {assGroupSelect.map((assignee) => {
@@ -151,19 +151,19 @@ const SupportTicket = () => {
           </RiskAndAssignTooRow>
           <ImpactRow>
             <Impact>
-              <SelectLbl htmlFor="Impact">Impact </SelectLbl>
+              <SelectLbl htmlFor="impact">Impact </SelectLbl>
               <DropDownSelect
-                id="Impact"
-                name="Impact"
+                id="impact"
+                name="impact"
                 onChange={(e) => setImpact(e.currentTarget.value)}
-                defaultValue="SelectImpact"
+                defaultValue="selectImpact"
               >
-                <option value="SelectImpact" disabled hidden>
+                <option value="selectImpact" disabled hidden>
                   Select Impact
                 </option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
               </DropDownSelect>
             </Impact>
             <DateOpened>
