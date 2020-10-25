@@ -4,29 +4,29 @@ import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 import {
-  requestClientAccount,
-  receiveClientAccount,
-  receiveClientAccountError,
+  requestUserAccount,
+  receiveUserAccount,
+  receiveUserAccountError,
 } from "../../actions";
 
-const ClientDirection = () => {
+const UserDirection = () => {
   const dispatch = useDispatch();
   const {user} = useAuth0();
   let history = useHistory();
   React.useEffect(() => {
-    requestClientAccount();
+    requestUserAccount();
     fetch(`/client/${user.email}`)
       .then((response) => response.json())
       .then((account) => {
         account.userFound
-          ? dispatch(receiveClientAccount(account.userFound)) &&
+          ? dispatch(receiveUserAccount(account.userFound)) &&
             history.push("/client/portal/newticket")
           : history.push("/client/signup", {user: user});
       })
-      .catch((err) => dispatch(receiveClientAccountError(err.message)));
+      .catch((err) => dispatch(receiveUserAccountError(err.message)));
   }, []);
 
   return <></>;
 };
 
-export default ClientDirection;
+export default UserDirection;

@@ -4,7 +4,10 @@ import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import SideBar from "./SideBar";
 
-const ClientPortal = () => {
+import {useAuth0} from "@auth0/auth0-react";
+
+const ClientTicket = () => {
+  const {user, isAuthenticated, isLoading, getTokenSilently} = useAuth0();
   const [productTypeSelected, setProductTypeSelected] = React.useState(null);
   const clientAccount = useSelector((state) => state.client);
   const [ticketState, setTicketState] = React.useState("New");
@@ -13,41 +16,31 @@ const ClientPortal = () => {
   const [impact, setImpact] = React.useState("Low");
   const [assGroupSelect, setAssGroupSelected] = React.useState([]);
 
-  const assignmentGroupSelected = (group) => {
-    if (group === "HardwareSupport") {
-      let support = ["a", "b", "c"];
-      setAssGroupSelected(support);
-    } else if (group === "ApplicationSupport") {
-      let support = ["d", "e", "f"];
-      setAssGroupSelected(support);
-    } else if (group === "EmailAndCollaboration") {
-      let support = ["g", "h", "i"];
-      setAssGroupSelected(support);
-    } else if (group === "MobileSupport") {
-      let support = ["j", "k", "l"];
-      setAssGroupSelected(support);
+  React.useEffect(() => {
+    const doSomething = async () => {
+      console.log(isAuthenticated);
+    };
+    if (!isLoading) {
+      console.log("user in useffect: ", user);
     }
-  };
+  }, [isLoading, getTokenSilently]);
 
-  console.log("clientAccount: ", clientAccount);
+  const registerTicket = () => {};
 
   return (
     <Portal>
       <SideBar />
-      <ClientTicket>
+      <TicketForm onSubmit={registerTicket}>
         <SupportTicketBanner>Report an Incident </SupportTicketBanner>
         <TopHalf>
           <TicketNumberProductTypeRow>
-            <TicketNumber>
-              <TicketNumberLbl>Incident number </TicketNumberLbl>
-              <TicketNumberTxt />
-            </TicketNumber>
             <ProductType>
               <SelectLbl htmlFor="Products">Product Type </SelectLbl>
               <DropDownSelect
                 id="productType"
                 name="Product"
                 defaultValue="SelectProduct"
+                onChange={(e) => {}}
               >
                 <option value="SelectProduct" disabled hidden>
                   Select Product Type
@@ -59,24 +52,7 @@ const ClientPortal = () => {
               </DropDownSelect>
             </ProductType>
           </TicketNumberProductTypeRow>
-          <RequestorAndStateRow>
-            <Requestor>
-              <RequestorLbl>Requested By </RequestorLbl>
-              <RequestorTxt />
-            </Requestor>
-            <State>
-              <SelectLbl htmlFor="State">State </SelectLbl>
-              <DropDownSelect
-                id="State"
-                name="State"
-                onChange={(e) => setTicketState(e.currentTarget.value)}
-              >
-                <option value="New">New</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-              </DropDownSelect>
-            </State>
-          </RequestorAndStateRow>
+          <RequestorAndStateRow></RequestorAndStateRow>
           <PriorityAndAssignmentGroupRow>
             <Priority>
               <SelectLbl htmlFor="Priority">Priority </SelectLbl>
@@ -92,63 +68,8 @@ const ClientPortal = () => {
                 <option value="High">High</option>
               </DropDownSelect>
             </Priority>
-            <AssignmentGroup>
-              <SelectLbl htmlFor="AssignmentGroup">Assignment group </SelectLbl>
-              <DropDownSelect
-                id="AssignmentGroup"
-                name="AssignmentGroup"
-                defaultValue="SelectAssignmentGroup"
-                onChange={(e) => assignmentGroupSelected(e.target.value)}
-              >
-                <option value="SelectAssignmentGroup" disabled hidden>
-                  Select Assignment Group
-                </option>
-                <option value="HardwareSupport">Desktop Support</option>
-                <option value="ApplicationSupport">Application Support</option>
-                <option value="EmailAndCollaboration">
-                  Email and Collaboration
-                </option>
-                <option value="MobileSupport">Mobile Support</option>
-              </DropDownSelect>
-            </AssignmentGroup>
           </PriorityAndAssignmentGroupRow>
-          <RiskAndAssignTooRow>
-            <Risk>
-              <SelectLbl htmlFor="Risk">Risk </SelectLbl>
-              <DropDownSelect
-                id="Risk"
-                name="Risk"
-                onChange={(e) => setRisk(e.currentTarget.value)}
-                defaultValue="SelectRisk"
-              >
-                <option value="SelectRisk" disabled hidden>
-                  Select Risk
-                </option>
-                <option value="Low">Low</option>
-                <option value="Moderate">Medium</option>
-                <option value="Severe">High</option>
-              </DropDownSelect>
-            </Risk>
-            <AssignToo>
-              <SelectLbl htmlFor="Assignee">Select Assignee</SelectLbl>
-              <DropDownSelect
-                id="Assignee"
-                name="Assignee"
-                defaultValue="SelectAssignee"
-              >
-                <option value="SelectAssignee" disabled hidden>
-                  Select Assignee
-                </option>
-                {assGroupSelect.map((assignee) => {
-                  return (
-                    <option key={assignee} value={assignee}>
-                      {assignee}
-                    </option>
-                  );
-                })}
-              </DropDownSelect>
-            </AssignToo>
-          </RiskAndAssignTooRow>
+          <RiskAndAssignTooRow></RiskAndAssignTooRow>
           <ImpactRow>
             <Impact>
               <SelectLbl htmlFor="Impact">Impact </SelectLbl>
@@ -166,15 +87,11 @@ const ClientPortal = () => {
                 <option value="High">High</option>
               </DropDownSelect>
             </Impact>
-            <DateOpened>
-              <DateLbl>Date Opened</DateLbl>
-              <DateTxt />
-            </DateOpened>
           </ImpactRow>
         </TopHalf>
         <DescriptionRow>
           <ShortDescription>
-            <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
+            <ShortDescriptionLbl>Title of Description </ShortDescriptionLbl>
 
             <ShortDescriptionTxt />
           </ShortDescription>
@@ -186,7 +103,7 @@ const ClientPortal = () => {
         <ButtonRow>
           <ButtonSubmit>Submit</ButtonSubmit>
         </ButtonRow>
-      </ClientTicket>
+      </TicketForm>
     </Portal>
   );
 };
@@ -200,7 +117,7 @@ const TopHalf = styled.div`
   padding-bottom: 2%;
 `;
 
-const ClientTicket = styled.form`
+const TicketForm = styled.form`
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -226,25 +143,6 @@ const TicketNumber = styled.div`
   justify-content: space-between;
   flex: 1;
 `;
-const TicketNumberLbl = styled.label`
-  flex: 1;
-`;
-const TicketNumberTxt = styled.input`
-  flex: 1;
-`;
-
-const DateOpened = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-const DateLbl = styled.label`
-  flex: 1;
-`;
-const DateTxt = styled.input`
-  flex: 1;
-`;
 
 const ProductType = styled.div`
   padding: 1%;
@@ -255,25 +153,6 @@ const ProductType = styled.div`
 
 const RequestorAndStateRow = styled.div`
   display: flex;
-`;
-const Requestor = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-const RequestorLbl = styled.label`
-  flex: 1;
-`;
-const RequestorTxt = styled.input`
-  flex: 1;
-`;
-
-const State = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
 `;
 
 const PriorityAndAssignmentGroupRow = styled.div`
@@ -286,7 +165,7 @@ const Priority = styled.div`
   flex: 1;
 `;
 const SelectLbl = styled.label`
-  flex: 1;
+  flex: 2;
 `;
 const DropDownSelect = styled.select`
   text-align: center;
@@ -294,30 +173,10 @@ const DropDownSelect = styled.select`
   flex: 1;
 `;
 
-const AssignmentGroup = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
 const RiskAndAssignTooRow = styled.div`
   display: flex;
 `;
 
-const Risk = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const AssignToo = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
 const ImpactRow = styled.div`
   display: flex;
 `;
@@ -366,4 +225,4 @@ const ButtonRow = styled.div`
 `;
 const ButtonSubmit = styled.button``;
 
-export default ClientPortal;
+export default ClientTicket;

@@ -27,12 +27,12 @@ const getClientAccount = async (req, res) => {
 };
 
 const registerClient = async (req, res) => {
-  console.log("req in registerClient ", req.body);
   const {loginInfo, billingInfo} = req.body;
   let newUser = {
     username: loginInfo.email,
     loginInfo: loginInfo,
     billingInfo: billingInfo,
+    isSupportPerson: false,
   };
 
   try {
@@ -48,4 +48,6 @@ const registerClient = async (req, res) => {
   }
 };
 
-module.exports = {getClientAccount, registerClient};
+const ticketCreated = async (req, res) => {};
+
+module.exports = {getClientAccount, registerClient, ticketCreated};

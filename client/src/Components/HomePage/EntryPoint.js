@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import {useAuth0} from '@auth0/auth0-react';
-import LogOutButton from '../LogButtons/logout-button';
-import LoginButton from '../LogButtons/login-button';
+import React from "react";
+import styled from "styled-components";
+import {useAuth0} from "@auth0/auth0-react";
+import LogOutButton from "../LogButtons/logout-button";
+import LoginButton from "../LogButtons/login-button";
 
 const EntryPoint = ({data}) => {
   const {isAuthenticated} = useAuth0();
@@ -15,7 +15,7 @@ const EntryPoint = ({data}) => {
       <ServiceDetail>
         <SubTitle>{data.subTitle}</SubTitle>
         <Description>{data.description}</Description>
-        {!isAuthenticated ? <LoginButton /> : <LogOutButton />}
+        {!isAuthenticated ? <LoginButton data={data} /> : <LogOutButton />}
       </ServiceDetail>
     </SubCategory>
   );

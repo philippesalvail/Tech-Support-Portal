@@ -49,6 +49,7 @@ export const createClient = async (signUp, billing) => {
     body: JSON.stringify({
       loginInfo: signUp,
       billingInfo: billing,
+      isSupportPerson: false,
     }),
     headers: {
       Accept: "application/json",
