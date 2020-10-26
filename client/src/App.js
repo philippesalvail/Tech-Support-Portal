@@ -5,6 +5,8 @@ import SignUp from "./Components/Client/SignUp";
 import PendingTickets from "./Components/Client/PendingTickets";
 import ClosedTickets from "./Components/Client/ClosedTickets";
 import AllTickets from "./Components/Client/AllTickets";
+import SupportPortal from "./Components/Support/SupportPortal";
+import SupportPendingTickets from "./Components/Support/SupportPendingTickets";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 function App() {
@@ -33,6 +35,12 @@ function App() {
             path="/client/portal/alltickets"
             exact
             component={AllTickets}
+          />
+          <Route path="/support/portal" exact component={SupportPortal} />
+          <Route
+            path="/support/portal/pendingtickets"
+            exact
+            component={SupportPendingTickets}
           />
         </Switch>
       </Router>
