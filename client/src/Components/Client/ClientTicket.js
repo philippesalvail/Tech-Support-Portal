@@ -188,12 +188,6 @@ const SupportTicketBanner = styled.div`
 const TicketNumberProductTypeRow = styled.div`
   display: flex;
 `;
-const TicketNumber = styled.div`
-  padding: 1%;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
 
 const ProductType = styled.div`
   padding: 1%;

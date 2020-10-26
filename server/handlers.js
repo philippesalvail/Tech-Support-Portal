@@ -60,6 +60,7 @@ const addTicket = async (req, res) => {
     description: ticketInfo.desc,
     impact: ticketInfo.impactSelected,
     dateOfTicketCreated: new Date().toLocaleDateString(),
+    ticketStatus: "New",
   };
   try {
     const client = await MongoClient(MONGO_URI, options);
@@ -78,4 +79,16 @@ const addTicket = async (req, res) => {
   }
 };
 
-module.exports = {getClientAccount, registerClient, addTicket};
+const getAllTickets = async (req, res) => {
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const data = await database.collection("Support_Tickets").find().toArray();
+    res.status(200).json({status: 200, data: data});
+  } catch (error) {
+    res.status(500).json({status: 500, data: data, message: error.message});
+  }
+};
+
+module.exports = {getClientAccount, registerClient, addTicket, getAllTickets};

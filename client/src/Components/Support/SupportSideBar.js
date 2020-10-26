@@ -9,22 +9,31 @@ import {
   ClosedIcon,
 } from "../../ReactIcons";
 
-function SideBar() {
+function SupportSideBar() {
+  // const [allTickets, setAllTickets] = React.useState({});
+  // React.useEffect(() => {
+  //   fetch("/support/getalltickets")
+  //     .then((response) => response.json())
+  //     .then((tickets) => setAllTickets(tickets))
+  //     .catch((error) =>
+  //       console.log("Error in support portal: ", error.message)
+  //     );
+  // }, []);
   return (
     <Side>
-      <SideLink strict to={"/client/portal/newticket"}>
+      <SideLink strict to={"/support/portal"}>
         <NewTicketIcon />
         <CreateNew>Create New</CreateNew>
       </SideLink>
-      <SideLink strict to={"/client/portal/pendingtickets"}>
+      <SideLink strict to={"/support/portal/pendingtickets"}>
         <PendingIcon />
         <ViewPending>View Pending</ViewPending>
       </SideLink>
-      <SideLink strict to={"/client/portal/closedtickets"}>
+      <SideLink strict to={"/support/portal/closedtickets"}>
         <HistoryIcon />
         <ViewHistory>View History</ViewHistory>
       </SideLink>
-      <SideLink strict to={"/client/portal/alltickets"}>
+      <SideLink strict to={"/support/portal/alltickets"}>
         <ClosedIcon />
         <ViewAll>View All</ViewAll>
       </SideLink>
@@ -50,4 +59,4 @@ const ViewPending = styled(PaddedLink)``;
 const ViewHistory = styled(PaddedLink)``;
 const ViewAll = styled(PaddedLink)``;
 
-export default SideBar;
+export default SupportSideBar;

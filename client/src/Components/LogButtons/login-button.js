@@ -1,11 +1,24 @@
 import React from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import {Button} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
 const LoginButton = ({data}) => {
-  const {loginWithRedirect} = useAuth0();
+  const [allTickets, setAllTickets] = React.useState({});
+  React.useEffect(() => {
+    fetch("/support/getalltickets")
+      .then((response) => response.json())
+      .then((tickets) => setAllTickets(tickets))
+      .catch((error) =>
+        console.log("Error in support portal: ", error.message)
+      );
+  }, []);
 
-  const supportLogin = () => {};
+  let history = useHistory();
+  const {loginWithRedirect} = useAuth0();
+  const supportLogin = () => {
+    history.push("/support/portal");
+  };
 
   return (
     <>
