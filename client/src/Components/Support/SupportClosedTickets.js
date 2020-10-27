@@ -2,26 +2,27 @@ import React from "react";
 import styled from "styled-components";
 import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
+import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 import Loading from "../Loading";
 
-function SupportPendingTickets() {
-  const [pendingTickets, setPendingTickets] = React.useState([]);
+function SupportClosedTickets() {
+  const [closedTickets, setClosedTickets] = React.useState([]);
   React.useEffect(() => {
-    fetch("/support/getpendingtickets")
+    fetch("/support/getclosedtickets")
       .then((response) => response.json())
-      .then((tickets) => setPendingTickets(tickets.data))
+      .then((tickets) => setClosedTickets(tickets.data))
       .catch((error) => console.log("error: ", error));
   }, []);
-
   return (
-    <PendingTickets>
+    <ClosedTickets>
       <SupportSideBar />
-      <PendingTicketsDisplay>
-        <PendingTicketItems>
-          {pendingTickets ? (
+      <ClosedTicketsDisplay>
+        <ClosedTicketItems>
+          {closedTickets ? (
             <TicketHeader>
-              <h2>In Progress Tickets</h2>
-              {pendingTickets.map((ticket) => {
+              <h2>Resolved Tickets</h2>
+              <TicketSectionHeader />
+              {closedTickets.map((ticket) => {
                 return <ListItem ticket={ticket} />;
               })}
             </TicketHeader>
@@ -30,24 +31,26 @@ function SupportPendingTickets() {
               <Loading />
             </Loader>
           )}
-        </PendingTicketItems>
-      </PendingTicketsDisplay>
-    </PendingTickets>
+        </ClosedTicketItems>
+      </ClosedTicketsDisplay>
+    </ClosedTickets>
   );
 }
-const PendingTickets = styled.div`
+
+const ClosedTickets = styled.div`
   display: flex;
 `;
 const TicketHeader = styled.div`
   text-align: center;
 `;
 
-const PendingTicketItems = styled.div``;
-const PendingTicketsDisplay = styled.div`
+const ClosedTicketItems = styled.div``;
+const ClosedTicketsDisplay = styled.div`
   flex: 5;
 `;
 
 const Loader = styled.div`
   postion: relative;
 `;
-export default SupportPendingTickets;
+
+export default SupportClosedTickets;

@@ -19,6 +19,9 @@ const ClientTicket = () => {
   const [impactSelected, setImpactSelected] = React.useState(
     "Select Impact Level"
   );
+  console.log("user: ", user);
+  console.log("is authenticated: ", isAuthenticated);
+
   const [shortDesc, setShortDesc] = React.useState("");
   const [desc, setDesc] = React.useState("");
   const valid = {

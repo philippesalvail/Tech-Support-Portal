@@ -1,27 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import SupportTicketDetail from "./SupportTicketDetail";
 import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
 import Loading from "../Loading";
 
-function SupportPendingTickets() {
-  const [pendingTickets, setPendingTickets] = React.useState([]);
+function SupportNewTickets() {
+  const [newTickets, setNewTickets] = React.useState([]);
   React.useEffect(() => {
-    fetch("/support/getpendingtickets")
+    fetch("/support/getnewtickets")
       .then((response) => response.json())
-      .then((tickets) => setPendingTickets(tickets.data))
+      .then((newTickets) => setNewTickets(newTickets.data))
       .catch((error) => console.log("error: ", error));
   }, []);
 
   return (
-    <PendingTickets>
+    <NewTickets>
       <SupportSideBar />
-      <PendingTicketsDisplay>
-        <PendingTicketItems>
-          {pendingTickets ? (
+      <NewTicketsDisplay>
+        <NewTicketItems>
+          {newTickets ? (
             <TicketHeader>
-              <h2>In Progress Tickets</h2>
-              {pendingTickets.map((ticket) => {
+              <h2>New Tickets</h2>
+              {newTickets.map((ticket) => {
                 return <ListItem ticket={ticket} />;
               })}
             </TicketHeader>
@@ -30,24 +31,25 @@ function SupportPendingTickets() {
               <Loading />
             </Loader>
           )}
-        </PendingTicketItems>
-      </PendingTicketsDisplay>
-    </PendingTickets>
+        </NewTicketItems>
+      </NewTicketsDisplay>
+    </NewTickets>
   );
 }
-const PendingTickets = styled.div`
+
+const NewTickets = styled.div`
   display: flex;
 `;
 const TicketHeader = styled.div`
   text-align: center;
 `;
 
-const PendingTicketItems = styled.div``;
-const PendingTicketsDisplay = styled.div`
+const NewTicketItems = styled.div``;
+const NewTicketsDisplay = styled.div`
   flex: 5;
 `;
 
 const Loader = styled.div`
   postion: relative;
 `;
-export default SupportPendingTickets;
+export default SupportNewTickets;

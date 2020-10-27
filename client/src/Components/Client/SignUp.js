@@ -41,7 +41,7 @@ const SignUp = () => {
     picture: picture,
   });
 
-  const routeChange = (email) => {
+  const routeChange = () => {
     history.push("/client/portal/");
   };
 

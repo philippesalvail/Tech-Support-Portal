@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import SideBar from "./SideBar";
+import SupportSideBar from "./SupportSideBar";
 
-const SupportTicket = () => {
+const SupportTicketDetail = () => {
   const [productTypeSelected, setProductTypeSelected] = React.useState(null);
   const clientAccount = useSelector((state) => state.client);
   const [ticketState, setTicketState] = React.useState("New");
@@ -12,6 +12,16 @@ const SupportTicket = () => {
   const [risk, setRisk] = React.useState("Low");
   const [impact, setImpact] = React.useState("Low");
   const [assGroupSelect, setAssGroupSelected] = React.useState([]);
+  const [ticketDetail, setTicketDetail] = React.useState({});
+
+  let {ticketdetail} = useParams();
+
+  React.useEffect(() => {
+    fetch(`/support/${ticketdetail}`)
+      .then((response) => response.json())
+      .then((ticket) => setTicketDetail(ticket.data))
+      .catch((error) => console.log("error: ", error));
+  }, []);
 
   const assignmentGroupSelected = (group) => {
     if (group === "HardwareSupport") {
@@ -29,18 +39,18 @@ const SupportTicket = () => {
     }
   };
 
-  console.log("clientAccount: ", clientAccount);
+  console.log("ticket priority: ", ticketDetail);
 
   return (
     <Portal>
-      <SideBar />
+      <SupportSideBar />
       <ClientTicket>
         <SupportTicketBanner>Report an Incident </SupportTicketBanner>
         <TopHalf>
           <TicketNumberProductTypeRow>
             <TicketNumber>
               <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
-              <TicketNumberTxt />
+              <TicketNumberTxt value={ticketDetail._id} />
             </TicketNumber>
             <ProductType>
               <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
@@ -49,7 +59,7 @@ const SupportTicket = () => {
                 name="product"
                 defaultValue="selectProduct"
               >
-                <option value="selectProduct" disabled hidden>
+                <option value={ticketDetail.productType} disabled hidden>
                   Select Product Type
                 </option>
                 <option value="hardware">Hardware</option>
@@ -62,7 +72,7 @@ const SupportTicket = () => {
           <RequestorAndStateRow>
             <Requestor>
               <RequestorLbl>Requested By &nbsp;</RequestorLbl>
-              <RequestorTxt />
+              <RequestorTxt value={ticketDetail.customerName} />
             </Requestor>
             <State>
               <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
@@ -86,7 +96,7 @@ const SupportTicket = () => {
                 onChange={(e) => setPriority(e.currentTarget.value)}
                 defaultValue="selectPriority"
               >
-                <option value="selectPriority">Select Priority</option>
+                <option value="selectPriority">{ticketDetail.priority}</option>
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
@@ -159,7 +169,7 @@ const SupportTicket = () => {
                 defaultValue="selectImpact"
               >
                 <option value="selectImpact" disabled hidden>
-                  Select Impact
+                  {ticketDetail.impact}
                 </option>
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -168,19 +178,18 @@ const SupportTicket = () => {
             </Impact>
             <DateOpened>
               <DateLbl>Date Opened</DateLbl>
-              <DateTxt />
+              <DateTxt value={ticketDetail.dateOfTicketCreated} />
             </DateOpened>
           </ImpactRow>
         </TopHalf>
         <DescriptionRow>
           <ShortDescription>
             <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
-
-            <ShortDescriptionTxt />
+            <ShortDescriptionTxt value={ticketDetail.shortDescrption} />
           </ShortDescription>
           <Description>
             <DescriptionLbl>Description</DescriptionLbl>
-            <DescriptionTxt />
+            <DescriptionTxt value={ticketDetail.description} />
           </Description>
         </DescriptionRow>
         <ButtonRow>
@@ -366,4 +375,4 @@ const ButtonRow = styled.div`
 `;
 const ButtonSubmit = styled.button``;
 
-export default SupportTicket;
+export default SupportTicketDetail;
