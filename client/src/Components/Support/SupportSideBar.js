@@ -10,20 +10,11 @@ import {
 } from "../../ReactIcons";
 
 function SupportSideBar() {
-  // const [allTickets, setAllTickets] = React.useState({});
-  // React.useEffect(() => {
-  //   fetch("/support/getalltickets")
-  //     .then((response) => response.json())
-  //     .then((tickets) => setAllTickets(tickets))
-  //     .catch((error) =>
-  //       console.log("Error in support portal: ", error.message)
-  //     );
-  // }, []);
   return (
     <Side>
-      <SideLink strict to={"/support/portal"}>
+      <SideLink strict to={"/support/portal/newtickets"}>
         <NewTicketIcon />
-        <CreateNew>Create New</CreateNew>
+        <CreateNew>View New</CreateNew>
       </SideLink>
       <SideLink strict to={"/support/portal/pendingtickets"}>
         <PendingIcon />
@@ -31,7 +22,7 @@ function SupportSideBar() {
       </SideLink>
       <SideLink strict to={"/support/portal/closedtickets"}>
         <HistoryIcon />
-        <ViewHistory>View History</ViewHistory>
+        <ViewHistory>View Resolved</ViewHistory>
       </SideLink>
       <SideLink strict to={"/support/portal/alltickets"}>
         <ClosedIcon />
