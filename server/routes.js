@@ -8,6 +8,7 @@ const {
   getNewTickets,
   getPendingTickets,
   getClosedTickets,
+  updateTicketDetail,
 } = require("./handlers");
 
 router.get("/client/:emailId", getClientAccount);
@@ -19,5 +20,6 @@ router.get("/support/getpendingtickets", getPendingTickets);
 router.get("/support/getclosedtickets", getClosedTickets);
 router.get("/support/getalltickets", getAllTickets);
 router.get("/support/:getTicket", getTicketDetail);
+router.put("/support/updateTicket", updateTicketDetail);
 
 module.exports = router;

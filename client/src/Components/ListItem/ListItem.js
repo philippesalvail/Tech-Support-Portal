@@ -5,7 +5,7 @@ import {useHistory} from "react-router-dom";
 function ListItem({ticket}) {
   let history = useHistory();
   const ticketDetailHandler = (ticketId) => {
-    history.push(`/support/portal/${ticketId}`);
+    history.push(`/support/portal/ticket/${ticketId}`);
   };
   return (
     <TicketItem onClick={() => ticketDetailHandler(ticket._id)}>
@@ -26,6 +26,7 @@ function ListItem({ticket}) {
 
 const TicketItem = styled.li`
   display: flex;
+  margin-bottom: 1%;
 `;
 const TicketId = styled.div`
   flex: 1;

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
 import Loading from "../Loading";
+import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 
 function SupportPendingTickets() {
   const [pendingTickets, setPendingTickets] = React.useState([]);
@@ -21,6 +22,7 @@ function SupportPendingTickets() {
           {pendingTickets ? (
             <TicketHeader>
               <h2>In Progress Tickets</h2>
+              <TicketSectionHeader />
               {pendingTickets.map((ticket) => {
                 return <ListItem ticket={ticket} />;
               })}

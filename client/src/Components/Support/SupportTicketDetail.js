@@ -3,199 +3,259 @@ import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import SupportSideBar from "./SupportSideBar";
+import Loading from "../Loading";
 
 const SupportTicketDetail = () => {
   const [productTypeSelected, setProductTypeSelected] = React.useState(null);
-  const clientAccount = useSelector((state) => state.client);
   const [ticketState, setTicketState] = React.useState("New");
   const [priority, setPriority] = React.useState("Low");
-  const [risk, setRisk] = React.useState("Low");
+  const [risk, setRisk] = React.useState("Select Risk Level");
   const [impact, setImpact] = React.useState("Low");
-  const [assGroupSelect, setAssGroupSelected] = React.useState([]);
-  const [ticketDetail, setTicketDetail] = React.useState({});
+  const [assGroupMembers, setAssGroupMembers] = React.useState([]);
+  const [ticketDetail, setTicketDetail] = React.useState(null);
+  const [supportTeams, setSupportTeams] = React.useState([]);
+  const [assGroup, setAssGroup] = React.useState("Select Assignment Group");
+  const [assignee, setAssignee] = React.useState(null);
 
-  let {ticketdetail} = useParams();
+  let {ticketId} = useParams();
 
   React.useEffect(() => {
-    fetch(`/support/${ticketdetail}`)
+    fetch(`/support/${ticketId}`)
       .then((response) => response.json())
-      .then((ticket) => setTicketDetail(ticket.data))
+      .then((ticket) => {
+        setTicketDetail(ticket.data);
+        setSupportTeams(ticket.teams);
+        setImpact(ticket.data.impact);
+        setPriority(ticket.data.priority);
+      })
       .catch((error) => console.log("error: ", error));
   }, []);
 
   const assignmentGroupSelected = (group) => {
-    if (group === "HardwareSupport") {
-      let support = ["a", "b", "c"];
-      setAssGroupSelected(support);
-    } else if (group === "ApplicationSupport") {
-      let support = ["d", "e", "f"];
-      setAssGroupSelected(support);
-    } else if (group === "EmailAndCollaboration") {
-      let support = ["g", "h", "i"];
-      setAssGroupSelected(support);
-    } else if (group === "MobileSupport") {
-      let support = ["j", "k", "l"];
-      setAssGroupSelected(support);
-    }
+    setAssGroup(group);
+    let team = supportTeams.find((team) => group == team.supportName);
+    team && setAssGroupMembers(team.supporters);
   };
 
-  console.log("ticket priority: ", ticketDetail);
+  const updateTicket = (e) => {
+    e.preventDefault();
+    let errorMessage = "";
+    if (ticketState === "New") {
+      errorMessage += "Please change the state of the ticket\n";
+    }
+    if (assGroup === "Select Assignment Group") {
+      errorMessage += "Please select an assignment group\n";
+    }
+    if (risk === "Select Risk Level") {
+      errorMessage += "Select Level of Risk\n";
+    }
+
+    if (errorMessage !== "") {
+      alert(errorMessage);
+      return;
+    }
+
+    fetch("/support/updateTicket", {
+      method: "put",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        _id: ticketDetail._id,
+        customerEmail: ticketDetail.customerEmail,
+        customerName: ticketDetail.customerName,
+        dateOfTicketCreated: ticketDetail.dateOfTicketCreated,
+        description: ticketDetail.description,
+        impact: impact,
+        priority: priority,
+        risk: risk,
+        ticketStatus: ticketState,
+        assignmentGroup: assGroup,
+        assignee: assignee,
+      }),
+    });
+  };
 
   return (
     <Portal>
       <SupportSideBar />
-      <ClientTicket>
-        <SupportTicketBanner>Report an Incident </SupportTicketBanner>
-        <TopHalf>
-          <TicketNumberProductTypeRow>
-            <TicketNumber>
-              <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
-              <TicketNumberTxt value={ticketDetail._id} />
-            </TicketNumber>
-            <ProductType>
-              <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
-              <DropDownSelect
-                id="productType"
-                name="product"
-                defaultValue="selectProduct"
-              >
-                <option value={ticketDetail.productType} disabled hidden>
-                  Select Product Type
-                </option>
-                <option value="hardware">Hardware</option>
-                <option value="software">Software</option>
-                <option value="cellPhone">CellPhone</option>
-                <option value="email">Email</option>
-              </DropDownSelect>
-            </ProductType>
-          </TicketNumberProductTypeRow>
-          <RequestorAndStateRow>
-            <Requestor>
-              <RequestorLbl>Requested By &nbsp;</RequestorLbl>
-              <RequestorTxt value={ticketDetail.customerName} />
-            </Requestor>
-            <State>
-              <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
-              <DropDownSelect
-                id="state"
-                name="state"
-                onChange={(e) => setTicketState(e.currentTarget.value)}
-              >
-                <option value="new">New</option>
-                <option value="In Progress">In Progress</option>
-                <option value="resolved">Resolved</option>
-              </DropDownSelect>
-            </State>
-          </RequestorAndStateRow>
-          <PriorityAndAssignmentGroupRow>
-            <Priority>
-              <SelectLbl htmlFor="priority">Priority &nbsp;</SelectLbl>
-              <DropDownSelect
-                id="priority"
-                name="priority"
-                onChange={(e) => setPriority(e.currentTarget.value)}
-                defaultValue="selectPriority"
-              >
-                <option value="selectPriority">{ticketDetail.priority}</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </DropDownSelect>
-            </Priority>
-            <AssignmentGroup>
-              <SelectLbl htmlFor="assignmentGroup">Assignment group </SelectLbl>
-              <DropDownSelect
-                id="assignmentGroup"
-                name="assignmentGroup"
-                defaultValue="selectAssignmentGroup"
-                onChange={(e) => assignmentGroupSelected(e.target.value)}
-              >
-                <option value="selectAssignmentGroup" disabled hidden>
-                  Select Assignment Group
-                </option>
-                <option value="hardwareSupport">Desktop Support</option>
-                <option value="applicationSupport">Application Support</option>
-                <option value="emailAndCollaboration">
-                  Email and Collaboration
-                </option>
-                <option value="mobileSupport">Mobile Support</option>
-              </DropDownSelect>
-            </AssignmentGroup>
-          </PriorityAndAssignmentGroupRow>
-          <RiskAndAssignTooRow>
-            <Risk>
-              <SelectLbl htmlFor="risk">Risk </SelectLbl>
-              <DropDownSelect
-                id="risk"
-                name="risk"
-                onChange={(e) => setRisk(e.currentTarget.value)}
-                defaultValue="selectRisk"
-              >
-                <option value="selectRisk" disabled hidden>
-                  Select Risk
-                </option>
-                <option value="low">Low</option>
-                <option value="moderate">Medium</option>
-                <option value="severe">High</option>
-              </DropDownSelect>
-            </Risk>
-            <AssignToo>
-              <SelectLbl htmlFor="assignee">Select Assignee</SelectLbl>
-              <DropDownSelect
-                id="assignee"
-                name="assignee"
-                defaultValue="selectAssignee"
-              >
-                <option value="selectAssignee" disabled hidden>
-                  Select Assignee
-                </option>
-                {assGroupSelect.map((assignee) => {
-                  return (
-                    <option key={assignee} value={assignee}>
-                      {assignee}
+      <TicketForm onSubmit={updateTicket}>
+        <SupportTicketBanner>Incident Report </SupportTicketBanner>
+        {ticketDetail ? (
+          <Details>
+            <TopHalf>
+              <TicketNumberProductTypeRow>
+                <TicketNumber>
+                  <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
+                  <TicketNumberTxt defaultValue={ticketDetail._id} />
+                </TicketNumber>
+                <ProductType>
+                  <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
+                  <DropDownSelect
+                    id="productType"
+                    name="product"
+                    defaultValue="selectProduct"
+                  >
+                    <option value="selectProduct" disabled hidden>
+                      {ticketDetail.productType}
                     </option>
-                  );
-                })}
-              </DropDownSelect>
-            </AssignToo>
-          </RiskAndAssignTooRow>
-          <ImpactRow>
-            <Impact>
-              <SelectLbl htmlFor="impact">Impact </SelectLbl>
-              <DropDownSelect
-                id="impact"
-                name="impact"
-                onChange={(e) => setImpact(e.currentTarget.value)}
-                defaultValue="selectImpact"
-              >
-                <option value="selectImpact" disabled hidden>
-                  {ticketDetail.impact}
-                </option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </DropDownSelect>
-            </Impact>
-            <DateOpened>
-              <DateLbl>Date Opened</DateLbl>
-              <DateTxt value={ticketDetail.dateOfTicketCreated} />
-            </DateOpened>
-          </ImpactRow>
-        </TopHalf>
-        <DescriptionRow>
-          <ShortDescription>
-            <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
-            <ShortDescriptionTxt value={ticketDetail.shortDescrption} />
-          </ShortDescription>
-          <Description>
-            <DescriptionLbl>Description</DescriptionLbl>
-            <DescriptionTxt value={ticketDetail.description} />
-          </Description>
-        </DescriptionRow>
-        <ButtonRow>
-          <ButtonSubmit>Submit</ButtonSubmit>
-        </ButtonRow>
-      </ClientTicket>
+                    <option value="hardware">Hardware</option>
+                    <option value="software">Software</option>
+                    <option value="cellPhone">CellPhone</option>
+                    <option value="email">Email</option>
+                  </DropDownSelect>
+                </ProductType>
+              </TicketNumberProductTypeRow>
+              <RequestorAndStateRow>
+                <Requestor>
+                  <RequestorLbl>Requested By &nbsp;</RequestorLbl>
+                  <RequestorTxt defaultValue={ticketDetail.customerName} />
+                </Requestor>
+                <State>
+                  <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
+                  <DropDownSelect
+                    id="state"
+                    name="state"
+                    defaultValue="new"
+                    onChange={(e) => setTicketState(e.currentTarget.value)}
+                  >
+                    <option value="new">
+                      {ticketDetail.ticketStatus
+                        ? ticketDetail.ticketStatus
+                        : "New"}
+                    </option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                  </DropDownSelect>
+                </State>
+              </RequestorAndStateRow>
+              <PriorityAndAssignmentGroupRow>
+                <Priority>
+                  <SelectLbl htmlFor="priority">Priority &nbsp;</SelectLbl>
+                  <DropDownSelect
+                    id="priority"
+                    name="priority"
+                    onChange={(e) => setPriority(e.currentTarget.value)}
+                    defaultValue="selectPriority"
+                  >
+                    <option value="selectPriority">
+                      {ticketDetail.priority}
+                    </option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </DropDownSelect>
+                </Priority>
+                <AssignmentGroup>
+                  <SelectLbl htmlFor="assignmentGroup">
+                    Assignment group
+                  </SelectLbl>
+                  <DropDownSelect
+                    id="assignmentGroup"
+                    name="assignmentGroup"
+                    defaultValue="selectAssignmentGroup"
+                    onChange={(e) => assignmentGroupSelected(e.target.value)}
+                  >
+                    <option value="selectAssignmentGroup" disabled hidden>
+                      {ticketDetail.assignmentGroup
+                        ? ticketDetail.assignmentGroup
+                        : "Select Assignment Group"}
+                    </option>
+                    {supportTeams.map((team) => {
+                      return (
+                        <option value={team.supportName}>
+                          {team.supportName}
+                        </option>
+                      );
+                    })}
+                  </DropDownSelect>
+                </AssignmentGroup>
+              </PriorityAndAssignmentGroupRow>
+              <RiskAndAssignTooRow>
+                <Risk>
+                  <SelectLbl htmlFor="risk">Risk </SelectLbl>
+                  <DropDownSelect
+                    id="risk"
+                    name="risk"
+                    onChange={(e) => setRisk(e.currentTarget.value)}
+                    defaultValue="selectRisk"
+                  >
+                    <option value="selectRisk" disabled hidden>
+                      {ticketDetail.risk
+                        ? ticketDetail.risk
+                        : "Select Risk Level"}
+                    </option>
+                    <option value="low">Low</option>
+                    <option value="moderate">Medium</option>
+                    <option value="severe">High</option>
+                  </DropDownSelect>
+                </Risk>
+                <AssignToo>
+                  <SelectLbl htmlFor="assignee">Select Assignee</SelectLbl>
+                  <DropDownSelect
+                    id="assignee"
+                    name="assignee"
+                    defaultValue="selectAssignee"
+                    onChange={(e) => setAssignee(e.currentTarget.value)}
+                  >
+                    <option value="selectAssignee" disabled hidden>
+                      {ticketDetail.assignee
+                        ? ticketDetail.assignee
+                        : "Select Assignee"}
+                    </option>
+                    {assGroupMembers.map((assignee) => {
+                      return (
+                        <option key={assignee} value={assignee}>
+                          {assignee}
+                        </option>
+                      );
+                    })}
+                  </DropDownSelect>
+                </AssignToo>
+              </RiskAndAssignTooRow>
+              <ImpactRow>
+                <Impact>
+                  <SelectLbl htmlFor="impact">Impact </SelectLbl>
+                  <DropDownSelect
+                    id="impact"
+                    name="impact"
+                    onChange={(e) => setImpact(e.currentTarget.value)}
+                    defaultValue="selectImpact"
+                  >
+                    <option value="selectImpact" disabled hidden>
+                      {ticketDetail.impact}
+                    </option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </DropDownSelect>
+                </Impact>
+                <DateOpened>
+                  <DateLbl>Date Opened</DateLbl>
+                  <DateTxt defaultValue={ticketDetail.dateOfTicketCreated} />
+                </DateOpened>
+              </ImpactRow>
+            </TopHalf>
+            <DescriptionRow>
+              <ShortDescription>
+                <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
+                <ShortDescriptionTxt
+                  defaultValue={ticketDetail.shortDescrption}
+                />
+              </ShortDescription>
+              <Description>
+                <DescriptionLbl>Description</DescriptionLbl>
+                <DescriptionTxt defaultValue={ticketDetail.description} />
+              </Description>
+            </DescriptionRow>
+            <ButtonRow>
+              <ButtonSubmit>Submit</ButtonSubmit>
+            </ButtonRow>
+          </Details>
+        ) : (
+          <Loader>
+            <Loading />
+          </Loader>
+        )}
+      </TicketForm>
     </Portal>
   );
 };
@@ -209,7 +269,7 @@ const TopHalf = styled.div`
   padding-bottom: 2%;
 `;
 
-const ClientTicket = styled.form`
+const TicketForm = styled.form`
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -240,6 +300,7 @@ const TicketNumberLbl = styled.label`
 `;
 const TicketNumberTxt = styled.input`
   flex: 1;
+  text-align: center;
 `;
 
 const DateOpened = styled.div`
@@ -253,6 +314,7 @@ const DateLbl = styled.label`
 `;
 const DateTxt = styled.input`
   flex: 1;
+  text-align: center;
 `;
 
 const ProductType = styled.div`
@@ -276,6 +338,7 @@ const RequestorLbl = styled.label`
 `;
 const RequestorTxt = styled.input`
   flex: 1;
+  text-align: center;
 `;
 
 const State = styled.div`
@@ -374,5 +437,11 @@ const ButtonRow = styled.div`
   text-align: right;
 `;
 const ButtonSubmit = styled.button``;
+
+const Details = styled.div``;
+const Loader = styled.div`
+  position: relative;
+  flex: 5;
+`;
 
 export default SupportTicketDetail;

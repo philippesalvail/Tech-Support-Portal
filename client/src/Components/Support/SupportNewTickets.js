@@ -4,6 +4,7 @@ import SupportTicketDetail from "./SupportTicketDetail";
 import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
 import Loading from "../Loading";
+import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 
 function SupportNewTickets() {
   const [newTickets, setNewTickets] = React.useState([]);
@@ -22,14 +23,13 @@ function SupportNewTickets() {
           {newTickets ? (
             <TicketHeader>
               <h2>New Tickets</h2>
+              <TicketSectionHeader />
               {newTickets.map((ticket) => {
                 return <ListItem ticket={ticket} />;
               })}
             </TicketHeader>
           ) : (
-            <Loader>
-              <Loading />
-            </Loader>
+            <div></div>
           )}
         </NewTicketItems>
       </NewTicketsDisplay>
