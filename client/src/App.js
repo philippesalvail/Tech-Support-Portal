@@ -63,7 +63,7 @@ function App() {
           />
 
           <Route
-            path="/support/portal/ticket/:ticketdetail"
+            path="/support/portal/ticket/:ticketId"
             exact
             component={SupportTicketDetail}
           />

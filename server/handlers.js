@@ -2,6 +2,7 @@
 const {MongoClient} = require("mongodb");
 const assert = require("assert");
 require("dotenv").config();
+let objID = require("mongodb").ObjectID;
 
 const {MONGO_URI} = process.env;
 
@@ -21,6 +22,7 @@ const getClientAccount = async (req, res) => {
       .findOne({username: emailId});
     console.log("getClientAccount userFound: ", userFound);
     res.status(200).send({status: "success", userFound: userFound});
+    client.close();
   } catch (error) {
     res.status(404).send({status: "error", error: error.message});
   }
@@ -93,7 +95,6 @@ const getAllTickets = async (req, res) => {
 };
 const getTicketDetail = async (req, res) => {
   const {getTicket} = req.params;
-  let objID = require("mongodb").ObjectID;
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
@@ -101,10 +102,54 @@ const getTicketDetail = async (req, res) => {
     const data = await database
       .collection("Support_Tickets")
       .findOne({_id: objID(getTicket)});
-    res.status(200).json({status: 200, data: data});
+    const teams = await database.collection("Support_Teams").find().toArray();
+
+    res.status(200).json({status: 200, data: data, teams: teams});
     client.close();
   } catch (error) {
     res.status(500).json({status: 500, data: data, message: error.message});
+  }
+};
+
+const updateTicketDetail = async (req, res) => {
+  console.log("req.body: ", req.body);
+  const {
+    _id,
+    customerEmail,
+    customerName,
+    dateOfTicketCreated,
+    description,
+    impact,
+    priority,
+    risk,
+    ticketStatus,
+    assignmentGroup,
+    assignee,
+  } = req.body;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    await database.collection("Support_Tickets").updateOne(
+      {_id: objID(_id)},
+      {
+        $set: {
+          customerEmail: customerEmail,
+          customerName: customerName,
+          dateOfTicketCreated: dateOfTicketCreated,
+          description: description,
+          impact: impact,
+          priority: priority,
+          risk: risk,
+          ticketStatus: ticketStatus,
+          assignmentGroup: assignmentGroup,
+          assignee: assignee,
+        },
+      }
+    );
+    res.status(200).json({message: `Ticket :${_id} updated sucessfully`});
+  } catch (error) {
+    res.status(404).json({status: 404, _id: _id, message: error.message});
   }
 };
 
@@ -165,4 +210,5 @@ module.exports = {
   getNewTickets,
   getPendingTickets,
   getClosedTickets,
+  updateTicketDetail,
 };
