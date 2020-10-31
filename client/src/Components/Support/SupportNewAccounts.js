@@ -5,13 +5,17 @@ import styled from "styled-components";
 import AccountSectionHeader from "../ListItem/AccountSectionHeader";
 
 function SupportNewAccounts() {
-  const [newSupporters, setNewTickets] = React.useState([]);
+  const [newAccounts, setNewAccounts] = React.useState([]);
   React.useEffect(() => {
     fetch("/support/supporter/getNewSupporters")
       .then((response) => response.json())
-      .then((accounts) => console.log("accounts: ", accounts))
+      .then((accounts) => setNewAccounts(accounts.accounts))
       .catch((error) => console.log("error: ", error));
   }, []);
+
+  if (newAccounts) {
+    console.log("newAccounts: ", newAccounts);
+  }
 
   return (
     <AdminPage>
@@ -20,11 +24,13 @@ function SupportNewAccounts() {
         <SupportSideBar />
         <NewAccountsDisplay>
           <NewAccountItems>
-            {newSupporters ? (
+            {newAccounts ? (
               <AccountHeader>
                 <AccountSectionHeader />
-                {newSupporters.map((account) => {
-                  return <AccountItem ticket={account} />;
+                {newAccounts.map((account, index) => {
+                  return (
+                    <AccountItem key={account + index} account={account} />
+                  );
                 })}
               </AccountHeader>
             ) : (

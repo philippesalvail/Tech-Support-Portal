@@ -61,7 +61,7 @@ const SignUp = () => {
         creditCard: creditCard,
         csc: csc,
         selectedDate: selectedDate,
-      }).then((response) => console.log("response: ", response.json()));
+      }).then((response) => alert(response.message));
 
       routeChange(email);
     }

@@ -2,21 +2,112 @@ import React from "react";
 import styled from "styled-components";
 import {useHistory} from "react-router-dom";
 
-function AccountItem({account}) {
+function AccountItem(account) {
+  const {_id, name, team, isValidated} = account.account;
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [teamSelected, setTeamSelected] = React.useState("");
+  const [teams, setTeams] = React.useState(null);
+  const [statusMessage, setStatusMesage] = React.useState("");
+  const [usernameExists, setUsernameExists] = React.useState(false);
+  const [filterList, setFilterList] = React.useState(false);
+
+  React.useEffect(() => {
+    fetch("/support/supportteams/getSupportTeams")
+      .then((response) => response.json())
+      .then((supportTeams) => setTeams(supportTeams.teams))
+      .catch((error) => console.log("error: ", error.message));
+  }, [filterList]);
   let history = useHistory();
-  //   const AccountHandler = (ticketId) => {
-  //     history.push(`/support/portal/ticket/${ticketId}`);
-  //   };
+
+  const checkIfAccountExists = (username) => {
+    fetch(`/support/supporter/accounts/${username}`)
+      .then((response) => response.json())
+      .then((account) => setUsernameExists(account.exists))
+      .catch((error) => console.log("error: ", error.message));
+  };
+
+  const checkPasswordComplexity = (password) => {
+    let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    return format.test(password);
+  };
+
+  const activateAccountHandler = (id) => {
+    if (checkIfAccountExists(username)) {
+      alert("username " + username + " already exists");
+      return;
+    }
+    if (!checkPasswordComplexity(password)) {
+      alert("password must contain at least one special character");
+      return;
+    }
+    fetch("/support/supporter/accounts/enabledAccount", {
+      method: "put",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        _id: _id,
+        name: name,
+        team: team,
+        username: username,
+        password: password,
+        isUnlocked: true,
+        isValidated: true,
+      }),
+    })
+      .then((response) => {
+        response.json();
+      })
+      .then((statusMessage) => {
+        setFilterList(!filterList);
+        alert(statusMessage.message);
+      })
+      .catch((error) => console.log("error: ", error.message));
+  };
+
   return (
-    <Supporter>
-      <SupporterName>Supporter Name</SupporterName>
-      <SupporterUserName />
-      <SupporterPassword />
-      <SupporterTeam>Supporter Team</SupporterTeam>
-      <EnableBtn>Enable</EnableBtn>
-    </Supporter>
+    <>
+      {!isValidated && teams && (
+        <Supporter>
+          <SupporterName>
+            <Name>{name}</Name>
+          </SupporterName>
+          <SupporterUserName>
+            <UserName onChange={(e) => setUsername(e.target.value)} />
+          </SupporterUserName>
+          <SupporterPassword>
+            <Password onChange={(e) => setPassword(e.target.value)} />
+          </SupporterPassword>
+          <SupporterTeam>
+            <DropDownSelect
+              id="assignmentGroup"
+              name="assignmentGroup"
+              defaultValue="selectAssignmentGroup"
+              onChange={(e) => setTeamSelected(e.target.value)}
+            >
+              <option value="selectAssignmentGroup" disabled hidden>
+                {team}
+              </option>
+              {teams.map((team, index) => {
+                return (
+                  <option key={team + index + team} value={team.supportName}>
+                    {team.supportName}
+                  </option>
+                );
+              })}
+            </DropDownSelect>
+          </SupporterTeam>
+          <EnableBtn>
+            <Btn onClick={() => activateAccountHandler(_id)}>Enable</Btn>
+          </EnableBtn>
+        </Supporter>
+      )}
+    </>
   );
 }
+
+const DropDownSelect = styled.select`
+  flex: 1;
+`;
 
 const Supporter = styled.li`
   display: flex;
@@ -26,10 +117,28 @@ const SupporterName = styled.div`
   flex: 1;
   text-align: left;
 `;
+const Name = styled.div``;
 
-const SupporterUserName = styled.input``;
-const SupporterPassword = styled.input``;
-const SupporterTeam = styled.div``;
-const EnableBtn = styled.button``;
+const SupporterUserName = styled.div`
+  flex: 1;
+  text-align: left;
+`;
+const UserName = styled.input``;
+const SupporterPassword = styled.div`
+  flex: 1;
+  text-align: left;
+`;
+const Password = styled.input``;
+
+const SupporterTeam = styled.div`
+  flex: 1;
+  text-align: left;
+`;
+const Team = styled.div``;
+const EnableBtn = styled.div`
+  flex: 1;
+  text-align: left;
+`;
+const Btn = styled.button``;
 
 export default AccountItem;
