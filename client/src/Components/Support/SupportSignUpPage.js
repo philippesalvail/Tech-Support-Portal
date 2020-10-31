@@ -36,7 +36,7 @@ function SupportSignUpPage() {
         supportteam: teamSelected,
       });
       alert(
-        "Reqest account for " +
+        "Request account for " +
           firstName +
           " " +
           lastName +
@@ -52,6 +52,10 @@ function SupportSignUpPage() {
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
   }, []);
+
+  if (teams) {
+    console.log("teams in SupportSignUpPage: ", teams);
+  }
   return (
     <>
       {teams ? (
@@ -77,15 +81,23 @@ function SupportSignUpPage() {
                 <option value="selectAssignmentGroup" disabled hidden>
                   Select Assignment Group
                 </option>
-                {teams.map((team) => {
+                {teams.map((team, index) => {
                   return (
-                    <option value={team.supportName}>{team.supportName}</option>
+                    <option key={team + index} value={team.supportName}>
+                      {team.supportName}
+                    </option>
                   );
                 })}
               </DropDownSelect>
             </SupportTeam>
             <ButtonRow>
-              <CancelBtn>Cancel</CancelBtn>
+              <CancelBtn
+                onClick={() => {
+                  history.push("/");
+                }}
+              >
+                Cancel
+              </CancelBtn>
               <SubmitBtn type="submit">Sign Up</SubmitBtn>
             </ButtonRow>
           </SignUpPage>

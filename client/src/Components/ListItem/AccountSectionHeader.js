@@ -5,12 +5,10 @@ function AccountSectionHeader() {
   return (
     <TicketHeader>
       <TicketCustomerName>Name</TicketCustomerName>
-      <TicketDesc>Description</TicketDesc>
-      <TicketType>Type</TicketType>
-      <TicketPriority>Priority</TicketPriority>
+      <TicketDesc>Username</TicketDesc>
+      <TicketType>Password</TicketType>
+      <TicketPriority>Support Team</TicketPriority>
       <TicketState>State</TicketState>
-      <TicketGroup>Group</TicketGroup>
-      <TicketAssignee>Assignee</TicketAssignee>
     </TicketHeader>
   );
 }

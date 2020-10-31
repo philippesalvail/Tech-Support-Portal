@@ -1,6 +1,7 @@
 "use strict";
 const {MongoClient} = require("mongodb");
 const assert = require("assert");
+const {error} = require("console");
 require("dotenv").config();
 let objID = require("mongodb").ObjectID;
 
@@ -20,7 +21,6 @@ const getClientAccount = async (req, res) => {
     let userFound = await database
       .collection("Clients")
       .findOne({username: emailId});
-    console.log("getClientAccount userFound: ", userFound);
     res.status(200).send({status: "success", userFound: userFound});
     client.close();
   } catch (error) {
@@ -28,7 +28,7 @@ const getClientAccount = async (req, res) => {
   }
 };
 
-const registerClient = async (req, res) => {
+const createClientAccount = async (req, res) => {
   const {loginInfo, billingInfo} = req.body;
   let newUser = {
     username: loginInfo.email,
@@ -43,14 +43,18 @@ const registerClient = async (req, res) => {
     const database = client.db("Tech_Support");
     const table = await database.collection("Clients").insertOne(newUser);
     assert.equal(1, table.insertedCount);
-    res.status(201).json({status: 201, data: newUser});
+    res.status(201).json({
+      status: 201,
+      data: newUser,
+      message: "Account for " + loginInfo.name + " has been created",
+    });
     client.close();
   } catch (error) {
     res.status(500).json({status: 500, data: newUser, message: error.message});
   }
 };
 
-const addTicket = async (req, res) => {
+const createClientTicket = async (req, res) => {
   const {ticketInfo} = req.body;
   console.log("req.body in addTicket: ", req.body);
   let newTicket = {
@@ -71,7 +75,6 @@ const addTicket = async (req, res) => {
     const table = await database
       .collection("Support_Tickets")
       .insertOne(newTicket);
-    assert.equal(1, table.insertedCount);
     res.status(201).json({status: 201, data: newTicket});
     client.close();
   } catch (error) {
@@ -103,7 +106,13 @@ const getTicketDetail = async (req, res) => {
       .collection("Support_Tickets")
       .findOne({_id: objID(getTicket)});
     const teams = await database.collection("Support_Teams").find().toArray();
-    res.status(200).json({status: 200, data: data, teams: teams});
+    data && teams
+      ? res.status(200).json({status: 200, data: data, teams: teams})
+      : res.status(404).json({
+          status: 200,
+          message: "Something went wrong, please submit again",
+        });
+
     client.close();
   } catch (error) {
     res.status(500).json({status: 500, message: error.message});
@@ -264,20 +273,94 @@ const getNewSupporters = async (req, res) => {
     const database = client.db("Tech_Support");
     const supporters = await database
       .collection("Supporters")
-      .find({isValidated: false});
-    assert.equal(1, user.insertedCount);
-    res.status(201).json({status: 201, supporters: supporters});
+      .find({isValidated: false})
+      .toArray();
+    res.status(200).json({status: 200, accounts: supporters});
   } catch (error) {
-    res
-      .status(500)
-      .json({status: 500, data: supporter, nessage: error.message});
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
+
+const getAllSupporters = async (req, res) => {
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const supporters = await database.collection("Supporters").find().toArray();
+    res.status(200).json({status: 200, accounts: supporters});
+  } catch (error) {
+    res.status(500).json({status: 200, message: error.message});
+  }
+};
+
+const enableSupportAccount = async (req, res) => {
+  const supportaccount = req.body;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const supporter = await database.collection("Supporters").updateOne(
+      {_id: objID(supportaccount._id)},
+      {
+        $set: {
+          name: supportaccount.name,
+          username: supportaccount.username,
+          password: supportaccount.password,
+          team: supportaccount.team,
+          accountStatus: supportaccount.isUnlocked,
+          isValidated: supportaccount.isValidated,
+        },
+      }
+    );
+
+    const teamAssigned = await database
+      .collection("Support_Teams")
+      .update(
+        {supportName: supportaccount.team},
+        {$push: {supporters: supportaccount.name}}
+      );
+    teamAssigned && supporter
+      ? res.status(201).json({
+          status: 200,
+          accounts: supporter,
+          teamAssigned: teamAssigned,
+          message:
+            "Support Account for " +
+            supportaccount.name +
+            " has been created Successfully",
+        })
+      : res.status(204).json({
+          status: 204,
+          message:
+            "Support Account for " +
+            supportaccount.name +
+            " has been created Successfully",
+        });
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
+
+const doesSupportUserNameExists = async (req, res) => {
+  const {username} = req.params;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const supporter = await database
+      .collection("Supporters")
+      .find({username: username})
+      .toArray();
+    res.status(200).json({status: 200, accounts: supporter});
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
   }
 };
 
 module.exports = {
   getClientAccount,
-  registerClient,
-  addTicket,
+  createClientAccount,
+  createClientTicket,
   getAllTickets,
   getTicketDetail,
   getNewTickets,
@@ -288,4 +371,7 @@ module.exports = {
   getSupportUser,
   createSupportUser,
   getNewSupporters,
+  enableSupportAccount,
+  getAllSupporters,
+  doesSupportUserNameExists,
 };

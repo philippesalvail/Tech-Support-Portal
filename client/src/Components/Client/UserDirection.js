@@ -12,6 +12,7 @@ import {
 const UserDirection = () => {
   const dispatch = useDispatch();
   const {user} = useAuth0();
+  console.log("user: ", user);
   let history = useHistory();
   React.useEffect(() => {
     requestUserAccount();

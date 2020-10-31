@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import {useHistory} from "react-router-dom";
+import Loading from "../Loading";
 
 function SupportLoginPage() {
   let history = useHistory();
   const [userNameTyped, setUserNameTyped] = React.useState(null);
   const [passwordTyped, setPasswordTyped] = React.useState(null);
   const [loginMessage, setLoginMessage] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
   const authenticateUser = (e) => {
     e.preventDefault();
     fetch(`/support/supporter/${userNameTyped}`)
