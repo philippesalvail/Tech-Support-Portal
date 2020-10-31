@@ -103,11 +103,23 @@ const getTicketDetail = async (req, res) => {
       .collection("Support_Tickets")
       .findOne({_id: objID(getTicket)});
     const teams = await database.collection("Support_Teams").find().toArray();
-
     res.status(200).json({status: 200, data: data, teams: teams});
     client.close();
   } catch (error) {
-    res.status(500).json({status: 500, data: data, message: error.message});
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
+
+const getSupportTeams = async (req, res) => {
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const teams = await database.collection("Support_Teams").find().toArray();
+    res.status(200).json({status: 200, teams: teams});
+    client.close();
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
   }
 };
 
@@ -201,6 +213,67 @@ const getClosedTickets = async (req, res) => {
   }
 };
 
+const getSupportUser = async (req, res) => {
+  const {getSupportUser} = req.params;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const user = await database
+      .collection("Supporters")
+      .findOne({username: getSupportUser});
+    console.log("user in getSupportUser: ", user);
+    res.status(200).json({
+      status: 200,
+      user: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 200,
+      user: user,
+      message: "Server Error",
+    });
+  }
+};
+
+const createSupportUser = async (req, res) => {
+  const supporterInfo = req.body;
+  const supporter = {
+    name: supporterInfo.firstname + " " + supporterInfo.lastname,
+    team: supporterInfo.team,
+    isValidated: supporterInfo.isValidated,
+  };
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const user = await database.collection("Supporters").insertOne(supporter);
+    assert.equal(1, user.insertedCount);
+    res.status(201).json({status: 201, data: supporter});
+  } catch (error) {
+    res
+      .status(500)
+      .json({status: 500, data: supporter, nessage: error.message});
+  }
+};
+
+const getNewSupporters = async (req, res) => {
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const supporters = await database
+      .collection("Supporters")
+      .find({isValidated: false});
+    assert.equal(1, user.insertedCount);
+    res.status(201).json({status: 201, supporters: supporters});
+  } catch (error) {
+    res
+      .status(500)
+      .json({status: 500, data: supporter, nessage: error.message});
+  }
+};
+
 module.exports = {
   getClientAccount,
   registerClient,
@@ -211,4 +284,8 @@ module.exports = {
   getPendingTickets,
   getClosedTickets,
   updateTicketDetail,
+  getSupportTeams,
+  getSupportUser,
+  createSupportUser,
+  getNewSupporters,
 };

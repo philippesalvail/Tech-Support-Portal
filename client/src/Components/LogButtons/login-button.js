@@ -16,8 +16,9 @@ const LoginButton = ({data}) => {
 
   let history = useHistory();
   const {loginWithRedirect} = useAuth0();
+
   const supportLogin = () => {
-    history.push("/support/portal/newtickets");
+    history.push("/support/portal/supportloginpage");
   };
 
   return (

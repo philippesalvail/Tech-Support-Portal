@@ -16,28 +16,39 @@ function SupportNewTickets() {
   }, []);
 
   return (
-    <NewTickets>
-      <SupportSideBar />
-      <NewTicketsDisplay>
-        <NewTicketItems>
-          {newTickets ? (
-            <TicketHeader>
-              <h2>New Tickets</h2>
-              <TicketSectionHeader />
-              {newTickets.map((ticket) => {
-                return <ListItem ticket={ticket} />;
-              })}
-            </TicketHeader>
-          ) : (
-            <div></div>
-          )}
-        </NewTicketItems>
-      </NewTicketsDisplay>
-    </NewTickets>
+    <AdminPage>
+      <TicketBanner>New Tickets</TicketBanner>
+      <TicketDashBoard>
+        <SupportSideBar />
+        <NewTicketsDisplay>
+          <NewTicketItems>
+            {newTickets ? (
+              <TicketHeader>
+                <TicketSectionHeader />
+                {newTickets.map((ticket) => {
+                  return <ListItem ticket={ticket} />;
+                })}
+              </TicketHeader>
+            ) : (
+              <div></div>
+            )}
+          </NewTicketItems>
+        </NewTicketsDisplay>
+      </TicketDashBoard>
+    </AdminPage>
   );
 }
 
-const NewTickets = styled.div`
+const AdminPage = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TicketBanner = styled.h2`
+  text-align: center;
+`;
+
+const TicketDashBoard = styled.div`
   display: flex;
 `;
 const TicketHeader = styled.div`
@@ -49,7 +60,4 @@ const NewTicketsDisplay = styled.div`
   flex: 5;
 `;
 
-const Loader = styled.div`
-  postion: relative;
-`;
 export default SupportNewTickets;

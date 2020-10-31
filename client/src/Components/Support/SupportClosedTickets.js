@@ -4,6 +4,7 @@ import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
 import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 import Loading from "../Loading";
+import AccountSideBar from "./AccountSideBar";
 
 function SupportClosedTickets() {
   const [closedTickets, setClosedTickets] = React.useState([]);
@@ -14,43 +15,48 @@ function SupportClosedTickets() {
       .catch((error) => console.log("error: ", error));
   }, []);
   return (
-    <ClosedTickets>
-      <SupportSideBar />
-      <ClosedTicketsDisplay>
-        <ClosedTicketItems>
-          {closedTickets ? (
-            <TicketHeader>
-              <h2>Resolved Tickets</h2>
-              <TicketSectionHeader />
-              {closedTickets.map((ticket) => {
-                return <ListItem ticket={ticket} />;
-              })}
-            </TicketHeader>
-          ) : (
-            <Loader>
-              <Loading />
-            </Loader>
-          )}
-        </ClosedTicketItems>
-      </ClosedTicketsDisplay>
-    </ClosedTickets>
+    <AdminPage>
+      <TicketBanner>Closed Tickets</TicketBanner>
+      <TicketDashBoard>
+        <SupportSideBar />
+        <NewTicketsDisplay>
+          <NewTicketItems>
+            {closedTickets ? (
+              <TicketHeader>
+                <TicketSectionHeader />
+                {closedTickets.map((ticket) => {
+                  return <ListItem ticket={ticket} />;
+                })}
+              </TicketHeader>
+            ) : (
+              <div></div>
+            )}
+          </NewTicketItems>
+        </NewTicketsDisplay>
+      </TicketDashBoard>
+    </AdminPage>
   );
 }
 
-const ClosedTickets = styled.div`
+const AdminPage = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TicketBanner = styled.h2`
+  text-align: center;
+`;
+
+const TicketDashBoard = styled.div`
   display: flex;
 `;
 const TicketHeader = styled.div`
   text-align: center;
 `;
 
-const ClosedTicketItems = styled.div``;
-const ClosedTicketsDisplay = styled.div`
+const NewTicketItems = styled.div``;
+const NewTicketsDisplay = styled.div`
   flex: 5;
-`;
-
-const Loader = styled.div`
-  postion: relative;
 `;
 
 export default SupportClosedTickets;

@@ -6,7 +6,7 @@ import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
 import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 
-function SupportPortal() {
+function SupportAllTickets() {
   const [allTickets, setAllTickets] = React.useState([]);
   React.useEffect(() => {
     fetch("/support/getalltickets")
@@ -18,36 +18,48 @@ function SupportPortal() {
   }, []);
 
   return (
-    <Portal>
-      <SupportSideBar />
-      {allTickets ? (
-        <TicketHeader>
-          <h2>All Tickets</h2>
-          <TicketSectionHeader />
-          {allTickets.map((ticket) => {
-            return <ListItem ticket={ticket} />;
-          })}
-        </TicketHeader>
-      ) : (
-        <Loader>
-          <Loading />
-        </Loader>
-      )}
-    </Portal>
+    <AdminPage>
+      <TicketBanner>All Tickets</TicketBanner>
+      <TicketDashBoard>
+        <SupportSideBar />
+        <NewTicketsDisplay>
+          <NewTicketItems>
+            {allTickets ? (
+              <TicketHeader>
+                <TicketSectionHeader />
+                {allTickets.map((ticket) => {
+                  return <ListItem ticket={ticket} />;
+                })}
+              </TicketHeader>
+            ) : (
+              <div></div>
+            )}
+          </NewTicketItems>
+        </NewTicketsDisplay>
+      </TicketDashBoard>
+    </AdminPage>
   );
 }
 
-const Portal = styled.div`
+const AdminPage = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TicketBanner = styled.h2`
+  text-align: center;
+`;
+
+const TicketDashBoard = styled.div`
   display: flex;
 `;
-
 const TicketHeader = styled.div`
   text-align: center;
+`;
+
+const NewTicketItems = styled.div``;
+const NewTicketsDisplay = styled.div`
   flex: 5;
 `;
 
-const Loader = styled.div`
-  flex: 5;
-`;
-
-export default SupportPortal;
+export default SupportAllTickets;
