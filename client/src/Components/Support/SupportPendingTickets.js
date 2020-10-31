@@ -4,6 +4,7 @@ import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
 import Loading from "../Loading";
 import TicketSectionHeader from "../ListItem/TicketSectionHeader";
+import AccountSideBar from "./AccountSideBar";
 
 function SupportPendingTickets() {
   const [pendingTickets, setPendingTickets] = React.useState([]);
@@ -15,41 +16,48 @@ function SupportPendingTickets() {
   }, []);
 
   return (
-    <PendingTickets>
-      <SupportSideBar />
-      <PendingTicketsDisplay>
-        <PendingTicketItems>
-          {pendingTickets ? (
-            <TicketHeader>
-              <h2>In Progress Tickets</h2>
-              <TicketSectionHeader />
-              {pendingTickets.map((ticket) => {
-                return <ListItem ticket={ticket} />;
-              })}
-            </TicketHeader>
-          ) : (
-            <Loader>
-              <Loading />
-            </Loader>
-          )}
-        </PendingTicketItems>
-      </PendingTicketsDisplay>
-    </PendingTickets>
+    <AdminPage>
+      <TicketBanner>Pending Tickets</TicketBanner>
+      <TicketDashBoard>
+        <SupportSideBar />
+        <NewTicketsDisplay>
+          <NewTicketItems>
+            {pendingTickets ? (
+              <TicketHeader>
+                <TicketSectionHeader />
+                {pendingTickets.map((ticket) => {
+                  return <ListItem ticket={ticket} />;
+                })}
+              </TicketHeader>
+            ) : (
+              <div></div>
+            )}
+          </NewTicketItems>
+        </NewTicketsDisplay>
+      </TicketDashBoard>
+    </AdminPage>
   );
 }
-const PendingTickets = styled.div`
+
+const AdminPage = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TicketBanner = styled.h2`
+  text-align: center;
+`;
+
+const TicketDashBoard = styled.div`
   display: flex;
 `;
 const TicketHeader = styled.div`
   text-align: center;
 `;
 
-const PendingTicketItems = styled.div``;
-const PendingTicketsDisplay = styled.div`
+const NewTicketItems = styled.div``;
+const NewTicketsDisplay = styled.div`
   flex: 5;
 `;
 
-const Loader = styled.div`
-  postion: relative;
-`;
 export default SupportPendingTickets;

@@ -11,6 +11,12 @@ import SupportTicketDetail from "./Components/Support/SupportTicketDetail";
 import SupportAllTickets from "./Components/Support/SupportAllTickets";
 import SupportNewTickets from "./Components/Support/SupportNewTickets";
 import SupportClosedTickets from "./Components/Support/SupportClosedTickets";
+import SupportSignUpPage from "./Components/Support/SupportSignUpPage";
+import SupportLoginPage from "./Components/Support/SupportLoginPage";
+
+import SupportNewAccounts from "./Components/Support/SupportNewAccounts";
+import SupportAllAccounts from "./Components/Support/SupportAllAccounts";
+import SupportTeamAccounts from "./Components/Support/SupportTeamAccounts";
 
 function App() {
   return (
@@ -61,11 +67,36 @@ function App() {
             exact
             component={SupportClosedTickets}
           />
+          <Route
+            path="/support/portal/supportsignuppage"
+            exact
+            component={SupportSignUpPage}
+          />
+          <Route
+            path="/support/portal/supportloginpage"
+            exact
+            component={SupportLoginPage}
+          />
 
           <Route
             path="/support/portal/ticket/:ticketId"
             exact
             component={SupportTicketDetail}
+          />
+          <Route
+            path="/support/portal/accounts/newaccounts"
+            exact
+            component={SupportNewAccounts}
+          />
+          <Route
+            path="/support/portal/accounts/allaccounts"
+            exact
+            component={SupportAllAccounts}
+          />
+          <Route
+            path="/support/portal/accounts/teamaccounts"
+            exact
+            component={SupportTeamAccounts}
           />
         </Switch>
       </Router>
