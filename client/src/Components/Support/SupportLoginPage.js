@@ -10,12 +10,12 @@ function SupportLoginPage() {
   const [loginMessage, setLoginMessage] = React.useState(null);
   const [failedAttempts, setFailedAttempts] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
-  const checkFailedAttempts = (failedAttempts) => {
+  const checkFailedAttempts = (failedAttempts, isLocked) => {
     if (failedAttempts > 1) {
       fetch(`/support/accounts/lockAccount/${userNameTyped}`, {
         method: "PATCH",
         body: JSON.stringify({
-          isUnlocked: false,
+          isLocked: !isLocked,
         }),
         headers: {"Content-type": "application/json; charset=UTF-8"},
       })
@@ -41,8 +41,8 @@ function SupportLoginPage() {
               "Please sign up for an account"
           );
         } else if (
-          userObj.user.isUnlocked !== undefined &&
-          !userObj.user.isUnlocked
+          userObj.user.isLocked !== undefined &&
+          userObj.user.isLocked
         ) {
           setLoginMessage(
             "Account is Locked, please contact your administrator"
@@ -50,7 +50,7 @@ function SupportLoginPage() {
         } else if (userObj.user.password !== passwordTyped) {
           setFailedAttempts(failedAttempts + 1);
           setLoginMessage("Password is invalid");
-          checkFailedAttempts(failedAttempts);
+          checkFailedAttempts(failedAttempts, userObj.user.isLocked);
         } else {
           history.push("/support/portal/newtickets");
         }

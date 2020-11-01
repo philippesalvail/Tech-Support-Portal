@@ -6,12 +6,13 @@ import ActiveAccountSectionHeader from "../ListItem/ActiveAccountSectionHeader";
 
 function SupportActiveAccounts() {
   const [allActiveAccounts, setAllActiveAccounts] = React.useState(null);
+  const [resetList, setResetList] = React.useState(false);
   React.useEffect(() => {
     fetch("/support/supporter/getAllSupporters")
       .then((response) => response.json())
       .then((accounts) => setAllActiveAccounts(accounts.accounts))
       .catch((error) => console.log("error: ", error));
-  }, []);
+  }, [resetList]);
 
   if (allActiveAccounts) {
     console.log("allActiveAccounts: ", allActiveAccounts);
@@ -32,6 +33,8 @@ function SupportActiveAccounts() {
                     <ActiveAccountItem
                       key={account + index}
                       account={account}
+                      setResetList={setResetList}
+                      resetList={resetList}
                     />
                   );
                 })}
