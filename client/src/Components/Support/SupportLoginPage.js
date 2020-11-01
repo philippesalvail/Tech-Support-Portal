@@ -8,7 +8,27 @@ function SupportLoginPage() {
   const [userNameTyped, setUserNameTyped] = React.useState(null);
   const [passwordTyped, setPasswordTyped] = React.useState(null);
   const [loginMessage, setLoginMessage] = React.useState(null);
+  const [failedAttempts, setFailedAttempts] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
+  const checkFailedAttempts = (failedAttempts) => {
+    if (failedAttempts > 1) {
+      fetch(`/support/accounts/lockAccount/${userNameTyped}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          isUnlocked: false,
+        }),
+        headers: {"Content-type": "application/json; charset=UTF-8"},
+      })
+        .then((response) => response.json())
+        .then((account) => {
+          setLoginMessage(account.message);
+        })
+        .catch((error) => console.log("error: ", error.message));
+      setFailedAttempts(0);
+      console.log("loginMessage: ", loginMessage);
+    }
+  };
+
   const authenticateUser = (e) => {
     e.preventDefault();
     fetch(`/support/supporter/${userNameTyped}`)
@@ -20,8 +40,17 @@ function SupportLoginPage() {
               "\n" +
               "Please sign up for an account"
           );
+        } else if (
+          userObj.user.isUnlocked !== undefined &&
+          !userObj.user.isUnlocked
+        ) {
+          setLoginMessage(
+            "Account is Locked, please contact your administrator"
+          );
         } else if (userObj.user.password !== passwordTyped) {
+          setFailedAttempts(failedAttempts + 1);
           setLoginMessage("Password is invalid");
+          checkFailedAttempts(failedAttempts);
         } else {
           history.push("/support/portal/newtickets");
         }

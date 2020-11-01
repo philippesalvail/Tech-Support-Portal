@@ -16,23 +16,27 @@ const {
   enableSupportAccount,
   getAllSupporters,
   doesSupportUserNameExists,
+  getAllActiveAccounts,
+  lockSupportAccount,
 } = require("./handlers");
 
-router.get("/client/:emailId", getClientAccount);
+router.patch("/support/accounts/lockAccount/:username", lockSupportAccount);
 router.post("/client/clientCreated", createClientAccount);
 router.post("/client/ticketCreated", createClientTicket);
+router.get("/client/:emailId", getClientAccount);
 router.get("/support/getnewtickets", getNewTickets);
 router.get("/support/getpendingtickets", getPendingTickets);
 router.get("/support/getclosedtickets", getClosedTickets);
 router.get("/support/getalltickets", getAllTickets);
-router.get("/support/:getTicket", getTicketDetail);
 router.put("/support/updateTicket", updateTicketDetail);
+router.get("/support/:getTicket", getTicketDetail);
+router.get("/support/accounts/:getActiveAccounts", getAllActiveAccounts);
 router.get("/support/supportteams/getSupportTeams", getSupportTeams);
 router.get("/support/supporter/getNewSupporters", getNewSupporters);
 router.get("/support/supporter/getAllSupporters", getAllSupporters);
-router.get("/support/supporter/:getSupportUser", getSupportUser);
-router.put("/support/supporter/accounts/enabledAccount", enableSupportAccount);
-router.get("/support/supporter/accounts/:username", doesSupportUserNameExists);
 router.post("/support/supporter/createSupportUser", createSupportUser);
+router.get("/support/supporter/:getSupportUser", getSupportUser);
+router.put("/support/accounts/enableAccount", enableSupportAccount);
+router.get("/support/accounts/:username", doesSupportUserNameExists);
 
 module.exports = router;

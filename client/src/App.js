@@ -15,7 +15,7 @@ import SupportSignUpPage from "./Components/Support/SupportSignUpPage";
 import SupportLoginPage from "./Components/Support/SupportLoginPage";
 
 import SupportNewAccounts from "./Components/Support/SupportNewAccounts";
-import SupportAllAccounts from "./Components/Support/SupportAllAccounts";
+import SupportActiveAccounts from "./Components/Support/SupportActiveAccounts";
 import SupportTeamAccounts from "./Components/Support/SupportTeamAccounts";
 
 function App() {
@@ -89,9 +89,9 @@ function App() {
             component={SupportNewAccounts}
           />
           <Route
-            path="/support/portal/accounts/allaccounts"
+            path="/support/portal/accounts/activeaccounts"
             exact
-            component={SupportAllAccounts}
+            component={SupportActiveAccounts}
           />
           <Route
             path="/support/portal/accounts/teamaccounts"

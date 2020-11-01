@@ -1,18 +1,21 @@
 import React from "react";
-import AccountItem from "../ListItem/AccountItem";
+import ActiveAccountItem from "../ListItem/ActiveAccountItem";
 import SupportSideBar from "./SupportSideBar";
 import styled from "styled-components";
-import AccountSectionHeader from "../ListItem/AccountSectionHeader";
+import ActiveAccountSectionHeader from "../ListItem/ActiveAccountSectionHeader";
 
-function SupportAllAccounts() {
-  console.log("I am in SupportNewAccounts");
-  const [allSupporters, setAllSupporters] = React.useState([]);
+function SupportActiveAccounts() {
+  const [allActiveAccounts, setAllActiveAccounts] = React.useState(null);
   React.useEffect(() => {
     fetch("/support/supporter/getAllSupporters")
       .then((response) => response.json())
-      .then((accounts) => setAllSupporters(accounts.accounts))
+      .then((accounts) => setAllActiveAccounts(accounts.accounts))
       .catch((error) => console.log("error: ", error));
   }, []);
+
+  if (allActiveAccounts) {
+    console.log("allActiveAccounts: ", allActiveAccounts);
+  }
 
   return (
     <AdminPage>
@@ -21,11 +24,16 @@ function SupportAllAccounts() {
         <SupportSideBar />
         <NewAccountsDisplay>
           <NewAccountItems>
-            {allSupporters ? (
+            <ActiveAccountSectionHeader />
+            {allActiveAccounts ? (
               <AccountHeader>
-                <AccountSectionHeader />
-                {allSupporters.map((account, index) => {
-                  return <AccountItem key={account + index} ticket={account} />;
+                {allActiveAccounts.map((account, index) => {
+                  return (
+                    <ActiveAccountItem
+                      key={account + index}
+                      account={account}
+                    />
+                  );
                 })}
               </AccountHeader>
             ) : (
@@ -59,4 +67,4 @@ const NewAccountsDisplay = styled.div`
   flex: 5;
 `;
 
-export default SupportAllAccounts;
+export default SupportActiveAccounts;

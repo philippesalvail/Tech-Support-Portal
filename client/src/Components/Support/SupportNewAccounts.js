@@ -1,8 +1,8 @@
 import React from "react";
-import AccountItem from "../ListItem/AccountItem";
+import NewAccountItem from "../ListItem/NewAccountItem";
 import SupportSideBar from "./SupportSideBar";
 import styled from "styled-components";
-import AccountSectionHeader from "../ListItem/AccountSectionHeader";
+import NewAccountSectionHeader from "../ListItem/NewAccountSectionHeader";
 
 function SupportNewAccounts() {
   const [newAccounts, setNewAccounts] = React.useState([]);
@@ -26,10 +26,10 @@ function SupportNewAccounts() {
           <NewAccountItems>
             {newAccounts ? (
               <AccountHeader>
-                <AccountSectionHeader />
+                <NewAccountSectionHeader />
                 {newAccounts.map((account, index) => {
                   return (
-                    <AccountItem
+                    <NewAccountItem
                       key={account + index}
                       account={account}
                       setEnableAccount={setEnableAccount}
