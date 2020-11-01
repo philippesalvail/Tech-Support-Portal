@@ -2,22 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import {useHistory} from "react-router-dom";
 
-function AccountItem(account) {
-  const {_id, name, team, isValidated} = account.account;
+function AccountItem(props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const {_id, name, team, isValidated} = props.account;
+  const {setEnableAccount, enableAccount} = props;
   const [teamSelected, setTeamSelected] = React.useState("");
   const [teams, setTeams] = React.useState(null);
   const [statusMessage, setStatusMesage] = React.useState("");
   const [usernameExists, setUsernameExists] = React.useState(false);
-  const [filterList, setFilterList] = React.useState(false);
 
   React.useEffect(() => {
     fetch("/support/supportteams/getSupportTeams")
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
-  }, [filterList]);
+  }, []);
   let history = useHistory();
 
   const checkIfAccountExists = (username) => {
@@ -58,8 +58,9 @@ function AccountItem(account) {
         response.json();
       })
       .then((statusMessage) => {
-        setFilterList(!filterList);
-        alert(statusMessage.message);
+        setEnableAccount(!enableAccount);
+        setPassword("");
+        setUsername("");
       })
       .catch((error) => console.log("error: ", error.message));
   };
@@ -72,10 +73,16 @@ function AccountItem(account) {
             <Name>{name}</Name>
           </SupporterName>
           <SupporterUserName>
-            <UserName onChange={(e) => setUsername(e.target.value)} />
+            <UserName
+              onChange={(e) => setUsername(e.target.value)}
+              value={username}
+            />
           </SupporterUserName>
           <SupporterPassword>
-            <Password onChange={(e) => setPassword(e.target.value)} />
+            <Password
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+            />
           </SupporterPassword>
           <SupporterTeam>
             <DropDownSelect
