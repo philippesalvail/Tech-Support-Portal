@@ -25,8 +25,8 @@ function SupportNewTickets() {
             {newTickets ? (
               <TicketHeader>
                 <TicketSectionHeader />
-                {newTickets.map((ticket) => {
-                  return <ListItem ticket={ticket} />;
+                {newTickets.map((ticket, index) => {
+                  return <ListItem key={ticket + index} ticket={ticket} />;
                 })}
               </TicketHeader>
             ) : (

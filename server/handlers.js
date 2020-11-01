@@ -307,7 +307,7 @@ const enableSupportAccount = async (req, res) => {
           username: supportaccount.username,
           password: supportaccount.password,
           team: supportaccount.team,
-          accountStatus: supportaccount.isUnlocked,
+          isUnlocked: supportaccount.isUnlocked,
           isValidated: supportaccount.isValidated,
         },
       }
@@ -356,6 +356,52 @@ const doesSupportUserNameExists = async (req, res) => {
     res.status(500).json({status: 500, message: error.message});
   }
 };
+const getAllActiveAccounts = async (req, res) => {
+  console.log("req in getAllActiveAccounts: ", req.params);
+  const {getActiveAccounts} = req.params;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const accounts = await database
+      .collection("Supporters")
+      .find({isValidated: getActiveAccounts})
+      .toArray();
+    res.status(200).json({status: 200, accounts: accounts});
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
+
+const lockSupportAccount = async (req, res) => {
+  const {username} = req.params;
+  const {isUnlocked} = req.body;
+  console.log("params: ", req.params);
+  console.log("body: ", req.body);
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    await database.collection("Supporters").updateOne(
+      {username: username},
+      {
+        $set: {isUnlocked: isUnlocked},
+      }
+    );
+    res
+      .status(200)
+      .json({
+        status: 200,
+        message:
+          "User account: " +
+          username +
+          " has been locked due to too many failed attempts",
+      });
+  } catch (error) {
+    console.log("error: ", error);
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
 
 module.exports = {
   getClientAccount,
@@ -374,4 +420,6 @@ module.exports = {
   enableSupportAccount,
   getAllSupporters,
   doesSupportUserNameExists,
+  getAllActiveAccounts,
+  lockSupportAccount,
 };

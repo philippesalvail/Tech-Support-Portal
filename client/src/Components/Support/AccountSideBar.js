@@ -15,7 +15,7 @@ function AccountSideBar() {
         <WaitingSupportersIcon />
         <NewAccounts>View New</NewAccounts>
       </SideLink>
-      <SideLink strict to={"/support/portal/accounts/allaccounts"}>
+      <SideLink strict to={"/support/portal/accounts/activeaccounts"}>
         <AllSupportersIcon />
         <ViewAll>View All</ViewAll>
       </SideLink>

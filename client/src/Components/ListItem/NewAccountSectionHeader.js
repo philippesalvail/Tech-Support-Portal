@@ -16,10 +16,6 @@ function AccountSectionHeader() {
 const TicketHeader = styled.div`
   display: flex;
 `;
-const TicketInc = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-`;
 const TicketCustomerName = styled.h3`
   flex: 1;
   text-decoration: underline;
@@ -41,16 +37,6 @@ const TicketPriority = styled.h3`
   text-align: left;
 `;
 const TicketState = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-const TicketGroup = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-const TicketAssignee = styled.h3`
   flex: 1;
   text-decoration: underline;
   text-align: left;

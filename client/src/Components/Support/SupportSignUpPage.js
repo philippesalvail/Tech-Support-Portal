@@ -23,10 +23,6 @@ function SupportSignUpPage() {
     if (!teamSelected) {
       error += "Please enter team";
     }
-
-    // error += firstName.length < 2 ? "Please enter valid first name" + "\n" : "";
-    // error += lastName.length < 2 ? "Please enter valid last name" + "\n" : "";
-    // error += teamSelected ? "" : "Please enter team";
     if (error !== "") {
       alert(error);
     } else {

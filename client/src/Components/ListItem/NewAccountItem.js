@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import {useHistory} from "react-router-dom";
 
-function AccountItem(props) {
+function NewAccountItem(props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const {_id, name, team, isValidated} = props.account;
@@ -21,7 +21,7 @@ function AccountItem(props) {
   let history = useHistory();
 
   const checkIfAccountExists = (username) => {
-    fetch(`/support/supporter/accounts/${username}`)
+    fetch(`/support/accounts/${username}`)
       .then((response) => response.json())
       .then((account) => setUsernameExists(account.exists))
       .catch((error) => console.log("error: ", error.message));
@@ -41,7 +41,7 @@ function AccountItem(props) {
       alert("password must contain at least one special character");
       return;
     }
-    fetch("/support/supporter/accounts/enabledAccount", {
+    fetch("/support/accounts/enableAccount", {
       method: "put",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
@@ -52,6 +52,7 @@ function AccountItem(props) {
         password: password,
         isUnlocked: true,
         isValidated: true,
+        isEnabled: true,
       }),
     })
       .then((response) => {
@@ -148,4 +149,4 @@ const EnableBtn = styled.div`
 `;
 const Btn = styled.button``;
 
-export default AccountItem;
+export default NewAccountItem;
