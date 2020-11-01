@@ -6,16 +6,16 @@ import AccountSectionHeader from "../ListItem/AccountSectionHeader";
 
 function SupportNewAccounts() {
   const [newAccounts, setNewAccounts] = React.useState([]);
+  const [enableAccount, setEnableAccount] = React.useState(false);
+
   React.useEffect(() => {
     fetch("/support/supporter/getNewSupporters")
       .then((response) => response.json())
-      .then((accounts) => setNewAccounts(accounts.accounts))
+      .then((accounts) => {
+        setNewAccounts(accounts.accounts);
+      })
       .catch((error) => console.log("error: ", error));
-  }, []);
-
-  if (newAccounts) {
-    console.log("newAccounts: ", newAccounts);
-  }
+  }, [enableAccount]);
 
   return (
     <AdminPage>
@@ -29,7 +29,12 @@ function SupportNewAccounts() {
                 <AccountSectionHeader />
                 {newAccounts.map((account, index) => {
                   return (
-                    <AccountItem key={account + index} account={account} />
+                    <AccountItem
+                      key={account + index}
+                      account={account}
+                      setEnableAccount={setEnableAccount}
+                      enableAccount={enableAccount}
+                    />
                   );
                 })}
               </AccountHeader>
