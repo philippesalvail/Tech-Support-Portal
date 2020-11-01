@@ -222,7 +222,7 @@ const getClosedTickets = async (req, res) => {
   }
 };
 
-const getSupportUser = async (req, res) => {
+const getSupporter = async (req, res) => {
   const {getSupportUser} = req.params;
   try {
     const client = await MongoClient(MONGO_URI, options);
@@ -245,7 +245,7 @@ const getSupportUser = async (req, res) => {
   }
 };
 
-const createSupportUser = async (req, res) => {
+const createSupporter = async (req, res) => {
   const supporterInfo = req.body;
   const supporter = {
     name: supporterInfo.firstname + " " + supporterInfo.lastname,
@@ -375,7 +375,7 @@ const getAllActiveAccounts = async (req, res) => {
 
 const lockSupportAccount = async (req, res) => {
   const {username} = req.params;
-  const {isUnlocked} = req.body;
+  const {isLocked} = req.body;
   console.log("params: ", req.params);
   console.log("body: ", req.body);
   try {
@@ -385,18 +385,16 @@ const lockSupportAccount = async (req, res) => {
     await database.collection("Supporters").updateOne(
       {username: username},
       {
-        $set: {isUnlocked: isUnlocked},
+        $set: {isLocked: isLocked},
       }
     );
-    res
-      .status(200)
-      .json({
-        status: 200,
-        message:
-          "User account: " +
-          username +
-          " has been locked due to too many failed attempts",
-      });
+    res.status(200).json({
+      status: 200,
+      message:
+        "User account: " +
+        username +
+        " has been locked due to too many failed attempts",
+    });
   } catch (error) {
     console.log("error: ", error);
     res.status(500).json({status: 500, message: error.message});
@@ -414,8 +412,8 @@ module.exports = {
   getClosedTickets,
   updateTicketDetail,
   getSupportTeams,
-  getSupportUser,
-  createSupportUser,
+  getSupporter,
+  createSupporter,
   getNewSupporters,
   enableSupportAccount,
   getAllSupporters,

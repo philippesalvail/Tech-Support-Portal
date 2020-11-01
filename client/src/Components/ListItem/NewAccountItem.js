@@ -50,7 +50,7 @@ function NewAccountItem(props) {
         team: team,
         username: username,
         password: password,
-        isUnlocked: true,
+        isLocked: false,
         isValidated: true,
         isEnabled: true,
       }),

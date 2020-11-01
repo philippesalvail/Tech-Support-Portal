@@ -1,8 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 
-function ActiveAccountItem({account}) {
-  const unlockAccountHandler = () => {};
+const unlockAccountHandler = (account, setResetList, resetList) => {
+  fetch(`/support/accounts/lockAccount/${account.username}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      isLocked: !account.isLocked,
+    }),
+    headers: {"Content-type": "application/json; charset=UTF-8"},
+  })
+    .then((response) => response.json())
+    .then((account) => {
+      setResetList(!account.isLocked);
+    })
+    .catch((error) => console.log("error: ", error.message));
+};
+
+function ActiveAccountItem({account, setResetList, resetList}) {
   return (
     <>
       {account.username !== "admin" && (
@@ -14,7 +28,14 @@ function ActiveAccountItem({account}) {
             <Username>{account.username}</Username>
           </SupporterUserName>
           <UnlockBtn>
-            <Btn onClick={() => unlockAccountHandler(account._id)}>Unlock</Btn>
+            <Btn
+              onClick={() =>
+                unlockAccountHandler(account, setResetList, resetList)
+              }
+              disabled={!account.isLocked}
+            >
+              Unlock
+            </Btn>
           </UnlockBtn>
         </Supporter>
       )}
@@ -37,15 +58,12 @@ const SupporterUserName = styled.div`
 `;
 const Username = styled.label``;
 
-const EnableBtn = styled.div`
-  flex: 1;
-  text-align: left;
-`;
-
 const UnlockBtn = styled.div`
   flex: 1;
   text-align: left;
 `;
-const Btn = styled.button``;
+const Btn = styled.button`
+  opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+`;
 
 export default ActiveAccountItem;
