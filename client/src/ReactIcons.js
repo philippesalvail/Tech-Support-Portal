@@ -10,11 +10,14 @@ import {user_add} from "react-icons-kit/ikons/user_add";
 import {user_circle} from "react-icons-kit/ikons/user_circle";
 import {users} from "react-icons-kit/ikons/users";
 import {user_ok} from "react-icons-kit/ikons/user_ok";
+import {group} from "react-icons-kit/fa/group";
 
-export const NewTicketIcon = () => <Icon icon={plus} size={"32"} />;
-export const HistoryIcon = () => <Icon icon={history} size={"32"} />;
-export const PendingIcon = () => <Icon icon={toList} size={"32"} />;
-export const ClosedIcon = () => <Icon icon={alignLeft} size={"32"} />;
-export const AllSupportersIcon = () => <Icon icon={users} size={"32"} />;
-export const WaitingSupportersIcon = () => <Icon icon={user_ok} size={"32"} />;
-export const TeamSupportersIcon = () => <Icon icon={user_circle} size={"32"} />;
+export const NewTicketIcon = () => <Icon icon={plus} size={"28"} />;
+export const HistoryIcon = () => <Icon icon={history} size={"28"} />;
+export const PendingIcon = () => <Icon icon={toList} size={"28"} />;
+export const ClosedIcon = () => <Icon icon={alignLeft} size={"28"} />;
+export const AllSupportersIcon = () => <Icon icon={users} size={"28"} />;
+export const WaitingSupportersIcon = () => <Icon icon={user_ok} size={"28"} />;
+export const TeamSupportersIcon = () => <Icon icon={user_circle} size={"28"} />;
+
+export const TeamIcon = () => <Icon icon={group} size={"28"} />;

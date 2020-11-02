@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import SupportSideBar from "./SupportSideBar";
+import AdminSideBar from "./AdminSideBar";
 import Loading from "../Loading";
 
 const SupportTicketDetail = () => {
@@ -76,7 +76,7 @@ const SupportTicketDetail = () => {
 
   return (
     <Portal>
-      <SupportSideBar />
+      <AdminSideBar />
       <TicketForm onSubmit={updateTicket}>
         <SupportTicketBanner>Incident Report </SupportTicketBanner>
         {ticketDetail ? (
@@ -273,7 +273,7 @@ const TicketForm = styled.form`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  flex: 5;
+  flex: 4;
   margin: 0 auto;
 `;
 const SupportTicketBanner = styled.div`

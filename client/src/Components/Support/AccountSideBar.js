@@ -35,10 +35,10 @@ const Side = styled.div`
 const SideLink = styled(NavLink)`
   display: flex;
   padding-left: 7%;
+  text-decoration: none;
 `;
 const PaddedLink = styled.span`
   font-weight: bold;
-  padding: 5%;
 `;
 const NewAccounts = styled(PaddedLink)``;
 const ViewAll = styled(PaddedLink)``;

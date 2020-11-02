@@ -11,7 +11,6 @@ function ListItem({ticket}) {
     <TicketItem onClick={() => ticketDetailHandler(ticket._id)}>
       <CustomerName>{ticket.customerName}</CustomerName>
       <TicketShortDesc>{ticket.shortDescrption}</TicketShortDesc>
-      <TicketCategory>{ticket.productType}</TicketCategory>
       <TicketPriority>{ticket.priority}</TicketPriority>
       <TicketState>{ticket.ticketStatus}</TicketState>
       <TicketAssignment>

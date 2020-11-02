@@ -2,7 +2,7 @@ import React from "react";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../Loading";
-import SupportSideBar from "./SupportSideBar";
+import AdminSideBar from "./AdminSideBar";
 import ListItem from "../ListItem/ListItem";
 import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 
@@ -19,9 +19,8 @@ function SupportAllTickets() {
 
   return (
     <AdminPage>
-      <TicketBanner>All Tickets</TicketBanner>
       <TicketDashBoard>
-        <SupportSideBar />
+        <AdminSideBar />
         <NewTicketsDisplay>
           <NewTicketItems>
             {allTickets ? (
@@ -59,7 +58,7 @@ const TicketHeader = styled.div`
 
 const NewTicketItems = styled.div``;
 const NewTicketsDisplay = styled.div`
-  flex: 5;
+  flex: 4;
 `;
 
 export default SupportAllTickets;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SupportTicketDetail from "./SupportTicketDetail";
-import SupportSideBar from "./SupportSideBar";
+import AdminSideBar from "./AdminSideBar";
 import ListItem from "../ListItem/ListItem";
 import Loading from "../Loading";
 import TicketSectionHeader from "../ListItem/TicketSectionHeader";
@@ -17,9 +17,8 @@ function SupportNewTickets() {
 
   return (
     <AdminPage>
-      <TicketBanner>New Tickets</TicketBanner>
       <TicketDashBoard>
-        <SupportSideBar />
+        <AdminSideBar />
         <NewTicketsDisplay>
           <NewTicketItems>
             {newTickets ? (
@@ -57,7 +56,7 @@ const TicketHeader = styled.div`
 
 const NewTicketItems = styled.div``;
 const NewTicketsDisplay = styled.div`
-  flex: 5;
+  flex: 4;
 `;
 
 export default SupportNewTickets;

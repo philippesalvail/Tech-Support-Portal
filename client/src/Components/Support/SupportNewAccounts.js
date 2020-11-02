@@ -1,6 +1,6 @@
 import React from "react";
 import NewAccountItem from "../ListItem/NewAccountItem";
-import SupportSideBar from "./SupportSideBar";
+import AdminSideBar from "./AdminSideBar";
 import styled from "styled-components";
 import NewAccountSectionHeader from "../ListItem/NewAccountSectionHeader";
 
@@ -19,9 +19,8 @@ function SupportNewAccounts() {
 
   return (
     <AdminPage>
-      <AccountBanner>New Accounts</AccountBanner>
       <AccountDashBoard>
-        <SupportSideBar />
+        <AdminSideBar />
         <NewAccountsDisplay>
           <NewAccountItems>
             {newAccounts ? (
