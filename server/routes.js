@@ -18,6 +18,8 @@ const {
   doesSupportUserNameExists,
   getAllActiveAccounts,
   lockSupportAccount,
+  getTeamAccounts,
+  getTeamTickets,
 } = require("./handlers");
 
 router.post("/client/clientCreated", createClientAccount);
@@ -31,8 +33,10 @@ router.put("/support/updateTicket", updateTicketDetail);
 router.get("/support/:getTicket", getTicketDetail);
 router.get("/support/accounts/:getActiveAccounts", getAllActiveAccounts);
 router.get("/support/supportteams/getSupportTeams", getSupportTeams);
+router.get("/support/supportteams/:getTeamTickets", getTeamTickets);
 router.get("/support/supporter/getNewSupporters", getNewSupporters);
 router.get("/support/supporter/getAllSupporters", getAllSupporters);
+router.get("/support/team/:getTeamAccounts", getTeamAccounts);
 router.post("/support/supporter/createSupportUser", createSupporter);
 router.get("/support/supporter/:getSupportUser", getSupporter);
 router.put("/support/accounts/enableAccount", enableSupportAccount);

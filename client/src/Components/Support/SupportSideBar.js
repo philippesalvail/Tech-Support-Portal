@@ -14,19 +14,19 @@ function SupportSideBar() {
   return (
     <Side>
       <SideLbl>Tickets</SideLbl>
-      <SideLink strict to={"/support/portal/newtickets"}>
+      <SideLink strict to={"/support/portal/agent/newtickets"}>
         <NewTicketIcon />
         <CreateNew>View New</CreateNew>
       </SideLink>
-      <SideLink strict to={"/support/portal/pendingtickets"}>
+      <SideLink strict to={"/support/portal/agent/pendingtickets"}>
         <PendingIcon />
         <ViewPending>View Pending</ViewPending>
       </SideLink>
-      <SideLink strict to={"/support/portal/closedtickets"}>
+      <SideLink strict to={"/support/portal/agent/closedtickets"}>
         <HistoryIcon />
         <ViewHistory>View Resolved</ViewHistory>
       </SideLink>
-      <SideLink strict to={"/support/portal/alltickets"}>
+      <SideLink strict to={"/support/portal/agent/alltickets"}>
         <ClosedIcon />
         <ViewAll>View All</ViewAll>
       </SideLink>

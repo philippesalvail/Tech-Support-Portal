@@ -52,7 +52,8 @@ function SupportLoginPage() {
           setLoginMessage("Password is invalid");
           checkFailedAttempts(failedAttempts, userObj.user.isLocked);
         } else {
-          history.push("/support/portal/newtickets");
+          console.log("last else");
+          history.push("/support/portal/admin/newtickets");
         }
       });
   };

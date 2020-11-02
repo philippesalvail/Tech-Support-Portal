@@ -357,7 +357,6 @@ const doesSupportUserNameExists = async (req, res) => {
   }
 };
 const getAllActiveAccounts = async (req, res) => {
-  console.log("req in getAllActiveAccounts: ", req.params);
   const {getActiveAccounts} = req.params;
   try {
     const client = await MongoClient(MONGO_URI, options);
@@ -401,6 +400,39 @@ const lockSupportAccount = async (req, res) => {
   }
 };
 
+const getTeamAccounts = () => {
+  // const {getTeamAccounts} = req.params;
+  // try {
+  //   const client = await MongoClient(MONGO_URI, options);
+  //   await client.connect();
+  //   const database = client.db("Tech_Support");
+  //   const accounts = await database
+  //     .collection("Supporters")
+  //     .find({isValidated: getActiveAccounts})
+  //     .toArray();
+  //   res.status(200).json({status: 200, accounts: accounts});
+  // } catch (error) {
+  //   res.status(500).json({status: 500, message: error.message});
+  // }
+};
+
+const getTeamTickets = async (req, res) => {
+  const {getTeamTickets} = req.params;
+
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const tickets = await database
+      .collection("Support_Tickets")
+      .find({assignmentGroup: getTeamTickets})
+      .toArray();
+    res.status(200).json({status: 200, tickets: tickets});
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
+
 module.exports = {
   getClientAccount,
   createClientAccount,
@@ -420,4 +452,6 @@ module.exports = {
   doesSupportUserNameExists,
   getAllActiveAccounts,
   lockSupportAccount,
+  getTeamAccounts,
+  getTeamTickets,
 };

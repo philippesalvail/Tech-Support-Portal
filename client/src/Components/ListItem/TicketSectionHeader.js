@@ -6,7 +6,6 @@ function TicketSectionHeader() {
     <TicketHeader>
       <TicketCustomerName>Name</TicketCustomerName>
       <TicketDesc>Description</TicketDesc>
-      <TicketType>Type</TicketType>
       <TicketPriority>Priority</TicketPriority>
       <TicketState>State</TicketState>
       <TicketGroup>Group</TicketGroup>

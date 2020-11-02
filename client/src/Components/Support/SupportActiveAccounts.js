@@ -1,6 +1,6 @@
 import React from "react";
 import ActiveAccountItem from "../ListItem/ActiveAccountItem";
-import SupportSideBar from "./SupportSideBar";
+import AdminSideBar from "./AdminSideBar";
 import styled from "styled-components";
 import ActiveAccountSectionHeader from "../ListItem/ActiveAccountSectionHeader";
 
@@ -20,9 +20,8 @@ function SupportActiveAccounts() {
 
   return (
     <AdminPage>
-      <AccountBanner>All Accounts</AccountBanner>
       <AccountDashBoard>
-        <SupportSideBar />
+        <AdminSideBar />
         <NewAccountsDisplay>
           <NewAccountItems>
             <ActiveAccountSectionHeader />

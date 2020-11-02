@@ -11,9 +11,9 @@ import SupportTicketDetail from "./Components/Support/SupportTicketDetail";
 import SupportAllTickets from "./Components/Support/SupportAllTickets";
 import SupportNewTickets from "./Components/Support/SupportNewTickets";
 import SupportClosedTickets from "./Components/Support/SupportClosedTickets";
+import SupportTeamTickets from "./Components/Support/SupportTeamTickets";
 import SupportSignUpPage from "./Components/Support/SupportSignUpPage";
 import SupportLoginPage from "./Components/Support/SupportLoginPage";
-
 import SupportNewAccounts from "./Components/Support/SupportNewAccounts";
 import SupportActiveAccounts from "./Components/Support/SupportActiveAccounts";
 import SupportTeamAccounts from "./Components/Support/SupportTeamAccounts";
@@ -47,28 +47,33 @@ function App() {
           />
 
           <Route
-            path="/support/portal/newtickets"
+            path="/support/portal/admin/newtickets"
             exact
             component={SupportNewTickets}
           />
           <Route
-            path="/support/portal/pendingtickets"
+            path="/support/portal/admin/pendingtickets"
             exact
             component={SupportPendingTickets}
           />
           <Route
-            path="/support/portal/alltickets"
+            path="/support/portal/admin/alltickets"
             exact
             component={SupportAllTickets}
           />
 
           <Route
-            path="/support/portal/closedtickets"
+            path="/support/portal/admin/closedtickets"
             exact
             component={SupportClosedTickets}
           />
           <Route
-            path="/support/portal/supportsignuppage"
+            path="/support/portal/admin/:teamtickets"
+            exact
+            component={SupportTeamTickets}
+          />
+          <Route
+            path="/support/portal/agent/supportsignuppage"
             exact
             component={SupportSignUpPage}
           />

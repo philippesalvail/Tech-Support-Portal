@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SupportSideBar from "./SupportSideBar";
+import AdminSideBar from "./AdminSideBar";
 import ListItem from "../ListItem/ListItem";
 import TicketSectionHeader from "../ListItem/TicketSectionHeader";
 import Loading from "../Loading";
@@ -16,9 +16,8 @@ function SupportClosedTickets() {
   }, []);
   return (
     <AdminPage>
-      <TicketBanner>Closed Tickets</TicketBanner>
       <TicketDashBoard>
-        <SupportSideBar />
+        <AdminSideBar />
         <NewTicketsDisplay>
           <NewTicketItems>
             {closedTickets ? (
@@ -56,7 +55,7 @@ const TicketHeader = styled.div`
 
 const NewTicketItems = styled.div``;
 const NewTicketsDisplay = styled.div`
-  flex: 5;
+  flex: 4;
 `;
 
 export default SupportClosedTickets;
