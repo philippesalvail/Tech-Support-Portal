@@ -4,6 +4,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
 import ActiveAccountSectionHeader from "../../SectionHeaders/ActiveAccountSectionHeader";
+import Loading from "../../Loading";
 
 function SupportActiveAccounts() {
   const [allActiveAccounts, setAllActiveAccounts] = React.useState(null);
@@ -43,7 +44,7 @@ function SupportActiveAccounts() {
                 })}
               </AccountHeader>
             ) : (
-              <div></div>
+              <Loading />
             )}
           </NewAccountItems>
         </NewAccountsDisplay>

@@ -4,6 +4,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
 import NewAccountSectionHeader from "../../SectionHeaders/NewAccountSectionHeader";
+import Loading from "../../Loading";
 
 function SupportNewAccounts() {
   const [newAccounts, setNewAccounts] = React.useState([]);
@@ -42,7 +43,7 @@ function SupportNewAccounts() {
                 })}
               </AccountHeader>
             ) : (
-              <div></div>
+              <Loading />
             )}
           </NewAccountItems>
         </NewAccountsDisplay>

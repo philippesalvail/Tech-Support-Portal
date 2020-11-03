@@ -23,9 +23,9 @@ function SupportNewTickets() {
         </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
+            <TicketSectionHeader />
             {newTickets ? (
               <TicketHeader>
-                <TicketSectionHeader />
                 {newTickets.map((ticket, index) => {
                   return <TicketItem key={ticket + index} ticket={ticket} />;
                 })}

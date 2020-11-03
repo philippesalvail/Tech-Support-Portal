@@ -7,7 +7,7 @@ import Loading from "../../Loading";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 
 function SupportPendingTickets() {
-  const [pendingTickets, setPendingTickets] = React.useState([]);
+  const [pendingTickets, setPendingTickets] = React.useState(null);
   React.useEffect(() => {
     fetch("/support/getpendingtickets")
       .then((response) => response.json())
@@ -24,15 +24,15 @@ function SupportPendingTickets() {
         </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
+            <TicketSectionHeader />
             {pendingTickets ? (
               <TicketHeader>
-                <TicketSectionHeader />
                 {pendingTickets.map((ticket) => {
                   return <TicketItem ticket={ticket} />;
                 })}
               </TicketHeader>
             ) : (
-              <div></div>
+              <Loading />
             )}
           </NewTicketItems>
         </NewTicketsDisplay>

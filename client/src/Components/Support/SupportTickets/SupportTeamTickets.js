@@ -35,7 +35,7 @@ function SupportTeamTickets() {
                 })}
               </TicketHeader>
             ) : (
-              <div></div>
+              <Loading />
             )}
           </NewTicketItems>
         </NewTicketsDisplay>
