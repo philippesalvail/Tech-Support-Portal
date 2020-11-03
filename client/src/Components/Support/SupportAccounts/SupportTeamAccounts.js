@@ -5,16 +5,19 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
 import ActiveAccountSectionHeader from "../../SectionHeaders/ActiveAccountSectionHeader";
 import Loading from "../../Loading";
+import {useParams} from "react-router-dom";
 
 function SupportTeamAccounts() {
-  const [allActiveAccounts, setAllActiveAccounts] = React.useState(null);
+  let {teamaccounts} = useParams();
+  const [team, setTeam] = React.useState(null);
   const [resetList, setResetList] = React.useState(false);
+
   React.useEffect(() => {
-    // fetch(`support/team/${}`)
-    //   .then((response) => response.json())
-    //   .then((accounts) => setAllActiveAccounts(accounts.accounts))
-    //   .catch((error) => console.log("error: ", error));
-  }, [resetList]);
+    fetch(`/support/supportteams/accounts/${teamaccounts}`)
+      .then((response) => response.json())
+      .then((accounts) => setTeam(accounts.accounts))
+      .catch((error) => console.log("error: ", error));
+  }, [teamaccounts]);
 
   return (
     <AdminPage>
@@ -26,9 +29,9 @@ function SupportTeamAccounts() {
         <NewAccountsDisplay>
           <NewAccountItems>
             <ActiveAccountSectionHeader />
-            {allActiveAccounts ? (
+            {team ? (
               <AccountHeader>
-                {allActiveAccounts.map((account, index) => {
+                {team.map((account, index) => {
                   return (
                     <ActiveAccountItem
                       key={account + index}

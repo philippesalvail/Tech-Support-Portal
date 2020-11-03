@@ -22,7 +22,7 @@ function AdminSideBar() {
   }, []);
 
   const teamSelected = (team) => {
-    history.push(`/support/portal/admin/${team}`);
+    history.push(`/support/portal/admin/teamtickets/${team}`);
   };
 
   return (

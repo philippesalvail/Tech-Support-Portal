@@ -400,20 +400,20 @@ const lockSupportAccount = async (req, res) => {
   }
 };
 
-const getTeamAccounts = () => {
-  // const {getTeamAccounts} = req.params;
-  // try {
-  //   const client = await MongoClient(MONGO_URI, options);
-  //   await client.connect();
-  //   const database = client.db("Tech_Support");
-  //   const accounts = await database
-  //     .collection("Supporters")
-  //     .find({isValidated: getActiveAccounts})
-  //     .toArray();
-  //   res.status(200).json({status: 200, accounts: accounts});
-  // } catch (error) {
-  //   res.status(500).json({status: 500, message: error.message});
-  // }
+const getTeamAccounts = async (req, res) => {
+  const {getTeamAccounts} = req.params;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const accounts = await database
+      .collection("Supporters")
+      .find({team: getTeamAccounts})
+      .toArray();
+    res.status(200).json({status: 200, accounts: accounts});
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
+  }
 };
 
 const getTeamTickets = async (req, res) => {

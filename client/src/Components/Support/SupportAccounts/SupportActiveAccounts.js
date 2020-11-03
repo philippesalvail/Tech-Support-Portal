@@ -16,10 +16,6 @@ function SupportActiveAccounts() {
       .catch((error) => console.log("error: ", error));
   }, [resetList]);
 
-  if (allActiveAccounts) {
-    console.log("allActiveAccounts: ", allActiveAccounts);
-  }
-
   return (
     <AdminPage>
       <AccountDashBoard>
