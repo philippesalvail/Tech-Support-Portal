@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import Loading from "../Loading";
 
 function SupportLoginPage() {
@@ -86,7 +86,9 @@ function SupportLoginPage() {
           <ButtonLogin type="submit">Login</ButtonLogin>
           <div>
             Don't have an account?{" "}
-            <a href="./SupportSignUpPage">Sign Up Here</a>
+            <Link to="/support/portal/agent/supportsignuppage">
+              Sign Up Here
+            </Link>
           </div>
         </Buttons>
       </LoginInfo>

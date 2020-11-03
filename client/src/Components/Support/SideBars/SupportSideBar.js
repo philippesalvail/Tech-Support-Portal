@@ -8,7 +8,7 @@ import {
   HistoryIcon,
   PendingIcon,
   ClosedIcon,
-} from "../../ReactIcons";
+} from "../../../ReactIcons";
 
 function SupportSideBar() {
   return (

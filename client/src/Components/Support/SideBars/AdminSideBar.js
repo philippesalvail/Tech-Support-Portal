@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import {NavLink, useHistory} from "react-router-dom";
-import AccountSideBar from "./AccountSideBar";
 
 import {
   NewTicketIcon,
@@ -9,7 +8,7 @@ import {
   PendingIcon,
   ClosedIcon,
   TeamIcon,
-} from "../../ReactIcons";
+} from "../../../ReactIcons";
 
 function AdminSideBar() {
   let history = useHistory();
@@ -66,8 +65,6 @@ function AdminSideBar() {
             })}
         </DropDownSelect>
       </TeamMenu>
-      <SideLbl>Accounts</SideLbl>
-      <AccountSideBar />
     </Side>
   );
 }
@@ -84,8 +81,6 @@ const SideLbl = styled.h3`
 const Side = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding-left: 1%;
 `;
 const SideLink = styled(NavLink)`
   display: flex;

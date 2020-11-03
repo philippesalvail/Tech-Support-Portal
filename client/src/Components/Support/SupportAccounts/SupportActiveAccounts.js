@@ -1,17 +1,18 @@
 import React from "react";
-import ActiveAccountItem from "../ListItem/ActiveAccountItem";
-import AdminSideBar from "./AdminSideBar";
+import ActiveAccountItem from "../../ListItems/ActiveAccountItem";
+import AdminSideBar from "../SideBars/AdminSideBar";
+import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
-import ActiveAccountSectionHeader from "../ListItem/ActiveAccountSectionHeader";
+import ActiveAccountSectionHeader from "../../SectionHeaders/ActiveAccountSectionHeader";
 
-function SupportTeamAccounts() {
+function SupportActiveAccounts() {
   const [allActiveAccounts, setAllActiveAccounts] = React.useState(null);
   const [resetList, setResetList] = React.useState(false);
   React.useEffect(() => {
-    // fetch(`support/team/${}`)
-    //   .then((response) => response.json())
-    //   .then((accounts) => setAllActiveAccounts(accounts.accounts))
-    //   .catch((error) => console.log("error: ", error));
+    fetch("/support/supporter/getAllSupporters")
+      .then((response) => response.json())
+      .then((accounts) => setAllActiveAccounts(accounts.accounts))
+      .catch((error) => console.log("error: ", error));
   }, [resetList]);
 
   if (allActiveAccounts) {
@@ -21,7 +22,10 @@ function SupportTeamAccounts() {
   return (
     <AdminPage>
       <AccountDashBoard>
-        <AdminSideBar />
+        <SideBar>
+          <AdminSideBar />
+          <AccountSideBar />
+        </SideBar>
         <NewAccountsDisplay>
           <NewAccountItems>
             <ActiveAccountSectionHeader />
@@ -47,14 +51,13 @@ function SupportTeamAccounts() {
     </AdminPage>
   );
 }
+const SideBar = styled.div`
+  flex: 1;
+`;
 
 const AdminPage = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const AccountBanner = styled.h2`
-  text-align: center;
 `;
 
 const AccountDashBoard = styled.div`
@@ -69,4 +72,4 @@ const NewAccountsDisplay = styled.div`
   flex: 5;
 `;
 
-export default SupportTeamAccounts;
+export default SupportActiveAccounts;

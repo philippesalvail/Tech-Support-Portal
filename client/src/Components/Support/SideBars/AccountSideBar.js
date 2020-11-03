@@ -6,11 +6,12 @@ import {
   AllSupportersIcon,
   WaitingSupportersIcon,
   TeamSupportersIcon,
-} from "../../ReactIcons";
+} from "../../../ReactIcons";
 
 function AccountSideBar() {
   return (
     <Side>
+      <SideLbl>Accounts</SideLbl>
       <SideLink strict to={"/support/portal/accounts/newaccounts"}>
         <WaitingSupportersIcon />
         <NewAccounts>View New</NewAccounts>
@@ -26,11 +27,14 @@ function AccountSideBar() {
     </Side>
   );
 }
+const SideLbl = styled.h3`
+  text-decoration: underline;
+  padding-left: 5%;
+`;
 
 const Side = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
 `;
 const SideLink = styled(NavLink)`
   display: flex;

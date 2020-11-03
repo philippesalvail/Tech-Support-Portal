@@ -6,17 +6,19 @@ import SignUp from "./Components/Client/SignUp";
 import PendingTickets from "./Components/Client/PendingTickets";
 import ClosedTickets from "./Components/Client/ClosedTickets";
 import ClientAllTickets from "./Components/Client/ClientAllTickets";
-import SupportPendingTickets from "./Components/Support/SupportPendingTickets";
-import SupportTicketDetail from "./Components/Support/SupportTicketDetail";
-import SupportAllTickets from "./Components/Support/SupportAllTickets";
-import SupportNewTickets from "./Components/Support/SupportNewTickets";
-import SupportClosedTickets from "./Components/Support/SupportClosedTickets";
-import SupportTeamTickets from "./Components/Support/SupportTeamTickets";
+
+import SupportTicketDetail from "./Components/Support/SupportTickets/SupportTicketDetail";
+import SupportAllTickets from "./Components/Support/SupportTickets/SupportAllTickets";
+import SupportNewTickets from "./Components/Support/SupportTickets/SupportNewTickets";
+import SupportClosedTickets from "./Components/Support/SupportTickets/SupportClosedTickets";
+import SupportPendingTickets from "./Components/Support/SupportTickets/SupportPendingTickets";
+
+import SupportTeamTickets from "./Components/Support/SupportTickets/SupportTeamTickets";
 import SupportSignUpPage from "./Components/Support/SupportSignUpPage";
 import SupportLoginPage from "./Components/Support/SupportLoginPage";
-import SupportNewAccounts from "./Components/Support/SupportNewAccounts";
-import SupportActiveAccounts from "./Components/Support/SupportActiveAccounts";
-import SupportTeamAccounts from "./Components/Support/SupportTeamAccounts";
+import SupportNewAccounts from "./Components/Support/SupportAccounts/SupportNewAccounts";
+import SupportActiveAccounts from "./Components/Support/SupportAccounts/SupportActiveAccounts";
+import SupportTeamAccounts from "./Components/Support/SupportAccounts/SupportTeamAccounts";
 
 function App() {
   return (

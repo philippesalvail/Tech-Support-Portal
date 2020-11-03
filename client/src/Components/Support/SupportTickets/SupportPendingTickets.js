@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import AdminSideBar from "./AdminSideBar";
-import ListItem from "../ListItem/ListItem";
-import Loading from "../Loading";
-import TicketSectionHeader from "../ListItem/TicketSectionHeader";
-import AccountSideBar from "./AccountSideBar";
+import AdminSideBar from "../SideBars/AdminSideBar";
+import AccountSideBar from "../SideBars/AccountSideBar";
+import TicketItem from "../../ListItems/TicketItem";
+import Loading from "../../Loading";
+import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 
 function SupportPendingTickets() {
   const [pendingTickets, setPendingTickets] = React.useState([]);
@@ -18,14 +18,17 @@ function SupportPendingTickets() {
   return (
     <AdminPage>
       <TicketDashBoard>
-        <AdminSideBar />
+        <SideBar>
+          <AdminSideBar />
+          <AccountSideBar />
+        </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
             {pendingTickets ? (
               <TicketHeader>
                 <TicketSectionHeader />
                 {pendingTickets.map((ticket) => {
-                  return <ListItem ticket={ticket} />;
+                  return <TicketItem ticket={ticket} />;
                 })}
               </TicketHeader>
             ) : (
@@ -37,14 +40,13 @@ function SupportPendingTickets() {
     </AdminPage>
   );
 }
+const SideBar = styled.div`
+  flex: 1;
+`;
 
 const AdminPage = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const TicketBanner = styled.h2`
-  text-align: center;
 `;
 
 const TicketDashBoard = styled.div`
@@ -56,7 +58,7 @@ const TicketHeader = styled.div`
 
 const NewTicketItems = styled.div``;
 const NewTicketsDisplay = styled.div`
-  flex: 4;
+  flex: 5;
 `;
 
 export default SupportPendingTickets;
