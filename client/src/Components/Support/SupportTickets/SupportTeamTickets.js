@@ -1,10 +1,11 @@
 import React from "react";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import Loading from "../Loading";
-import AdminSideBar from "./AdminSideBar";
-import ListItem from "../ListItem/ListItem";
-import TicketSectionHeader from "../ListItem/TicketSectionHeader";
+import Loading from "../../Loading";
+import AdminSideBar from "../SideBars/AdminSideBar";
+import AccountSideBar from "../SideBars/AccountSideBar";
+import TicketItem from "../../ListItems/TicketItem";
+import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 
 function SupportTeamTickets() {
   const [tickets, setTickets] = React.useState(null);
@@ -20,14 +21,17 @@ function SupportTeamTickets() {
   return (
     <AdminPage>
       <TicketDashBoard>
-        <AdminSideBar />
+        <SideBar>
+          <AdminSideBar />
+          <AccountSideBar />
+        </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
+            <TicketSectionHeader />
             {tickets ? (
               <TicketHeader>
-                <TicketSectionHeader />
                 {tickets.map((ticket, index) => {
-                  return <ListItem key={ticket + index} ticket={ticket} />;
+                  return <TicketItem key={ticket + index} ticket={ticket} />;
                 })}
               </TicketHeader>
             ) : (
@@ -39,6 +43,9 @@ function SupportTeamTickets() {
     </AdminPage>
   );
 }
+const SideBar = styled.div`
+  flex: 1;
+`;
 
 const AdminPage = styled.div`
   display: flex;
@@ -54,7 +61,7 @@ const TicketHeader = styled.div`
 
 const NewTicketItems = styled.div``;
 const NewTicketsDisplay = styled.div`
-  flex: 4;
+  flex: 5;
 `;
 
 export default SupportTeamTickets;

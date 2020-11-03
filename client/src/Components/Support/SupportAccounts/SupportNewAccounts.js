@@ -1,8 +1,9 @@
 import React from "react";
-import NewAccountItem from "../ListItem/NewAccountItem";
-import AdminSideBar from "./AdminSideBar";
+import NewAccountItem from "../../ListItems/NewAccountItem";
+import AdminSideBar from "../SideBars/AdminSideBar";
+import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
-import NewAccountSectionHeader from "../ListItem/NewAccountSectionHeader";
+import NewAccountSectionHeader from "../../SectionHeaders/NewAccountSectionHeader";
 
 function SupportNewAccounts() {
   const [newAccounts, setNewAccounts] = React.useState([]);
@@ -20,7 +21,10 @@ function SupportNewAccounts() {
   return (
     <AdminPage>
       <AccountDashBoard>
-        <AdminSideBar />
+        <SideBar>
+          <AdminSideBar />
+          <AccountSideBar />
+        </SideBar>
         <NewAccountsDisplay>
           <NewAccountItems>
             {newAccounts ? (
@@ -46,6 +50,9 @@ function SupportNewAccounts() {
     </AdminPage>
   );
 }
+const SideBar = styled.div`
+  flex: 1;
+`;
 
 const AdminPage = styled.div`
   display: flex;

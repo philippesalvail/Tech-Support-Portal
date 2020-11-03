@@ -49,9 +49,8 @@ function SupportSignUpPage() {
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
-  if (teams) {
-    console.log("teams in SupportSignUpPage: ", teams);
-  }
+  console.log("teams in SupportSignUpPage: ", teams);
+
   return (
     <>
       {teams ? (

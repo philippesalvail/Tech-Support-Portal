@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import AdminSideBar from "./AdminSideBar";
-import Loading from "../Loading";
+import AdminSideBar from "../SideBars/AdminSideBar";
+import AccountSideBar from "../SideBars/AccountSideBar";
+import Loading from "../../Loading";
 
 const SupportTicketDetail = () => {
   const [productTypeSelected, setProductTypeSelected] = React.useState(null);
@@ -76,7 +77,10 @@ const SupportTicketDetail = () => {
 
   return (
     <Portal>
-      <AdminSideBar />
+      <SideBar>
+        <AdminSideBar />
+        <AccountSideBar />
+      </SideBar>
       <TicketForm onSubmit={updateTicket}>
         <SupportTicketBanner>Incident Report </SupportTicketBanner>
         {ticketDetail ? (
@@ -259,6 +263,9 @@ const SupportTicketDetail = () => {
     </Portal>
   );
 };
+const SideBar = styled.div`
+  flex: 1;
+`;
 
 const Portal = styled.div`
   display: flex;
@@ -273,7 +280,7 @@ const TicketForm = styled.form`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  flex: 4;
+  flex: 5;
   margin: 0 auto;
 `;
 const SupportTicketBanner = styled.div`

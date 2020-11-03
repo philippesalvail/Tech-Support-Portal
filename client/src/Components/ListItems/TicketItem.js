@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import {useHistory} from "react-router-dom";
 
-function ListItem({ticket}) {
+function TicketItem({ticket}) {
   let history = useHistory();
   const ticketDetailHandler = (ticketId) => {
     history.push(`/support/portal/ticket/${ticketId}`);
   };
   return (
-    <TicketItem onClick={() => ticketDetailHandler(ticket._id)}>
+    <Item onClick={() => ticketDetailHandler(ticket._id)}>
       <CustomerName>{ticket.customerName}</CustomerName>
       <TicketShortDesc>{ticket.shortDescrption}</TicketShortDesc>
       <TicketPriority>{ticket.priority}</TicketPriority>
@@ -19,16 +19,13 @@ function ListItem({ticket}) {
       <TicketAssignment>
         {ticket.assignee ? ticket.assignee : "Unassigned"}
       </TicketAssignment>
-    </TicketItem>
+    </Item>
   );
 }
 
-const TicketItem = styled.li`
+const Item = styled.li`
   display: flex;
   margin-bottom: 1%;
-`;
-const TicketId = styled.div`
-  flex: 1;
 `;
 const CustomerName = styled.div`
   flex: 1;
@@ -55,4 +52,4 @@ const TicketAssignment = styled.div`
   text-align: left;
 `;
 
-export default ListItem;
+export default TicketItem;
