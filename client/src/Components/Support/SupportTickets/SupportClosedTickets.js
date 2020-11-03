@@ -6,7 +6,7 @@ import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 
 function SupportClosedTickets() {
-  const [closedTickets, setClosedTickets] = React.useState([]);
+  const [closedTickets, setClosedTickets] = React.useState(null);
   React.useEffect(() => {
     fetch("/support/getclosedtickets")
       .then((response) => response.json())
@@ -22,9 +22,9 @@ function SupportClosedTickets() {
         </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
+            <TicketSectionHeader />
             {closedTickets ? (
               <TicketHeader>
-                <TicketSectionHeader />
                 {closedTickets.map((ticket) => {
                   return <TicketItem ticket={ticket} />;
                 })}

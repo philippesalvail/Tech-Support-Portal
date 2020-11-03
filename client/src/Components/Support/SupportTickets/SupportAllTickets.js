@@ -8,7 +8,7 @@ import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 
 function SupportAllTickets() {
-  const [allTickets, setAllTickets] = React.useState([]);
+  const [allTickets, setAllTickets] = React.useState(null);
   React.useEffect(() => {
     fetch("/support/getalltickets")
       .then((response) => response.json())
@@ -28,15 +28,15 @@ function SupportAllTickets() {
 
         <NewTicketsDisplay>
           <NewTicketItems>
+            <TicketSectionHeader />
             {allTickets ? (
               <TicketHeader>
-                <TicketSectionHeader />
                 {allTickets.map((ticket) => {
                   return <TicketItem ticket={ticket} />;
                 })}
               </TicketHeader>
             ) : (
-              <div></div>
+              <Loading />
             )}
           </NewTicketItems>
         </NewTicketsDisplay>
