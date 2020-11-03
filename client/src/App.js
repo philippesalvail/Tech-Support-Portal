@@ -70,9 +70,14 @@ function App() {
             component={SupportClosedTickets}
           />
           <Route
-            path="/support/portal/admin/:teamtickets"
+            path="/support/portal/admin/teamtickets/:teamtickets"
             exact
             component={SupportTeamTickets}
+          />
+          <Route
+            path="/support/portal/admin/teamaccounts/:teamaccounts"
+            exact
+            component={SupportTeamAccounts}
           />
           <Route
             path="/support/portal/agent/supportsignuppage"
@@ -100,11 +105,11 @@ function App() {
             exact
             component={SupportActiveAccounts}
           />
-          <Route
+          {/* <Route
             path="/support/portal/accounts/teamaccounts"
             exact
             component={SupportTeamAccounts}
-          />
+          /> */}
         </Switch>
       </Router>
     </>

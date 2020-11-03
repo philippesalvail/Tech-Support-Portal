@@ -12,7 +12,7 @@ function SupportTeamTickets() {
   let {teamtickets} = useParams();
   React.useEffect(() => {
     console.log("called");
-    fetch(`/support/supportteams/${teamtickets}`)
+    fetch(`/support/supportteams/tickets/${teamtickets}`)
       .then((response) => response.json())
       .then((supportTeams) => setTickets(supportTeams.tickets))
       .catch((error) => console.log("error: ", error.message));
