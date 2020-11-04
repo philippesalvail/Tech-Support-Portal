@@ -11,6 +11,7 @@ import {user_circle} from "react-icons-kit/ikons/user_circle";
 import {users} from "react-icons-kit/ikons/users";
 import {user_ok} from "react-icons-kit/ikons/user_ok";
 import {group} from "react-icons-kit/fa/group";
+import {androidSearch} from "react-icons-kit/ionicons/androidSearch";
 
 export const NewTicketIcon = () => <Icon icon={plus} size={"28"} />;
 export const HistoryIcon = () => <Icon icon={history} size={"28"} />;
@@ -19,5 +20,6 @@ export const ClosedIcon = () => <Icon icon={alignLeft} size={"28"} />;
 export const AllSupportersIcon = () => <Icon icon={users} size={"28"} />;
 export const WaitingSupportersIcon = () => <Icon icon={user_ok} size={"28"} />;
 export const TeamSupportersIcon = () => <Icon icon={user_circle} size={"28"} />;
+export const SearchIcon = () => <Icon icon={androidSearch} size={"16"} />;
 
 export const TeamIcon = () => <Icon icon={group} size={"28"} />;

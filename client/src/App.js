@@ -19,6 +19,7 @@ import SupportLoginPage from "./Components/Support/SupportLoginPage";
 import SupportNewAccounts from "./Components/Support/SupportAccounts/SupportNewAccounts";
 import SupportActiveAccounts from "./Components/Support/SupportAccounts/SupportActiveAccounts";
 import SupportTeamAccounts from "./Components/Support/SupportAccounts/SupportTeamAccounts";
+import SupportAccountDetail from "./Components/Support/SupportAccounts/SupportAccountDetail";
 
 function App() {
   return (
@@ -105,11 +106,11 @@ function App() {
             exact
             component={SupportActiveAccounts}
           />
-          {/* <Route
-            path="/support/portal/accounts/teamaccounts"
+          <Route
+            path="/support/portal/accounts/accountdetail"
             exact
-            component={SupportTeamAccounts}
-          /> */}
+            component={SupportAccountDetail}
+          />
         </Switch>
       </Router>
     </>

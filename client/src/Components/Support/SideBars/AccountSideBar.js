@@ -35,10 +35,10 @@ function AccountSideBar() {
         <AllSupportersIcon />
         <ViewAll>View All</ViewAll>
       </SideLink>
-      {/* <SideLink strict to={"/support/portal/accounts/teamaccounts"}>
+      <SideLink strict to={"/support/portal/accounts/accountdetail"}>
         <TeamSupportersIcon />
-        <ViewAll>View Teams</ViewAll>
-      </SideLink> */}
+        <ViewAll>View Detail</ViewAll>
+      </SideLink>
       <TeamMenu>
         <TeamSupportersIcon />
         <DropDownSelect
