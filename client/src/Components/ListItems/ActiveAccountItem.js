@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {useHistory} from "react-router-dom";
 
 const unlockAccountHandler = (account, setResetList, resetList) => {
   fetch(`/support/accounts/lockAccount/${account.username}`, {
@@ -17,6 +18,12 @@ const unlockAccountHandler = (account, setResetList, resetList) => {
 };
 
 function ActiveAccountItem({account, setResetList, resetList}) {
+  console.log("account in ActiveAccountItem: ", account);
+  let history = useHistory();
+  const accountDetail = (account) => {
+    history.push(`/support/portal/accounts/accountdetail/${account}`);
+  };
+
   return (
     <>
       {account.username !== "admin" && (

@@ -25,7 +25,6 @@ function SupportAllTickets() {
           <AdminSideBar />
           <AccountSideBar />
         </SideBar>
-
         <NewTicketsDisplay>
           <NewTicketItems>
             <TicketSectionHeader />

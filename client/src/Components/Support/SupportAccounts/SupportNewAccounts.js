@@ -7,7 +7,7 @@ import NewAccountSectionHeader from "../../SectionHeaders/NewAccountSectionHeade
 import Loading from "../../Loading";
 
 function SupportNewAccounts() {
-  const [newAccounts, setNewAccounts] = React.useState([]);
+  const [newAccounts, setNewAccounts] = React.useState(null);
   const [enableAccount, setEnableAccount] = React.useState(false);
 
   React.useEffect(() => {
