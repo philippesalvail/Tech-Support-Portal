@@ -222,6 +222,28 @@ const getClosedTickets = async (req, res) => {
   }
 };
 
+const searchSupporter = async (req, res) => {
+  const {username} = req.params;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const user = await database
+      .collection("Supporters")
+      .findOne({username: username});
+
+    res.status(200).json({
+      status: 200,
+      user: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      message: "Server Error",
+    });
+  }
+};
+
 const getSupporter = async (req, res) => {
   const {getSupportUser} = req.params;
   try {
@@ -545,4 +567,5 @@ module.exports = {
   getTeamTickets,
   changeAccountState,
   updateSupporter,
+  searchSupporter,
 };

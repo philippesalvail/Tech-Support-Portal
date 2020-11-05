@@ -22,6 +22,7 @@ const {
   getTeamTickets,
   changeAccountState,
   updateSupporter,
+  searchSupporter,
 } = require("./handlers");
 
 router.post("/client/clientCreated", createClientAccount);
@@ -51,6 +52,7 @@ router.get("/support/supporter/getNewSupporters", getNewSupporters);
 router.get("/support/supporter/getAllSupporters", getAllSupporters);
 router.post("/support/supporter/createSupportUser", createSupporter);
 router.get("/support/supporter/:getSupportUser", getSupporter);
+router.get("/support/supporter/searchSupporter/:username", searchSupporter);
 
 router.patch("/support/supporter/updateSupporter/:username", updateSupporter);
 

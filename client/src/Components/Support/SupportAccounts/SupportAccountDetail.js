@@ -66,20 +66,31 @@ function SupportAccountDetail() {
   }, []);
 
   const searchSupporter = (userNameTyped) => {
-    fetch(`/support/supporter/${userNameTyped}`)
+    if (userNameTyped === "") {
+      alert("Please enter a username");
+      return;
+    }
+    fetch(`/support/supporter/searchSupporter/${userNameTyped}`)
       .then((response) => response.json())
       .then((supporter) => {
-        setSupporterFound(supporter.user);
-        if (supporter.user.isEnabled) {
+        if (supporter.user === null) {
+          alert("username: " + userNameTyped + " does not exists");
+        } else if (supporter.user !== null && supporter.user.isEnabled) {
+          setSupporterFound(supporter.user);
           setAccountStatus("Enabled");
-        } else {
+          setOldTeam(supporter.user.team);
+          setPassword(supporter.user.password);
+          setUsername(supporter.user.username);
+          setSupporterName(supporter.user.name);
+          setAccountState(supporter.user.isEnabled);
+        } else if (supporter.user !== null && !supporter.user.isEnabled) {
           setAccountStatus("Disabled");
+          setOldTeam(supporter.user.team);
+          setPassword(supporter.user.password);
+          setUsername(supporter.user.username);
+          setSupporterName(supporter.user.name);
+          setAccountState(supporter.user.isEnabled);
         }
-        setOldTeam(supporter.user.team);
-        setPassword(supporter.user.password);
-        setUsername(supporter.user.username);
-        setSupporterName(supporter.user.name);
-        setAccountState(supporter.user.isEnabled);
       })
       .catch((error) => console.log(error.message));
   };
