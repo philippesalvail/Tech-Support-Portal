@@ -292,6 +292,35 @@ const getAllSupporters = async (req, res) => {
   }
 };
 
+const changeAccountState = async (req, res) => {
+  const {username} = req.params;
+  const {isEnabled} = req.body;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const updateSupporter = await database.collection("Supporters").updateOne(
+      {username: username},
+      {
+        $set: {
+          isEnabled: isEnabled,
+        },
+      }
+    );
+    isEnabled
+      ? res.status(200).json({
+          status: 200,
+          message: "Account for " + username + " has been re-enabled",
+        })
+      : res.status(200).json({
+          status: 200,
+          message: "Account for " + username + " has been disabled",
+        });
+  } catch (error) {
+    res.status(500).json({status: 200, message: error.message});
+  }
+};
+
 const updateSupporter = async (req, res) => {
   const {username} = req.params;
   const {newTeam, supportUsername, password, oldTeam, name} = req.body;
@@ -377,30 +406,30 @@ const activateSupportAccount = async (req, res) => {
   }
 };
 
-const changeAccountState = async (req, res) => {
-  const {username} = req.params;
-  const {isEnabled} = req.body;
-  try {
-    const client = await MongoClient(MONGO_URI, options);
-    await client.connect();
-    const database = client.db("Tech_Support");
-    const supporter = await database.collection("Supporters").updateOne(
-      {username: username},
-      {
-        $set: {
-          isEnabled: isEnabled,
-        },
-      }
-    );
-    let state = isEnabled
-      ? "Account for username " + username + " has been re-enabled"
-      : "Account for username " + username + " has been disabled";
+// const changeAccountState = async (req, res) => {
+//   const {username} = req.params;
+//   const {isEnabled} = req.body;
+//   try {
+//     const client = await MongoClient(MONGO_URI, options);
+//     await client.connect();
+//     const database = client.db("Tech_Support");
+//     const supporter = await database.collection("Supporters").updateOne(
+//       {username: username},
+//       {
+//         $set: {
+//           isEnabled: isEnabled,
+//         },
+//       }
+//     );
+//     let state = isEnabled
+//       ? "Account for username " + username + " has been re-enabled"
+//       : "Account for username " + username + " has been disabled";
 
-    res.status(200).json({status: 200, message: state});
-  } catch (error) {
-    res.status(500).json({status: 500, message: error.message});
-  }
-};
+//     res.status(200).json({status: 200, message: state});
+//   } catch (error) {
+//     res.status(500).json({status: 500, message: error.message});
+//   }
+// };
 
 const doesSupportUserNameExists = async (req, res) => {
   const {username} = req.params;

@@ -41,11 +41,22 @@ function SupportLoginPage() {
               "Please sign up for an account"
           );
         } else if (
+          userObj.user.isEnabled !== null &&
+          userObj.user.isEnabled === false
+        ) {
+          setLoginMessage(
+            "Account for " +
+              userObj.user.username +
+              " is disabled, please contact your administrator"
+          );
+        } else if (
           userObj.user.isLocked !== undefined &&
           userObj.user.isLocked
         ) {
           setLoginMessage(
-            "Account is Locked, please contact your administrator"
+            "Account for " +
+              userObj.user.username +
+              " is locked, please contact your administrator"
           );
         } else if (userObj.user.password !== passwordTyped) {
           setFailedAttempts(failedAttempts + 1);

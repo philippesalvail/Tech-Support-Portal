@@ -8,13 +8,36 @@ import {SearchIcon} from "../../../ReactIcons";
 function SupportAccountDetail() {
   const [teams, setTeams] = React.useState(null);
   const [supporterFound, setSupporterFound] = React.useState("");
-  const [statusMessage, setStatusMessage] = React.useState(false);
+  const [userNameTyped, setUserNameTyped] = React.useState("");
   const [accountStatus, setAccountStatus] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [newteam, setNewTeam] = React.useState("");
   const [oldteam, setOldTeam] = React.useState(null);
   const [supporterName, setSupporterName] = React.useState("");
+  const [accountState, setAccountState] = React.useState(false);
+
+  const changeAccountState = () => {
+    fetch(`/support/accounts/changeAccountState/${username}`, {
+      method: "PATCH",
+      headers: {"Content-type": "application/json; charset=UTF-8"},
+      body: JSON.stringify({
+        isEnabled: !accountState,
+      }),
+    })
+      .then((response) => response.json())
+      .then((statusMessage) => {
+        alert(statusMessage.message);
+        setUserNameTyped("");
+        setAccountStatus("");
+        setPassword("");
+        setUsername("");
+        setNewTeam("");
+        setOldTeam("");
+        setSupporterName("");
+      })
+      .catch((error) => console.log("error: ", error.message));
+  };
 
   const updateSupporterHandler = () => {
     fetch(`/support/supporter/updateSupporter/${username}`, {
@@ -42,8 +65,8 @@ function SupportAccountDetail() {
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
-  const searchSupporter = (supporter) => {
-    fetch(`/support/supporter/${supporter}`)
+  const searchSupporter = (userNameTyped) => {
+    fetch(`/support/supporter/${userNameTyped}`)
       .then((response) => response.json())
       .then((supporter) => {
         setSupporterFound(supporter.user);
@@ -56,6 +79,7 @@ function SupportAccountDetail() {
         setPassword(supporter.user.password);
         setUsername(supporter.user.username);
         setSupporterName(supporter.user.name);
+        setAccountState(supporter.user.isEnabled);
       })
       .catch((error) => console.log(error.message));
   };
@@ -73,10 +97,11 @@ function SupportAccountDetail() {
           <UsernameTxt
             placeholder="Enter Username..."
             onChange={(e) => {
-              setSupporterFound(e.target.value);
+              setUserNameTyped(e.target.value);
             }}
+            value={userNameTyped}
           />
-          <SearchBtn onClick={() => searchSupporter(supporterFound)}>
+          <SearchBtn onClick={() => searchSupporter(userNameTyped)}>
             <SearchIcon />
           </SearchBtn>
         </SearchRow>
@@ -92,7 +117,7 @@ function SupportAccountDetail() {
         </DetailRow>
         <DetailRow>
           <Lbl>Status: </Lbl>
-          <Txt value={supporterFound.isEnabled && accountStatus} />
+          <Txt value={supporterFound.isEnabled !== null && accountStatus} />
         </DetailRow>
         <DetailRow>
           <Lbl>Username: </Lbl>
@@ -142,7 +167,7 @@ function SupportAccountDetail() {
 
         <ButtonRow>
           <UpdateBtn onClick={updateSupporterHandler}>Update</UpdateBtn>
-          <EnableBtn>
+          <EnableBtn onClick={changeAccountState}>
             {supporterFound.isEnabled ? "Disable" : "Enable"}
           </EnableBtn>
         </ButtonRow>
