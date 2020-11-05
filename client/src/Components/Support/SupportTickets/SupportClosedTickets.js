@@ -8,7 +8,7 @@ import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 function SupportClosedTickets() {
   const [closedTickets, setClosedTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch("/support/getclosedtickets")
+    fetch("/support/tickets/getclosedtickets")
       .then((response) => response.json())
       .then((tickets) => setClosedTickets(tickets.data))
       .catch((error) => console.log("error: ", error));

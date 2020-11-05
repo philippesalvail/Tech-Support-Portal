@@ -9,7 +9,7 @@ import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 function SupportPendingTickets() {
   const [pendingTickets, setPendingTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch("/support/getpendingtickets")
+    fetch("/support/tickets/getpendingtickets")
       .then((response) => response.json())
       .then((tickets) => setPendingTickets(tickets.data))
       .catch((error) => console.log("error: ", error));

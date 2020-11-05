@@ -231,7 +231,6 @@ const getSupporter = async (req, res) => {
     const user = await database
       .collection("Supporters")
       .findOne({username: getSupportUser});
-    console.log("user in getSupportUser: ", user);
     res.status(200).json({
       status: 200,
       user: user,
@@ -293,6 +292,45 @@ const getAllSupporters = async (req, res) => {
   }
 };
 
+const updateSupporter = async (req, res) => {
+  const {username} = req.params;
+  const {newTeam, supportUsername, password, oldTeam, name} = req.body;
+
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const updateSupporter = await database.collection("Supporters").updateOne(
+      {username: username},
+      {
+        $set: {
+          team: newTeam,
+          username: supportUsername,
+          password: password,
+        },
+      }
+    );
+    const addSupporterToTeam = await database
+      .collection("Support_Teams")
+      .update({supportName: newTeam}, {$push: {supporters: name}});
+
+    const removeSupporterFromTeam = await database
+      .collection("Support_Teams")
+      .update({supportName: oldTeam}, {$pull: {supporters: name}});
+    updateSupporter && addSupporterToTeam && removeSupporterFromTeam
+      ? res.status(200).json({
+          status: 200,
+          message: "Account for " + name + " has been updated successfully",
+        })
+      : res.status(409).json({
+          status: 409,
+          message: "Something went wrong!, Please Update again",
+        });
+  } catch (error) {
+    res.status(500).json({status: 200, message: error.message});
+  }
+};
+
 const activateSupportAccount = async (req, res) => {
   const supportaccount = req.body;
   try {
@@ -307,7 +345,7 @@ const activateSupportAccount = async (req, res) => {
           username: supportaccount.username,
           password: supportaccount.password,
           team: supportaccount.team,
-          isUnlocked: supportaccount.isUnlocked,
+          isLocked: supportaccount.isLocked,
           isValidated: supportaccount.isValidated,
           isEnabled: supportaccount.isEnabled,
         },
@@ -330,12 +368,9 @@ const activateSupportAccount = async (req, res) => {
             supportaccount.name +
             " has been created Successfully",
         })
-      : res.status(204).json({
-          status: 204,
-          message:
-            "Support Account for " +
-            supportaccount.name +
-            " has been created Successfully",
+      : res.status(409).json({
+          status: 409,
+          message: "Something went wrong!, Please submit again",
         });
   } catch (error) {
     res.status(500).json({status: 500, message: error.message});
@@ -480,4 +515,5 @@ module.exports = {
   getTeamAccounts,
   getTeamTickets,
   changeAccountState,
+  updateSupporter,
 };
