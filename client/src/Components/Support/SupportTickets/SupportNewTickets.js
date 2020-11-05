@@ -8,7 +8,7 @@ import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 function SupportNewTickets() {
   const [newTickets, setNewTickets] = React.useState([]);
   React.useEffect(() => {
-    fetch("/support/getnewtickets")
+    fetch("/support/tickets/getnewtickets")
       .then((response) => response.json())
       .then((newTickets) => setNewTickets(newTickets.data))
       .catch((error) => console.log("error: ", error));

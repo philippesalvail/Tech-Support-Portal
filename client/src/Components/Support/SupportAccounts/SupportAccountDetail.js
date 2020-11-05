@@ -10,6 +10,30 @@ function SupportAccountDetail() {
   const [supporterFound, setSupporterFound] = React.useState("");
   const [statusMessage, setStatusMessage] = React.useState(false);
   const [accountStatus, setAccountStatus] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [newteam, setNewTeam] = React.useState("");
+  const [oldteam, setOldTeam] = React.useState(null);
+  const [supporterName, setSupporterName] = React.useState("");
+
+  const updateSupporterHandler = () => {
+    fetch(`/support/supporter/updateSupporter/${username}`, {
+      method: "PATCH",
+      headers: {"Content-type": "application/json; charset=UTF-8"},
+      body: JSON.stringify({
+        newTeam: newteam,
+        oldTeam: oldteam,
+        supportUsername: username,
+        password: password,
+        name: supporterName,
+      }),
+    })
+      .then((response) => response.json())
+      .then((statusMessage) => {
+        alert(statusMessage.message);
+      })
+      .catch((error) => console.log("error: ", error.message));
+  };
 
   React.useEffect(() => {
     fetch("/support/supportteams/getSupportTeams")
@@ -28,13 +52,13 @@ function SupportAccountDetail() {
         } else {
           setAccountStatus("Disabled");
         }
+        setOldTeam(supporter.user.team);
+        setPassword(supporter.user.password);
+        setUsername(supporter.user.username);
+        setSupporterName(supporter.user.name);
       })
       .catch((error) => console.log(error.message));
   };
-
-  if (supporterFound) {
-    console.log("supporterFound: ", supporterFound);
-  }
 
   return (
     <Account>
@@ -58,23 +82,52 @@ function SupportAccountDetail() {
         </SearchRow>
 
         <DetailRow>
-          <FirstNameLbl>Name: </FirstNameLbl>
-          <FirstNameTxt value={supporterFound.name} />
+          <Lbl>Name: </Lbl>
+          <Txt
+            value={supporterName}
+            onChange={(e) => {
+              setSupporterName(e.target.value);
+            }}
+          />
         </DetailRow>
         <DetailRow>
-          <FirstNameLbl>Status: </FirstNameLbl>
-          <FirstNameTxt value={supporterFound.isEnabled && accountStatus} />
+          <Lbl>Status: </Lbl>
+          <Txt value={supporterFound.isEnabled && accountStatus} />
         </DetailRow>
         <DetailRow>
-          <SupportTeamLbl>Support Team: </SupportTeamLbl>
+          <Lbl>Username: </Lbl>
+          <Txt
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          />
+        </DetailRow>
+        <DetailRow>
+          <Lbl>Password: </Lbl>
+          <Txt
+            value={password}
+            type="password"
+            id="txthidden"
+            name="txthidden"
+            size="15"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </DetailRow>
+        <DetailRow>
+          <Lbl>Support Team: </Lbl>
           <DropDownSelect
             id="assignmentGroup"
             name="assignmentGroup"
             defaultValue="selectAssignmentGroup"
-            // onChange={(e) => teamSelected(e.target.value)}
+            onChange={(e) => {
+              setNewTeam(e.target.value);
+            }}
           >
             <option value="selectAssignmentGroup" disabled hidden>
-              {supporterFound.team}
+              {oldteam}
             </option>
             {teams &&
               teams.map((team, index) => {
@@ -88,8 +141,10 @@ function SupportAccountDetail() {
         </DetailRow>
 
         <ButtonRow>
-          <UpdateBtn>Update</UpdateBtn>
-          <EnableBtn>Disable</EnableBtn>
+          <UpdateBtn onClick={updateSupporterHandler}>Update</UpdateBtn>
+          <EnableBtn>
+            {supporterFound.isEnabled ? "Disable" : "Enable"}
+          </EnableBtn>
         </ButtonRow>
       </AccountInformation>
     </Account>
@@ -141,16 +196,12 @@ const DetailRow = styled.div`
   margin: 0 auto;
   padding: 1%;
 `;
-const FirstNameLbl = styled.label`
+const Lbl = styled.label`
   flex: 1;
 `;
-const FirstNameTxt = styled.input`
+const Txt = styled.input`
   flex: 1;
   text-align: center;
-`;
-
-const SupportTeamLbl = styled.label`
-  flex: 1;
 `;
 
 export default SupportAccountDetail;

@@ -21,7 +21,7 @@ const SupportTicketDetail = () => {
   let {ticketId} = useParams();
 
   React.useEffect(() => {
-    fetch(`/support/${ticketId}`)
+    fetch(`/support/tickets/${ticketId}`)
       .then((response) => response.json())
       .then((ticket) => {
         setTicketDetail(ticket.data);
@@ -74,6 +74,8 @@ const SupportTicketDetail = () => {
       }),
     });
   };
+
+  console.log("ticket detail: ", ticketDetail);
 
   return (
     <Portal>

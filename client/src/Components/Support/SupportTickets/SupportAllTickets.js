@@ -10,7 +10,7 @@ import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 function SupportAllTickets() {
   const [allTickets, setAllTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch("/support/getalltickets")
+    fetch("/support/tickets/getalltickets")
       .then((response) => response.json())
       .then((tickets) => setAllTickets(tickets.data))
       .catch((error) =>
