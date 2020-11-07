@@ -27,14 +27,14 @@ function ActiveAccountItem(props) {
   return (
     <>
       {props.account.username !== "admin" && (
-        <Supporter>
-          <SupporterName>
-            <Name>{props.account.name}</Name>
-          </SupporterName>
-          <SupporterUserName>
+        <Supporter index={props.index}>
+          <Row>
+            <SupporterName>{props.account.name}</SupporterName>
+          </Row>
+          <Row>
             <Username>{props.account.username}</Username>
-          </SupporterUserName>
-          <UnlockBtn>
+          </Row>
+          <Row>
             <Btn
               onClick={() =>
                 unlockAccountHandler(
@@ -47,41 +47,40 @@ function ActiveAccountItem(props) {
             >
               Unlock
             </Btn>
-          </UnlockBtn>
+          </Row>
         </Supporter>
       )}
     </>
   );
 }
-
 const Supporter = styled.li`
   display: flex;
   padding-left: 5%;
   background-color: ${(props) =>
-    props.index % 2 === 0 ? "#caffbf" : "#a8dadc"};
-  color: ${(props) => (props.index % 2 === 0 ? "#caffbf" : "#000000")};
+    props.index % 2 === 0 ? "#a8dadc" : "#f1faee"};
+  color: ${(props) => (props.index % 2 === 0 ? "#1d3557" : "#000000")};
   font-weight: bold;
   padding-top: 1%;
   padding-bottom: 1%;
 `;
-const SupporterName = styled.div`
-  flex: 1;
-  text-align: left;
-`;
-const Name = styled.label``;
-
-const SupporterUserName = styled.div`
-  flex: 1;
-  text-align: left;
-`;
+const SupporterName = styled.label``;
 const Username = styled.label``;
 
-const UnlockBtn = styled.div`
+const Row = styled.div`
   flex: 1;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const Btn = styled.button`
   opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin: 1%;
+  font-size: 15px;
+  width: 20%;
 `;
 
 export default ActiveAccountItem;

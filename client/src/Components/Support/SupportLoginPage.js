@@ -62,9 +62,10 @@ function SupportLoginPage() {
           setFailedAttempts(failedAttempts + 1);
           setLoginMessage("Password is invalid");
           checkFailedAttempts(failedAttempts, userObj.user.isLocked);
+        } else if (userObj.user.username === "admin") {
+          history.push(`/support/portal/admin/newtickets`);
         } else {
-          console.log("last else");
-          history.push("/support/portal/admin/newtickets");
+          history.push(`/support/portal/${userObj.user.username}/newtickets`);
         }
       });
   };

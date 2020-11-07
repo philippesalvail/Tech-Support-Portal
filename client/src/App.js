@@ -21,6 +21,8 @@ import SupportActiveAccounts from "./Components/Support/SupportAccounts/SupportA
 import SupportTeamAccounts from "./Components/Support/SupportAccounts/SupportTeamAccounts";
 import SupportAccountDetail from "./Components/Support/SupportAccounts/SupportAccountDetail";
 import SupportCreateAccount from "./Components/Support/SupportAccounts/SupportCreateAccount";
+import SupportAgentNewTickets from "./Components/Support/SupportTickets/SupportAgentNewTickets";
+import SupportAgentTeamTickets from "./Components/Support/SupportTickets/SupportAgentTeamTickets";
 
 function App() {
   return (
@@ -71,6 +73,17 @@ function App() {
             exact
             component={SupportClosedTickets}
           />
+          <Route
+            path="/support/portal/:username/newtickets"
+            exact
+            component={SupportAgentNewTickets}
+          />
+          <Route
+            path="/support/portal/:username/teamtickets"
+            exact
+            component={SupportAgentTeamTickets}
+          />
+
           <Route
             path="/support/portal/admin/teamtickets/:teamtickets"
             exact

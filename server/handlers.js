@@ -56,7 +56,7 @@ const createClientAccount = async (req, res) => {
 
 const createClientTicket = async (req, res) => {
   const {ticketInfo} = req.body;
-  console.log("req.body in addTicket: ", req.body);
+
   let newTicket = {
     customerName: ticketInfo.clientInfo.name,
     customerEmail: ticketInfo.clientInfo.email,
@@ -546,7 +546,54 @@ const getTeamTickets = async (req, res) => {
   }
 };
 
-const createAccount = async (req, res) => {};
+const createAccount = async (req, res) => {
+  const {
+    name,
+    team,
+    username,
+    password,
+    isLocked,
+    isValidated,
+    isEnabled,
+  } = req.body;
+
+  const newSupporter = {
+    name: name,
+    team: team,
+    username: username,
+    password: password,
+    isLocked: isLocked,
+    isValidated: isValidated,
+    isEnabled: isEnabled,
+  };
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const agent = await database
+      .collection("Supporters")
+      .insertOne(newSupporter);
+    const teamAssigned = await database
+      .collection("Support_Teams")
+      .update({supportName: team}, {$push: {supporters: newSupporter.name}});
+
+    if (teamAssigned && agent) {
+      console.log("inside ");
+      res.status(201).json({
+        status: 201,
+        message: "Support Account for has been created Successfully",
+      });
+    } else {
+      res.status(409).json({
+        status: 409,
+        message: "Something went wrong!, Please submit again",
+      });
+    }
+  } catch (error) {
+    console.log("error in createAccount: ", error);
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
 
 module.exports = {
   getClientAccount,

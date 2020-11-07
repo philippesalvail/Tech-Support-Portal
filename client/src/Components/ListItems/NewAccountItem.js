@@ -1,14 +1,15 @@
 import React from "react";
+import {user} from "react-icons-kit/ikons/user";
 import styled from "styled-components";
 
 function NewAccountItem(props) {
   const {_id, name, team, isValidated} = props.account;
+  console.log("props: ", props.index);
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const {setEnableAccount, enableAccount} = props;
   const [teamSelected, setTeamSelected] = React.useState("");
   const [teams, setTeams] = React.useState(null);
-  const [usernameExists, setUsernameExists] = React.useState(null);
 
   React.useEffect(() => {
     fetch("/support/supportteams/getSupportTeams")
@@ -17,14 +18,11 @@ function NewAccountItem(props) {
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
-  const checkIfAccountExists = (username) => {
-    fetch(`/support/accounts/checkUsername/${username}`)
+  const checkIfAccountExists = (username) =>
+    fetch(`/support/accounts/checkUsername/${user}`)
       .then((response) => response.json())
-      .then((account) => {
-        setUsernameExists(account.supporter.username == username);
-      })
-      .catch((error) => console.log("error: ", error.message));
-  };
+      .then((user) => user.supporter.username === username)
+      .catch((error) => console.log("error: ", error.messaage));
 
   const checkPasswordComplexity = (password) => {
     let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
@@ -55,9 +53,7 @@ function NewAccountItem(props) {
         isEnabled: true,
       }),
     })
-      .then((response) => {
-        response.json();
-      })
+      .then((response) => response.json())
       .then((statusMessage) => {
         setEnableAccount(!enableAccount);
         setPassword("");
@@ -69,7 +65,7 @@ function NewAccountItem(props) {
   return (
     <>
       {!isValidated && teams && (
-        <Supporter>
+        <Supporter index={props.index}>
           <SupporterName>
             <Name>{name}</Name>
           </SupporterName>
@@ -115,13 +111,15 @@ function NewAccountItem(props) {
 
 const DropDownSelect = styled.select`
   flex: 1;
+  width: 75%;
 `;
 
 const Supporter = styled.li`
   display: flex;
   padding-left: 5%;
-  background-color: ${(props) => (props.index % 2 ? "#caffbf" : "#a8dadc")};
-  color: ${(props) => (props.index % 2 ? "#caffbf" : "#000000")};
+  background-color: ${(props) =>
+    props.index % 2 === 0 ? "#a8dadc" : "#f1faee"};
+  color: ${(props) => (props.index % 2 === 0 ? "#1d3557" : "#000000")};
   font-weight: bold;
   padding-top: 1%;
   padding-bottom: 1%;
@@ -129,29 +127,50 @@ const Supporter = styled.li`
 const SupporterName = styled.div`
   flex: 1;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const Name = styled.div``;
 
 const SupporterUserName = styled.div`
   flex: 1;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
-const UserName = styled.input``;
+const UserName = styled.input`
+  width: 75%;
+`;
 const SupporterPassword = styled.div`
   flex: 1;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
-const Password = styled.input``;
+const Password = styled.input`
+  width: 75%;
+`;
 
 const SupporterTeam = styled.div`
   flex: 1;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
-const Team = styled.div``;
 const EnableBtn = styled.div`
   flex: 1;
   text-align: left;
 `;
-const Btn = styled.button``;
+const Btn = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin: 1%;
+  font-size: 15px;
+`;
 
 export default NewAccountItem;

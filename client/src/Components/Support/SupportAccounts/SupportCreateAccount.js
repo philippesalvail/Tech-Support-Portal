@@ -24,12 +24,12 @@ function SupportCreateAccount() {
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
-  const checkIfAccountExists = (username) => {
-    fetch(`/support/accounts/${username}`)
+  const checkIfAccountExists = (username) =>
+    fetch(`/support/accounts/checkUsername/${username}`)
       .then((response) => response.json())
-      .then((account) => setUsernameExists(account.exists))
-      .catch((error) => console.log("error: ", error.message));
-  };
+      .then((user) => user.supporter.username === username)
+      .catch((error) => console.log("error: ", error.messaage));
+
   const checkPasswordComplexity = (password) => {
     let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     return format.test(password);
@@ -66,8 +66,7 @@ function SupportCreateAccount() {
       method: "POST",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
-        firstname: supporterFirstName,
-        lastname: supporterLastName,
+        name: supporterFirstName + " " + supporterLastName,
         team: newteam,
         username: username,
         password: password,
@@ -76,14 +75,16 @@ function SupportCreateAccount() {
         isEnabled: true,
       }),
     })
-      .then((response) => {
-        response.json();
-      })
-      .then((statusMessage) => {
-        setPassword("");
-        setUsername("");
-        setSupporterFirstName("");
-        setSupporterLastName("");
+      .then((response) => response.json())
+      .then((supporter) => {
+        // alert(
+        //   "Account for " + supporter.name + " has been created successfully"
+        // );
+        // setPassword("");
+        // setUsername("");
+        // setSupporterFirstName("");
+        // setSupporterLastName("");
+        // setNewTeam("Select Support Team");
       })
       .catch((error) => console.log("error: ", error.message));
   };
@@ -104,6 +105,7 @@ function SupportCreateAccount() {
                 onChange={(e) => {
                   setSupporterFirstName(e.target.value);
                 }}
+                value={supporterFirstName}
               />
             </DetailRow>
             <DetailRow>
@@ -112,6 +114,7 @@ function SupportCreateAccount() {
                 onChange={(e) => {
                   setSupporterLastName(e.target.value);
                 }}
+                value={supporterLastName}
               />
             </DetailRow>
 
