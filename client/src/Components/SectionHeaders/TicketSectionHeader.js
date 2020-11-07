@@ -18,10 +18,7 @@ const TicketHeader = styled.div`
   display: flex;
   padding-left: 5%;
 `;
-const TicketInc = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-`;
+
 const TicketCustomerName = styled.h3`
   flex: 1;
   text-decoration: underline;
@@ -32,11 +29,7 @@ const TicketDesc = styled.h3`
   text-decoration: underline;
   text-align: left;
 `;
-const TicketType = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
+
 const TicketPriority = styled.h3`
   flex: 1;
   text-decoration: underline;

@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import {useLocation, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import Loading from "../../Loading";
 
 const SupportTicketDetail = () => {
-  const [productTypeSelected, setProductTypeSelected] = React.useState(null);
   const [ticketState, setTicketState] = React.useState("New");
   const [priority, setPriority] = React.useState("Low");
   const [risk, setRisk] = React.useState("Select Risk Level");
@@ -75,8 +73,6 @@ const SupportTicketDetail = () => {
     });
   };
 
-  console.log("ticket detail: ", ticketDetail);
-
   return (
     <Portal>
       <SideBar>
@@ -88,12 +84,12 @@ const SupportTicketDetail = () => {
         {ticketDetail ? (
           <Details>
             <TopHalf>
-              <TicketNumberProductTypeRow>
-                <TicketNumber>
+              <Row>
+                <Detail>
                   <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
                   <TicketNumberTxt defaultValue={ticketDetail._id} />
-                </TicketNumber>
-                <ProductType>
+                </Detail>
+                <Detail>
                   <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
                   <DropDownSelect
                     id="productType"
@@ -108,14 +104,14 @@ const SupportTicketDetail = () => {
                     <option value="cellPhone">CellPhone</option>
                     <option value="email">Email</option>
                   </DropDownSelect>
-                </ProductType>
-              </TicketNumberProductTypeRow>
-              <RequestorAndStateRow>
-                <Requestor>
+                </Detail>
+              </Row>
+              <Row>
+                <Detail>
                   <RequestorLbl>Requested By &nbsp;</RequestorLbl>
                   <RequestorTxt defaultValue={ticketDetail.customerName} />
-                </Requestor>
-                <State>
+                </Detail>
+                <Detail>
                   <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
                   <DropDownSelect
                     id="state"
@@ -131,10 +127,10 @@ const SupportTicketDetail = () => {
                     <option value="In Progress">In Progress</option>
                     <option value="resolved">Resolved</option>
                   </DropDownSelect>
-                </State>
-              </RequestorAndStateRow>
-              <PriorityAndAssignmentGroupRow>
-                <Priority>
+                </Detail>
+              </Row>
+              <Row>
+                <Detail>
                   <SelectLbl htmlFor="priority">Priority &nbsp;</SelectLbl>
                   <DropDownSelect
                     id="priority"
@@ -149,8 +145,8 @@ const SupportTicketDetail = () => {
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
                   </DropDownSelect>
-                </Priority>
-                <AssignmentGroup>
+                </Detail>
+                <Detail>
                   <SelectLbl htmlFor="assignmentGroup">
                     Assignment group
                   </SelectLbl>
@@ -173,10 +169,10 @@ const SupportTicketDetail = () => {
                       );
                     })}
                   </DropDownSelect>
-                </AssignmentGroup>
-              </PriorityAndAssignmentGroupRow>
-              <RiskAndAssignTooRow>
-                <Risk>
+                </Detail>
+              </Row>
+              <Row>
+                <Detail>
                   <SelectLbl htmlFor="risk">Risk </SelectLbl>
                   <DropDownSelect
                     id="risk"
@@ -193,8 +189,8 @@ const SupportTicketDetail = () => {
                     <option value="moderate">Medium</option>
                     <option value="severe">High</option>
                   </DropDownSelect>
-                </Risk>
-                <AssignToo>
+                </Detail>
+                <Detail>
                   <SelectLbl htmlFor="assignee">Select Assignee</SelectLbl>
                   <DropDownSelect
                     id="assignee"
@@ -215,10 +211,10 @@ const SupportTicketDetail = () => {
                       );
                     })}
                   </DropDownSelect>
-                </AssignToo>
-              </RiskAndAssignTooRow>
-              <ImpactRow>
-                <Impact>
+                </Detail>
+              </Row>
+              <Row>
+                <Detail>
                   <SelectLbl htmlFor="impact">Impact </SelectLbl>
                   <DropDownSelect
                     id="impact"
@@ -233,12 +229,12 @@ const SupportTicketDetail = () => {
                     <option value="medium">Medium</option>
                     <option value="high">High</option>
                   </DropDownSelect>
-                </Impact>
-                <DateOpened>
+                </Detail>
+                <Detail>
                   <DateLbl>Date Opened</DateLbl>
                   <DateTxt defaultValue={ticketDetail.dateOfTicketCreated} />
-                </DateOpened>
-              </ImpactRow>
+                </Detail>
+              </Row>
             </TopHalf>
             <DescriptionRow>
               <ShortDescription>
@@ -267,10 +263,14 @@ const SupportTicketDetail = () => {
 };
 const SideBar = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;
 
 const Portal = styled.div`
   display: flex;
+  min-height: 100vh;
 `;
 
 const TopHalf = styled.div`
@@ -282,23 +282,28 @@ const TicketForm = styled.form`
   flex-direction: column;
   height: 100vh;
   flex: 5;
+  background-color: #f1faee;
+  min-height: 100vh;
 `;
 const SupportTicketBanner = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #428bca;
+  background-color: #1d3557;
   justify-content: center;
   color: white;
+  font-weight: bold;
+  padding: 1%;
 `;
 
-const TicketNumberProductTypeRow = styled.div`
+const Row = styled.div`
   display: flex;
 `;
-const TicketNumber = styled.div`
+const Detail = styled.div`
   display: flex;
   justify-content: space-between;
   flex: 1;
+  margin: 1%;
 `;
 const TicketNumberLbl = styled.label`
   flex: 1;
@@ -308,11 +313,6 @@ const TicketNumberTxt = styled.input`
   text-align: center;
 `;
 
-const DateOpened = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
 const DateLbl = styled.label`
   flex: 1;
 `;
@@ -321,20 +321,6 @@ const DateTxt = styled.input`
   text-align: center;
 `;
 
-const ProductType = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const RequestorAndStateRow = styled.div`
-  display: flex;
-`;
-const Requestor = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
 const RequestorLbl = styled.label`
   flex: 1;
 `;
@@ -343,20 +329,6 @@ const RequestorTxt = styled.input`
   text-align: center;
 `;
 
-const State = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const PriorityAndAssignmentGroupRow = styled.div`
-  display: flex;
-`;
-const Priority = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
 const SelectLbl = styled.label`
   flex: 1;
 `;
@@ -366,45 +338,16 @@ const DropDownSelect = styled.select`
   flex: 1;
 `;
 
-const AssignmentGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const RiskAndAssignTooRow = styled.div`
-  display: flex;
-`;
-
-const Risk = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
-const AssignToo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-const ImpactRow = styled.div`
-  display: flex;
-`;
-
-const Impact = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-`;
-
 const ShortDescription = styled.div`
   display: flex;
   justify-content: space-between;
+  margin: 1%;
 `;
 
 const Description = styled.div`
   display: flex;
   justify-content: space-between;
+  margin: 1%;
 `;
 
 const DescriptionRow = styled.div`
@@ -429,9 +372,17 @@ const ButtonRow = styled.div`
   padding: 1%;
   text-align: right;
 `;
-const ButtonSubmit = styled.button``;
+const ButtonSubmit = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin: 1%;
+  font-size: 15px;
+`;
 
-const Details = styled.div``;
+const Details = styled.div`
+  background-color: #a8dadc;
+`;
 const Loader = styled.div`
   position: relative;
   flex: 5;

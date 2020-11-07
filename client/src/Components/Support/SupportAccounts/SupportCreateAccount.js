@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
-import {useHistory} from "react-router-dom";
 
 function SupportCreateAccount() {
   const [teams, setTeams] = React.useState(null);
@@ -193,7 +192,13 @@ const ButtonRow = styled.div`
   margin: 3%;
 `;
 
-const CreateBtn = styled.button``;
+const CreateBtn = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin: 1%;
+  font-size: 15px;
+`;
 
 const SideBar = styled.div`
   flex: 1;

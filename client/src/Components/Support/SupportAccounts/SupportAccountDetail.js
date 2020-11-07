@@ -206,16 +206,31 @@ const ButtonRow = styled.div`
 
   margin: 3%;
 `;
-const EnableBtn = styled.button``;
-const UpdateBtn = styled.button``;
+const EnableBtn = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin: 1%;
+  font-size: 15px;
+`;
+const UpdateBtn = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin: 1%;
+  font-size: 15px;
+`;
+
 const AccountHeader = styled.h3`
   text-align: center;
 `;
-const SearchBtn = styled.button``;
+const SearchBtn = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+`;
 const SearchRow = styled.div`
   display: flex;
   justify-content: flex-end;
-
   margin: 3%;
 `;
 

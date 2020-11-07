@@ -28,9 +28,9 @@ function SupportNewAccounts() {
         </SideBar>
         <NewAccountsDisplay>
           <NewAccountItems>
+            <NewAccountSectionHeader />
             {newAccounts ? (
               <AccountHeader>
-                <NewAccountSectionHeader />
                 {newAccounts.map((account, index) => {
                   return (
                     <NewAccountItem
