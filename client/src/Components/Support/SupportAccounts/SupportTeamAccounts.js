@@ -54,11 +54,16 @@ function SupportTeamAccounts() {
 
 const SideBar = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;
 
 const AdminPage = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  background-color: #f1faee;
 `;
 
 const AccountDashBoard = styled.div`

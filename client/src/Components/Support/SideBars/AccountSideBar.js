@@ -26,21 +26,33 @@ function AccountSideBar() {
 
   return (
     <Side>
-      <SideLbl>Accounts</SideLbl>
+      <TitleLbl>Accounts</TitleLbl>
       <SideLink strict to={"/support/portal/accounts/newaccounts"}>
-        <WaitingSupportersIcon />
-        <NewAccounts>View New</NewAccounts>
+        <IconImg>
+          <WaitingSupportersIcon />
+        </IconImg>
+        <LinkSelection>New</LinkSelection>
       </SideLink>
       <SideLink strict to={"/support/portal/accounts/activeaccounts"}>
-        <AllSupportersIcon />
-        <ViewAll>View All</ViewAll>
+        <IconImg>
+          <AllSupportersIcon />
+        </IconImg>
+        <LinkSelection>All</LinkSelection>
       </SideLink>
+      <SideLink strict to={"/support/portal/accounts/createaccount"}>
+        <IconImg>
+          <WaitingSupportersIcon />
+        </IconImg>
+        <LinkSelection>Create</LinkSelection>
+      </SideLink>
+
       <SideLink strict to={"/support/portal/accounts/accountdetail"}>
-        <TeamSupportersIcon />
-        <ViewAll>View Detail</ViewAll>
+        <IconImg>
+          <TeamSupportersIcon />
+        </IconImg>
+        <LinkSelection>Detail</LinkSelection>
       </SideLink>
       <TeamMenu>
-        <TeamSupportersIcon />
         <DropDownSelect
           id="assignmentGroup"
           name="assignmentGroup"
@@ -48,7 +60,7 @@ function AccountSideBar() {
           onChange={(e) => teamSelected(e.target.value)}
         >
           <option value="selectAssignmentGroup" disabled hidden>
-            View Team
+            Team
           </option>
           {teams &&
             teams.map((team, index) => {
@@ -63,32 +75,50 @@ function AccountSideBar() {
     </Side>
   );
 }
+const IconImg = styled.div`
+  flex: 1;
+`;
 const TeamMenu = styled.div`
   display: flex;
-  padding-left: 7%;
+  padding-left: 5%;
 `;
 const DropDownSelect = styled.select`
   text-align: center;
   text-align-last: center;
+  min-width: 165px;
+  height: 30px;
 `;
-const SideLbl = styled.h3`
+const TitleLbl = styled.h3`
   text-decoration: underline;
+  color: #f1faee;
   padding-left: 5%;
 `;
 
 const Side = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: #457b9d;
+  flex: 1;
 `;
 const SideLink = styled(NavLink)`
   display: flex;
-  padding-left: 7%;
   text-decoration: none;
+  color: #f1faee;
+  padding-left: 5%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  &:hover {
+    background-color: #e63946;
+  }
 `;
 const PaddedLink = styled.span`
   font-weight: bold;
 `;
-const NewAccounts = styled(PaddedLink)``;
-const ViewAll = styled(PaddedLink)``;
+const LinkSelection = styled(PaddedLink)`
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default AccountSideBar;

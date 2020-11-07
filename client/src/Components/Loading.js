@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import loaderImg from '../Images/loading.gif';
+import React from "react";
+import styled from "styled-components";
+import loaderImg from "../Images/loading.gif";
 
 const Loading = () => {
   return <Loader src={loaderImg} />;
@@ -11,6 +11,7 @@ const Loader = styled.img`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: #f1faee;
 `;
 
 export default Loading;

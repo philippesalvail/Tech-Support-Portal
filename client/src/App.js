@@ -20,6 +20,7 @@ import SupportNewAccounts from "./Components/Support/SupportAccounts/SupportNewA
 import SupportActiveAccounts from "./Components/Support/SupportAccounts/SupportActiveAccounts";
 import SupportTeamAccounts from "./Components/Support/SupportAccounts/SupportTeamAccounts";
 import SupportAccountDetail from "./Components/Support/SupportAccounts/SupportAccountDetail";
+import SupportCreateAccount from "./Components/Support/SupportAccounts/SupportCreateAccount";
 
 function App() {
   return (
@@ -48,12 +49,12 @@ function App() {
             exact
             component={ClientAllTickets}
           />
-
           <Route
             path="/support/portal/admin/newtickets"
             exact
             component={SupportNewTickets}
           />
+
           <Route
             path="/support/portal/admin/pendingtickets"
             exact
@@ -110,6 +111,11 @@ function App() {
             path="/support/portal/accounts/accountdetail"
             exact
             component={SupportAccountDetail}
+          />
+          <Route
+            path="/support/portal/accounts/createaccount"
+            exact
+            component={SupportCreateAccount}
           />
         </Switch>
       </Router>

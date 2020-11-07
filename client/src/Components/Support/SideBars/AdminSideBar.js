@@ -27,25 +27,32 @@ function AdminSideBar() {
 
   return (
     <Side>
-      <SideLbl>Tickets</SideLbl>
+      <TitleLbl>Tickets</TitleLbl>
       <SideLink strict to={"/support/portal/admin/newtickets"}>
-        <NewTicketIcon />
-        <CreateNew>View New</CreateNew>
+        <IconImg>
+          <NewTicketIcon />
+        </IconImg>
+        <LinkSelection>New</LinkSelection>
       </SideLink>
       <SideLink strict to={"/support/portal/admin/pendingtickets"}>
-        <PendingIcon />
-        <ViewPending>View Pending</ViewPending>
+        <IconImg>
+          <PendingIcon />
+        </IconImg>
+        <LinkSelection>Pending</LinkSelection>
       </SideLink>
       <SideLink strict to={"/support/portal/admin/closedtickets"}>
-        <HistoryIcon />
-        <ViewHistory>View Resolved</ViewHistory>
+        <IconImg>
+          <HistoryIcon />
+        </IconImg>
+        <LinkSelection>Resolved</LinkSelection>
       </SideLink>
       <SideLink strict to={"/support/portal/admin/alltickets"}>
-        <ClosedIcon />
-        <ViewAll>View All</ViewAll>
+        <IconImg>
+          <ClosedIcon />
+        </IconImg>
+        <LinkSelection>All</LinkSelection>
       </SideLink>
       <TeamMenu>
-        <TeamIcon />
         <DropDownSelect
           id="assignmentGroup"
           name="assignmentGroup"
@@ -53,7 +60,7 @@ function AdminSideBar() {
           onChange={(e) => teamSelected(e.target.value)}
         >
           <option value="selectAssignmentGroup" disabled hidden>
-            View Team
+            Team
           </option>
           {teams &&
             teams.map((team, index) => {
@@ -69,11 +76,17 @@ function AdminSideBar() {
   );
 }
 
+const IconImg = styled.div`
+  flex: 1;
+`;
+
 const DropDownSelect = styled.select`
   text-align: center;
   text-align-last: center;
+  min-width: 164px;
+  height: 30px;
 `;
-const SideLbl = styled.h3`
+const TitleLbl = styled.h3`
   text-decoration: underline;
   padding-left: 5%;
 `;
@@ -81,22 +94,34 @@ const SideLbl = styled.h3`
 const Side = styled.div`
   display: flex;
   flex-direction: column;
+  color: #f1faee;
+  background-color: #457b9d;
+  flex: 1;
 `;
 const SideLink = styled(NavLink)`
   display: flex;
-  padding-left: 7%;
   text-decoration: none;
+  color: #f1faee;
+  padding-left: 5%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+
+  &:hover {
+    background-color: #e63946;
+  }
 `;
 const TeamMenu = styled.div`
   display: flex;
-  padding-left: 7%;
+  padding-left: 5%;
 `;
 const PaddedLink = styled.span`
   font-weight: bold;
 `;
-const CreateNew = styled(PaddedLink)``;
-const ViewPending = styled(PaddedLink)``;
-const ViewHistory = styled(PaddedLink)``;
-const ViewAll = styled(PaddedLink)``;
+const LinkSelection = styled(PaddedLink)`
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default AdminSideBar;

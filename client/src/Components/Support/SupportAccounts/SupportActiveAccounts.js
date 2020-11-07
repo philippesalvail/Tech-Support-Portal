@@ -35,6 +35,7 @@ function SupportActiveAccounts() {
                       account={account}
                       setResetList={setResetList}
                       resetList={resetList}
+                      index={index}
                     />
                   );
                 })}
@@ -50,11 +51,15 @@ function SupportActiveAccounts() {
 }
 const SideBar = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;
 
 const AdminPage = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 `;
 
 const AccountDashBoard = styled.div`
@@ -64,9 +69,13 @@ const AccountHeader = styled.div`
   text-align: center;
 `;
 
-const NewAccountItems = styled.div``;
+const NewAccountItems = styled.div`
+  width: 95%;
+  margin: 0 auto;
+`;
 const NewAccountsDisplay = styled.div`
   flex: 5;
+  background-color: #f1faee;
 `;
 
 export default SupportActiveAccounts;

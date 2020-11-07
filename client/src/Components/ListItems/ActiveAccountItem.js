@@ -17,8 +17,8 @@ const unlockAccountHandler = (account, setResetList, resetList) => {
     .catch((error) => console.log("error: ", error.message));
 };
 
-function ActiveAccountItem({account, setResetList, resetList}) {
-  console.log("account in ActiveAccountItem: ", account);
+function ActiveAccountItem(props) {
+  console.log("props: ", props.index % 2 == 0);
   let history = useHistory();
   const accountDetail = (account) => {
     history.push(`/support/portal/accounts/accountdetail/${account}`);
@@ -26,20 +26,24 @@ function ActiveAccountItem({account, setResetList, resetList}) {
 
   return (
     <>
-      {account.username !== "admin" && (
+      {props.account.username !== "admin" && (
         <Supporter>
           <SupporterName>
-            <Name>{account.name}</Name>
+            <Name>{props.account.name}</Name>
           </SupporterName>
           <SupporterUserName>
-            <Username>{account.username}</Username>
+            <Username>{props.account.username}</Username>
           </SupporterUserName>
           <UnlockBtn>
             <Btn
               onClick={() =>
-                unlockAccountHandler(account, setResetList, resetList)
+                unlockAccountHandler(
+                  props.account,
+                  props.setResetList,
+                  props.resetList
+                )
               }
-              disabled={!account.isLocked}
+              disabled={!props.account.isLocked}
             >
               Unlock
             </Btn>
@@ -49,9 +53,16 @@ function ActiveAccountItem({account, setResetList, resetList}) {
     </>
   );
 }
+
 const Supporter = styled.li`
   display: flex;
-  margin-bottom: 1%;
+  padding-left: 5%;
+  background-color: ${(props) =>
+    props.index % 2 === 0 ? "#caffbf" : "#a8dadc"};
+  color: ${(props) => (props.index % 2 === 0 ? "#caffbf" : "#000000")};
+  font-weight: bold;
+  padding-top: 1%;
+  padding-bottom: 1%;
 `;
 const SupporterName = styled.div`
   flex: 1;

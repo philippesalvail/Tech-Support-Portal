@@ -16,6 +16,7 @@ function TicketSectionHeader() {
 
 const TicketHeader = styled.div`
   display: flex;
+  padding-left: 5%;
 `;
 const TicketInc = styled.h3`
   flex: 1;

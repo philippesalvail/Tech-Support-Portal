@@ -275,7 +275,6 @@ const Portal = styled.div`
 
 const TopHalf = styled.div`
   border-bottom: 1px solid black;
-  padding-bottom: 2%;
 `;
 
 const TicketForm = styled.form`
@@ -283,7 +282,6 @@ const TicketForm = styled.form`
   flex-direction: column;
   height: 100vh;
   flex: 5;
-  margin: 0 auto;
 `;
 const SupportTicketBanner = styled.div`
   display: flex;
@@ -292,14 +290,12 @@ const SupportTicketBanner = styled.div`
   background-color: #428bca;
   justify-content: center;
   color: white;
-  padding: 1%;
 `;
 
 const TicketNumberProductTypeRow = styled.div`
   display: flex;
 `;
 const TicketNumber = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -313,7 +309,6 @@ const TicketNumberTxt = styled.input`
 `;
 
 const DateOpened = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -327,7 +322,6 @@ const DateTxt = styled.input`
 `;
 
 const ProductType = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -337,7 +331,6 @@ const RequestorAndStateRow = styled.div`
   display: flex;
 `;
 const Requestor = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -351,7 +344,6 @@ const RequestorTxt = styled.input`
 `;
 
 const State = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -361,7 +353,6 @@ const PriorityAndAssignmentGroupRow = styled.div`
   display: flex;
 `;
 const Priority = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -376,7 +367,6 @@ const DropDownSelect = styled.select`
 `;
 
 const AssignmentGroup = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -387,14 +377,12 @@ const RiskAndAssignTooRow = styled.div`
 `;
 
 const Risk = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
 `;
 
 const AssignToo = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -404,7 +392,6 @@ const ImpactRow = styled.div`
 `;
 
 const Impact = styled.div`
-  padding: 1%;
   display: flex;
   justify-content: space-between;
   flex: 1;
@@ -413,19 +400,16 @@ const Impact = styled.div`
 const ShortDescription = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 1%;
 `;
 
 const Description = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 1%;
 `;
 
 const DescriptionRow = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 2%;
 `;
 
 const ShortDescriptionLbl = styled.label`
