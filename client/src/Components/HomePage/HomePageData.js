@@ -1,6 +1,3 @@
-import aboutUs from "../../Images/aboutUs.jpeg";
-import Support from "../../Images/SupportImage.png";
-import whyUs from "../../Images/whyUs.jpeg";
 import helpdesk from "../../Images/techSupport.jpeg";
 import user from "../../Images/user.jpeg";
 

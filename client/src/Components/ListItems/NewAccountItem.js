@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import {useHistory} from "react-router-dom";
 
 function NewAccountItem(props) {
+  const {_id, name, team, isValidated} = props.account;
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const {_id, name, team, isValidated} = props.account;
   const {setEnableAccount, enableAccount} = props;
   const [teamSelected, setTeamSelected] = React.useState("");
   const [teams, setTeams] = React.useState(null);
-  const [statusMessage, setStatusMesage] = React.useState("");
-  const [usernameExists, setUsernameExists] = React.useState(false);
+  const [usernameExists, setUsernameExists] = React.useState(null);
 
   React.useEffect(() => {
     fetch("/support/supportteams/getSupportTeams")
@@ -18,7 +16,6 @@ function NewAccountItem(props) {
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
   }, []);
-  let history = useHistory();
 
   const checkIfAccountExists = (username) => {
     fetch(`/support/accounts/checkUsername/${username}`)
@@ -50,7 +47,7 @@ function NewAccountItem(props) {
       body: JSON.stringify({
         _id: _id,
         name: name,
-        team: team,
+        team: teamSelected,
         username: username,
         password: password,
         isLocked: false,

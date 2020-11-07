@@ -6,7 +6,6 @@ import {
   AllSupportersIcon,
   WaitingSupportersIcon,
   TeamSupportersIcon,
-  TeamIcon,
 } from "../../../ReactIcons";
 
 function AccountSideBar() {
@@ -37,7 +36,7 @@ function AccountSideBar() {
         <IconImg>
           <AllSupportersIcon />
         </IconImg>
-        <LinkSelection>All</LinkSelection>
+        <LinkSelection>Active</LinkSelection>
       </SideLink>
       <SideLink strict to={"/support/portal/accounts/createaccount"}>
         <IconImg>
