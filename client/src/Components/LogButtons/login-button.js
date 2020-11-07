@@ -1,7 +1,7 @@
 import React from "react";
 import {useAuth0} from "@auth0/auth0-react";
-import {Button} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
+import styled from "styled-components";
 
 const LoginButton = ({data}) => {
   const [allTickets, setAllTickets] = React.useState({});
@@ -24,26 +24,35 @@ const LoginButton = ({data}) => {
   return (
     <>
       {data.userType == "Customer" ? (
-        <Button
+        <LogBtn
           onClick={() => loginWithRedirect()}
           id="qsLoginBtn"
           variant="primary"
           className="btn-margin"
         >
           Log in
-        </Button>
+        </LogBtn>
       ) : (
-        <Button
+        <LogBtn
           onClick={() => supportLogin()}
           id="qsLoginBtn"
           variant="primary"
           className="btn-margin"
         >
           Log in
-        </Button>
+        </LogBtn>
       )}
     </>
   );
 };
+
+const LogBtn = styled.button`
+  background-color: #457b9d;
+  color: #f1faee;
+  font-weight: bold;
+  margin-top: 5%;
+  font-size: 15px;
+  padding: 2%;
+`;
 
 export default LoginButton;

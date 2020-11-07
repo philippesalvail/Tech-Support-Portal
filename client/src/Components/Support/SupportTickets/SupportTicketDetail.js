@@ -369,7 +369,6 @@ const DescriptionTxt = styled.textarea`
   flex: 3;
 `;
 const ButtonRow = styled.div`
-  padding: 1%;
   text-align: right;
 `;
 const ButtonSubmit = styled.button`
@@ -378,6 +377,7 @@ const ButtonSubmit = styled.button`
   font-weight: bold;
   margin: 1%;
   font-size: 15px;
+  padding: 1%;
 `;
 
 const Details = styled.div`

@@ -16,11 +16,13 @@ function HomePage() {
   return (
     <>
       {!isAuthenticated ? (
-        <Entries>
-          {HomePageData.map((data, index) => {
-            return <EntryPoint data={data} key={index} />;
-          })}
-        </Entries>
+        <LandingPage>
+          <Entries>
+            {HomePageData.map((data, index) => {
+              return <EntryPoint data={data} key={index} />;
+            })}
+          </Entries>
+        </LandingPage>
       ) : (
         <UserDirection />
       )}
@@ -28,12 +30,19 @@ function HomePage() {
   );
 }
 
+const LandingPage = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #f1faee;
+`;
+
 const Entries = styled.div`
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-gap: 100px;
-  width: 70%;
+  display: flex;
+  width: 50%;
   margin: 0 auto;
+  justify-content: space-around;
 `;
 
 export default HomePage;
