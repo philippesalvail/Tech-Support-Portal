@@ -77,14 +77,14 @@ function SupportCreateAccount() {
     })
       .then((response) => response.json())
       .then((supporter) => {
-        // alert(
-        //   "Account for " + supporter.name + " has been created successfully"
-        // );
-        // setPassword("");
-        // setUsername("");
-        // setSupporterFirstName("");
-        // setSupporterLastName("");
-        // setNewTeam("Select Support Team");
+        alert(
+          "Account for " + supporter.name + " has been created successfully"
+        );
+        setPassword("");
+        setUsername("");
+        setSupporterFirstName("");
+        setSupporterLastName("");
+        setNewTeam("Select Support Team");
       })
       .catch((error) => console.log("error: ", error.message));
   };
@@ -201,6 +201,7 @@ const CreateBtn = styled.button`
   font-weight: bold;
   margin: 1%;
   font-size: 15px;
+  padding: 1%;
 `;
 
 const SideBar = styled.div`

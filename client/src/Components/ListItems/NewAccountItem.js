@@ -171,6 +171,7 @@ const Btn = styled.button`
   font-weight: bold;
   margin: 1%;
   font-size: 15px;
+  padding: 1%;
 `;
 
 export default NewAccountItem;

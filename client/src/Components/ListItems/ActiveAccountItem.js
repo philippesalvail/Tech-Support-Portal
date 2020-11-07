@@ -81,6 +81,7 @@ const Btn = styled.button`
   margin: 1%;
   font-size: 15px;
   width: 20%;
+  padding: 1%;
 `;
 
 export default ActiveAccountItem;

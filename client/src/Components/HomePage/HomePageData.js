@@ -4,7 +4,7 @@ import user from "../../Images/user.jpeg";
 export const HomePageData = [
   {
     title: "Customer Portal",
-    subTitle: "Technical Issue ",
+    subTitle: "Product Issue ",
     description:
       "If you are a customer in need technical asistance, please connect here.",
     image: user,

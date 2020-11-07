@@ -26,7 +26,9 @@ const SubCategory = styled.div`
   flex-direction: column;
   border: 1px black solid;
   border-radius: 25px;
-  padding: 5%;
+  width: 30%;
+  padding: 2%;
+  background-color: #a8dadc;
 `;
 const IconAndTitle = styled.div`
   display: flex;

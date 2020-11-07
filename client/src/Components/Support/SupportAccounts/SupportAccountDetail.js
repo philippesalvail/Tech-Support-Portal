@@ -212,6 +212,7 @@ const EnableBtn = styled.button`
   font-weight: bold;
   margin: 1%;
   font-size: 15px;
+  padding: 1%;
 `;
 const UpdateBtn = styled.button`
   background-color: #457b9d;
@@ -219,6 +220,7 @@ const UpdateBtn = styled.button`
   font-weight: bold;
   margin: 1%;
   font-size: 15px;
+  padding: 1%;
 `;
 
 const AccountHeader = styled.h3`

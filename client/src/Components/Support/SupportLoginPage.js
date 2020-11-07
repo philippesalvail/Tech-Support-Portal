@@ -72,54 +72,65 @@ function SupportLoginPage() {
 
   return (
     <LoginPage>
-      <LoginBanner>Welcome To Service Now</LoginBanner>
-      <LoginInfo onSubmit={authenticateUser}>
-        <Login>
-          <h1>Login</h1>
-          <p>Please fill in your credentials to login</p>
-        </Login>
-        <UserName>
-          <UserNameLbl>Username: </UserNameLbl>
-          <UserNameTxt
-            onChange={(e) => {
-              setUserNameTyped(e.target.value);
-            }}
-          />
-        </UserName>
-        <Password>
-          <PasswordLbl>Password: </PasswordLbl>
-          <PasswordTxt
-            onChange={(e) => {
-              setPasswordTyped(e.target.value);
-            }}
-          />
-        </Password>
-        <Buttons>
-          <ButtonLogin type="submit">Login</ButtonLogin>
-          <div>
-            Don't have an account?{" "}
-            <Link to="/support/portal/agent/supportsignuppage">
-              Sign Up Here
-            </Link>
-          </div>
-        </Buttons>
-      </LoginInfo>
-      <LoginMessage>{loginMessage ? loginMessage : ""}</LoginMessage>
+      <LoginWrapper>
+        <LoginBanner>Welcome To Service Now</LoginBanner>
+        <LoginInfo onSubmit={authenticateUser}>
+          <Login>
+            <h1>Login</h1>
+            <p>Please fill in your credentials to login</p>
+          </Login>
+          <UserName>
+            <UserNameLbl>Username: </UserNameLbl>
+            <UserNameTxt
+              onChange={(e) => {
+                setUserNameTyped(e.target.value);
+              }}
+            />
+          </UserName>
+          <Password>
+            <PasswordLbl>Password: </PasswordLbl>
+            <PasswordTxt
+              onChange={(e) => {
+                setPasswordTyped(e.target.value);
+              }}
+            />
+          </Password>
+          <Buttons>
+            <ButtonLogin type="submit">Login</ButtonLogin>
+            <div>
+              Don't have an account?{" "}
+              <SignUpLink to="/support/portal/agent/supportsignuppage">
+                Sign Up Here
+              </SignUpLink>
+            </div>
+          </Buttons>
+        </LoginInfo>
+        <LoginMessage>{loginMessage ? loginMessage : ""}</LoginMessage>
+      </LoginWrapper>
     </LoginPage>
   );
 }
+const SignUpLink = styled(Link)`
+  color: #457b9d;
+`;
+
+const LoginWrapper = styled.div`
+  width: 35%;
+  margin: 0 auto;
+`;
 const LoginInfo = styled.form`
   display: flex;
   flex-direction: column;
   border: 1px solid black;
   padding: 5%;
   border-radius: 25px;
+  background-color: #a8dadc;
 `;
 const LoginPage = styled.div`
   display: flex;
   flex-direction: column;
-  width: 35%;
-  margin: 0 auto;
+  background-color: #f1faee;
+  min-height: 100vh;
 `;
 const UserName = styled.div`
   display: flex;
@@ -154,6 +165,10 @@ const Login = styled.div``;
 const ButtonLogin = styled.button`
   width: 20%;
   margin-bottom: 2%;
+  background-color: #457b9d;
+  color: #f1faee;
+  padding: 1%;
+  font-weight: bold;
 `;
 
 const LoginMessage = styled.div`
@@ -163,9 +178,10 @@ const LoginMessage = styled.div`
   color: red;
 `;
 const LoginBanner = styled.div`
+  color: #457b9d;
   text-align: center;
   margin: 5%;
-  color: blue;
+
   font-size: 1.75em;
 `;
 export default SupportLoginPage;
