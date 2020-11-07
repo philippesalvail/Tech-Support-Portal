@@ -16,7 +16,7 @@ const SignUp = () => {
   const [selectedDate, setSelectedDate] = React.useState(null);
 
   const valid = {
-    address: address.length > 5,
+    fullName: address.length > 5,
     creditCard: creditCard.length == 16,
     csc: csc.length == 3,
     expDate: selectedDate !== null,

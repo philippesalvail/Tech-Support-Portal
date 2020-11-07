@@ -25,7 +25,7 @@ function TicketItem({ticket}) {
 
 const Item = styled.li`
   display: flex;
-  margin-bottom: 1%;
+  padding-left: 5%;
 `;
 const CustomerName = styled.div`
   flex: 1;

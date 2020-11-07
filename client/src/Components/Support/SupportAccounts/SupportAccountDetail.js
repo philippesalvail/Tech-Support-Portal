@@ -103,94 +103,108 @@ function SupportAccountDetail() {
       </SideBar>
 
       <AccountInformation>
-        <AccountHeader>Account Detail</AccountHeader>
-        <SearchRow>
-          <UsernameTxt
-            placeholder="Enter Username..."
-            onChange={(e) => {
-              setUserNameTyped(e.target.value);
-            }}
-            value={userNameTyped}
-          />
-          <SearchBtn onClick={() => searchSupporter(userNameTyped)}>
-            <SearchIcon />
-          </SearchBtn>
-        </SearchRow>
+        <AccountWrapper>
+          <AccountHeader>Account Detail</AccountHeader>
+          <SearchRow>
+            <UsernameTxt
+              placeholder="Enter Username..."
+              onChange={(e) => {
+                setUserNameTyped(e.target.value);
+              }}
+              value={userNameTyped}
+            />
+            <SearchBtn onClick={() => searchSupporter(userNameTyped)}>
+              <SearchIcon />
+            </SearchBtn>
+          </SearchRow>
 
-        <DetailRow>
-          <Lbl>Name: </Lbl>
-          <Txt
-            value={supporterName}
-            onChange={(e) => {
-              setSupporterName(e.target.value);
-            }}
-          />
-        </DetailRow>
-        <DetailRow>
-          <Lbl>Status: </Lbl>
-          <Txt value={supporterFound.isEnabled !== null && accountStatus} />
-        </DetailRow>
-        <DetailRow>
-          <Lbl>Username: </Lbl>
-          <Txt
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </DetailRow>
-        <DetailRow>
-          <Lbl>Password: </Lbl>
-          <Txt
-            value={password}
-            type="password"
-            id="txthidden"
-            name="txthidden"
-            size="15"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </DetailRow>
-        <DetailRow>
-          <Lbl>Support Team: </Lbl>
-          <DropDownSelect
-            id="assignmentGroup"
-            name="assignmentGroup"
-            defaultValue="selectAssignmentGroup"
-            onChange={(e) => {
-              setNewTeam(e.target.value);
-            }}
-          >
-            <option value="selectAssignmentGroup" disabled hidden>
-              {oldteam}
-            </option>
-            {teams &&
-              teams.map((team, index) => {
-                return (
-                  <option key={team + index} value={team.supportName}>
-                    {team.supportName}
-                  </option>
-                );
-              })}
-          </DropDownSelect>
-        </DetailRow>
+          <DetailRow>
+            <Lbl>Name: </Lbl>
+            <Txt
+              value={supporterName}
+              onChange={(e) => {
+                setSupporterName(e.target.value);
+              }}
+            />
+          </DetailRow>
+          <DetailRow>
+            <Lbl>Status: </Lbl>
+            <Txt value={supporterFound.isEnabled !== null && accountStatus} />
+          </DetailRow>
+          <DetailRow>
+            <Lbl>Username: </Lbl>
+            <Txt
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+          </DetailRow>
+          <DetailRow>
+            <Lbl>Password: </Lbl>
+            <Txt
+              value={password}
+              type="password"
+              id="txthidden"
+              name="txthidden"
+              size="15"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          </DetailRow>
+          <DetailRow>
+            <Lbl>Support Team: </Lbl>
+            <DropDownSelect
+              id="assignmentGroup"
+              name="assignmentGroup"
+              defaultValue="selectAssignmentGroup"
+              onChange={(e) => {
+                setNewTeam(e.target.value);
+              }}
+            >
+              <option value="selectAssignmentGroup" disabled hidden>
+                {oldteam}
+              </option>
+              {teams &&
+                teams.map((team, index) => {
+                  return (
+                    <option key={team + index} value={team.supportName}>
+                      {team.supportName}
+                    </option>
+                  );
+                })}
+            </DropDownSelect>
+          </DetailRow>
 
-        <ButtonRow>
-          <UpdateBtn onClick={updateSupporterHandler}>Update</UpdateBtn>
-          <EnableBtn onClick={changeAccountState}>
-            {supporterFound.isEnabled ? "Disable" : "Enable"}
-          </EnableBtn>
-        </ButtonRow>
+          <ButtonRow>
+            <UpdateBtn onClick={updateSupporterHandler}>Update</UpdateBtn>
+            <EnableBtn onClick={changeAccountState}>
+              {supporterFound.isEnabled ? "Disable" : "Enable"}
+            </EnableBtn>
+          </ButtonRow>
+        </AccountWrapper>
       </AccountInformation>
     </Account>
   );
 }
-const ButtonRow = styled.div`
-  display: flex;
+const AccountWrapper = styled.div`
   width: 50%;
   margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 25px;
+  margin-top: 18px;
+  background-color: #a8dadc;
+`;
+const Account = styled.div`
+  display: flex;
+  background-color: #f1faee;
+`;
+const ButtonRow = styled.div`
+  display: flex;
   justify-content: flex-end;
+
+  margin: 3%;
 `;
 const EnableBtn = styled.button``;
 const UpdateBtn = styled.button``;
@@ -200,9 +214,9 @@ const AccountHeader = styled.h3`
 const SearchBtn = styled.button``;
 const SearchRow = styled.div`
   display: flex;
-  width: 50%;
-  margin: 0 auto;
   justify-content: flex-end;
+
+  margin: 3%;
 `;
 
 const UsernameTxt = styled.input`
@@ -218,19 +232,17 @@ const DropDownSelect = styled.select`
 
 const SideBar = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 const AccountInformation = styled.div`
   flex: 5;
+  min-height: 100vh;
 `;
 
-const Account = styled.div`
-  display: flex;
-`;
 const DetailRow = styled.div`
   display: flex;
-  width: 50%;
-  margin: 0 auto;
-  padding: 1%;
+  margin: 3%;
 `;
 const Lbl = styled.label`
   flex: 1;

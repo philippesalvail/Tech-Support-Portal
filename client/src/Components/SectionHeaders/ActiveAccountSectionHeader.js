@@ -13,6 +13,7 @@ function AccountSectionHeader() {
 
 const AccountHeader = styled.div`
   display: flex;
+  padding-left: 5%;
 `;
 const AccountName = styled.h3`
   flex: 1;
@@ -24,11 +25,7 @@ const AccountUserName = styled.h3`
   text-decoration: underline;
   text-align: left;
 `;
-const AccountState = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
+
 const AccountStatus = styled.h3`
   flex: 1;
   text-decoration: underline;

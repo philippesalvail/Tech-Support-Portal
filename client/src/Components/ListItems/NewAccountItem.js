@@ -21,9 +21,11 @@ function NewAccountItem(props) {
   let history = useHistory();
 
   const checkIfAccountExists = (username) => {
-    fetch(`/support/accounts/${username}`)
+    fetch(`/support/accounts/checkUsername/${username}`)
       .then((response) => response.json())
-      .then((account) => setUsernameExists(account.exists))
+      .then((account) => {
+        setUsernameExists(account.supporter.username == username);
+      })
       .catch((error) => console.log("error: ", error.message));
   };
 
@@ -37,6 +39,7 @@ function NewAccountItem(props) {
       alert("username " + username + " already exists");
       return;
     }
+
     if (!checkPasswordComplexity(password)) {
       alert("password must contain at least one special character");
       return;
@@ -119,7 +122,12 @@ const DropDownSelect = styled.select`
 
 const Supporter = styled.li`
   display: flex;
-  margin-bottom: 1%;
+  padding-left: 5%;
+  background-color: ${(props) => (props.index % 2 ? "#caffbf" : "#a8dadc")};
+  color: ${(props) => (props.index % 2 ? "#caffbf" : "#000000")};
+  font-weight: bold;
+  padding-top: 1%;
+  padding-bottom: 1%;
 `;
 const SupporterName = styled.div`
   flex: 1;

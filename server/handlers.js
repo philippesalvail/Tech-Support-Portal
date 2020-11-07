@@ -307,7 +307,10 @@ const getAllSupporters = async (req, res) => {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    const supporters = await database.collection("Supporters").find().toArray();
+    const supporters = await database
+      .collection("Supporters")
+      .find({isValidated: true})
+      .toArray();
     res.status(200).json({status: 200, accounts: supporters});
   } catch (error) {
     res.status(500).json({status: 200, message: error.message});
@@ -461,9 +464,8 @@ const doesSupportUserNameExists = async (req, res) => {
     const database = client.db("Tech_Support");
     const supporter = await database
       .collection("Supporters")
-      .find({username: username})
-      .toArray();
-    res.status(200).json({status: 200, accounts: supporter});
+      .findOne({username: username});
+    res.status(200).json({status: 200, supporter: supporter});
   } catch (error) {
     res.status(500).json({status: 500, message: error.message});
   }
@@ -544,6 +546,8 @@ const getTeamTickets = async (req, res) => {
   }
 };
 
+const createAccount = async (req, res) => {};
+
 module.exports = {
   getClientAccount,
   createClientAccount,
@@ -568,4 +572,5 @@ module.exports = {
   changeAccountState,
   updateSupporter,
   searchSupporter,
+  createAccount,
 };

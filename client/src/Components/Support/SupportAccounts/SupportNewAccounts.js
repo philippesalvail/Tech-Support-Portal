@@ -38,12 +38,13 @@ function SupportNewAccounts() {
                       account={account}
                       setEnableAccount={setEnableAccount}
                       enableAccount={enableAccount}
+                      index={index}
                     />
                   );
                 })}
               </AccountHeader>
             ) : (
-              <Loading />
+              <Loader />
             )}
           </NewAccountItems>
         </NewAccountsDisplay>
@@ -51,17 +52,18 @@ function SupportNewAccounts() {
     </AdminPage>
   );
 }
-const SideBar = styled.div`
-  flex: 1;
-`;
-
+const Loader = styled(Loading)``;
 const AdminPage = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  background-color: #f1faee;
 `;
-
-const AccountBanner = styled.h2`
-  text-align: center;
+const SideBar = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;
 
 const AccountDashBoard = styled.div`
