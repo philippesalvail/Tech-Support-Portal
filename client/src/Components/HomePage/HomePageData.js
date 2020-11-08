@@ -14,7 +14,8 @@ export const HomePageData = [
   {
     title: "HelpDesk Portal",
     subTitle: "Service Now",
-    description: "If you are a helpdesk agent, please login here",
+    description:
+      "If you are a helpdesk agent, please sign-in to view your pending tickets.",
     image: helpdesk,
     userType: "Support",
   },

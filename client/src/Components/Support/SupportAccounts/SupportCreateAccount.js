@@ -10,7 +10,6 @@ function SupportCreateAccount() {
   const [username, setUsername] = React.useState("");
   const [supporterFirstName, setSupporterFirstName] = React.useState("");
   const [supporterLastName, setSupporterLastName] = React.useState("");
-  const [usernameExists, setUsernameExists] = React.useState(false);
 
   const valid = {
     username: username.length > 3,
@@ -24,12 +23,6 @@ function SupportCreateAccount() {
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
-  const checkIfAccountExists = (username) =>
-    fetch(`/support/accounts/checkUsername/${username}`)
-      .then((response) => response.json())
-      .then((user) => user.supporter.username === username)
-      .catch((error) => console.log("error: ", error.messaage));
-
   const checkPasswordComplexity = (password) => {
     let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     return format.test(password);
@@ -38,27 +31,28 @@ function SupportCreateAccount() {
   const registerAccountHandler = (e) => {
     e.preventDefault();
     let errorMessage = "";
-    for (var key of Object.keys(valid)) {
-      if (!valid[key]) {
-        errorMessage += "Please enter a valid " + key + "\n";
-      }
-    }
-    if (checkIfAccountExists(username)) {
-      alert("username " + usernameExists + " already exists");
-      return;
-    }
-    if (!checkPasswordComplexity(password)) {
-      alert("password must contain at least one special character");
-      return;
-    }
-
     if (supporterFirstName.length < 2) {
-      alert("Please enter a first name");
-      return;
+      errorMessage += "Please enter a first name\n";
     }
 
     if (supporterLastName.length < 2) {
-      alert("Please enter a Last name");
+      errorMessage += "Please enter a last name\n";
+    }
+    for (var key of Object.keys(valid)) {
+      if (!valid[key]) {
+        errorMessage += key + " does not meet the length requirement\n";
+      }
+    }
+    if (!checkPasswordComplexity(password)) {
+      errorMessage += "password must contain at least one special character\n";
+    }
+
+    if (newteam === "Select Support Team") {
+      errorMessage += "Please select a support team\n";
+    }
+
+    if (errorMessage !== "") {
+      alert(errorMessage);
       return;
     }
 
@@ -77,14 +71,14 @@ function SupportCreateAccount() {
     })
       .then((response) => response.json())
       .then((supporter) => {
-        alert(
-          "Account for " + supporter.name + " has been created successfully"
-        );
-        setPassword("");
-        setUsername("");
-        setSupporterFirstName("");
-        setSupporterLastName("");
-        setNewTeam("Select Support Team");
+        alert(supporter.message);
+        if (supporter.accountCreated) {
+          setPassword("");
+          setUsername("");
+          setSupporterFirstName("");
+          setSupporterLastName("");
+          setNewTeam("Select Support Team");
+        }
       })
       .catch((error) => console.log("error: ", error.message));
   };
@@ -147,7 +141,7 @@ function SupportCreateAccount() {
               <DropDownSelect
                 id="assignmentGroup"
                 name="assignmentGroup"
-                defaultValue="selectAssignmentGroup"
+                value="selectAssignmentGroup"
                 onChange={(e) => {
                   setNewTeam(e.target.value);
                 }}
