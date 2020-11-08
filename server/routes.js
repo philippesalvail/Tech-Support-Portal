@@ -7,7 +7,7 @@ const {
   getTicketDetail,
   getNewTickets,
   getPendingTickets,
-  getClosedTickets,
+  getResolvedTickets,
   updateTicketDetail,
   getSupportTeams,
   getSupporter,
@@ -30,10 +30,14 @@ router.post("/client/clientCreated", createClientAccount);
 router.post("/client/tickets/ticketCreated", createClientTicket);
 router.get("/client/account/:emailId", getClientAccount);
 
-router.get("/support/tickets/getnewtickets", getNewTickets);
-router.get("/support/tickets/getpendingtickets", getPendingTickets);
-router.get("/support/tickets/getclosedtickets", getClosedTickets);
-router.get("/support/tickets/getalltickets", getAllTickets);
+router.get("/support/tickets/getnewtickets/:supporter", getNewTickets);
+router.get("/support/tickets/getpendingtickets/:supporter", getPendingTickets);
+router.get(
+  "/support/tickets/getresolvedtickets/:supporter",
+  getResolvedTickets
+);
+router.get("/support/tickets/getalltickets/:supporter", getAllTickets);
+
 router.put("/support/tickets/updateTicket", updateTicketDetail);
 router.get("/support/tickets/:getTicket", getTicketDetail);
 

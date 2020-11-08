@@ -27,7 +27,7 @@ function SupportTeamAccounts() {
           <AccountSideBar />
         </SideBar>
         <NewAccountsDisplay>
-          <NewAccountItems>
+          <AccountItems>
             <ActiveAccountSectionHeader />
             {team ? (
               <AccountHeader>
@@ -45,12 +45,17 @@ function SupportTeamAccounts() {
             ) : (
               <Loading />
             )}
-          </NewAccountItems>
+          </AccountItems>
         </NewAccountsDisplay>
       </AccountDashBoard>
     </AdminPage>
   );
 }
+
+const AccountItems = styled.div`
+  width: 97%;
+  margin: 0 auto;
+`;
 
 const SideBar = styled.div`
   flex: 1;

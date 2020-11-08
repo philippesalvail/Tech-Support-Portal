@@ -17,6 +17,7 @@ export const HomePageData = [
     description:
       "If you are a helpdesk agent, please sign-in to view your pending tickets.",
     image: helpdesk,
+    buttonText: "Login",
     userType: "Support",
   },
 ];

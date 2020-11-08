@@ -135,7 +135,6 @@ const DropDownSelect = styled.select`
 
 const Supporter = styled.li`
   display: flex;
-  padding-left: 5%;
   background-color: ${(props) =>
     props.index % 2 === 0 ? "#a8dadc" : "#f1faee"};
   color: ${(props) => (props.index % 2 === 0 ? "#1d3557" : "#000000")};

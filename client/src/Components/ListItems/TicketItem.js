@@ -22,10 +22,10 @@ function TicketItem({ticket}) {
     </Item>
   );
 }
+const Emtpy = styled.div``;
 
 const Item = styled.li`
   display: flex;
-  padding-left: 5%;
 `;
 const CustomerName = styled.div`
   flex: 1;

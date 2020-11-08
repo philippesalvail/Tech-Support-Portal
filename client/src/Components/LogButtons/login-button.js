@@ -4,16 +4,6 @@ import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 
 const LoginButton = ({data}) => {
-  const [allTickets, setAllTickets] = React.useState({});
-  React.useEffect(() => {
-    fetch("/support/getalltickets")
-      .then((response) => response.json())
-      .then((tickets) => setAllTickets(tickets))
-      .catch((error) =>
-        console.log("Error in support portal: ", error.message)
-      );
-  }, []);
-
   let history = useHistory();
   const {loginWithRedirect} = useAuth0();
 
@@ -30,7 +20,7 @@ const LoginButton = ({data}) => {
           variant="primary"
           className="btn-margin"
         >
-          Log in
+          {data.buttonText}
         </LogBtn>
       ) : (
         <LogBtn
@@ -39,7 +29,7 @@ const LoginButton = ({data}) => {
           variant="primary"
           className="btn-margin"
         >
-          Log in
+          {data.buttonText}
         </LogBtn>
       )}
     </>

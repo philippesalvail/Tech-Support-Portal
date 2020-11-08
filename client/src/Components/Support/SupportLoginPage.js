@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import {Link, useHistory} from "react-router-dom";
-import Loading from "../Loading";
 
 function SupportLoginPage() {
   let history = useHistory();
@@ -9,7 +8,10 @@ function SupportLoginPage() {
   const [passwordTyped, setPasswordTyped] = React.useState(null);
   const [loginMessage, setLoginMessage] = React.useState(null);
   const [failedAttempts, setFailedAttempts] = React.useState(0);
-  const [loading, setLoading] = React.useState(true);
+
+  const backToHomePage = () => {
+    history.push("/");
+  };
   const checkFailedAttempts = (failedAttempts, isLocked) => {
     if (failedAttempts > 1) {
       fetch(`/support/accounts/lockAccount/${userNameTyped}`, {
@@ -62,8 +64,6 @@ function SupportLoginPage() {
           setFailedAttempts(failedAttempts + 1);
           setLoginMessage("Password is invalid");
           checkFailedAttempts(failedAttempts, userObj.user.isLocked);
-        } else if (userObj.user.username === "admin") {
-          history.push("/support/portal/admin/newtickets");
         } else {
           history.push(`/support/portal/${userObj.user.username}/newtickets`);
         }
@@ -96,13 +96,16 @@ function SupportLoginPage() {
             />
           </Password>
           <Buttons>
-            <ButtonLogin type="submit">Login</ButtonLogin>
-            <div>
-              Don't have an account?{" "}
+            <ButtonRow>
+              <ButtonLogin onClick={backToHomePage}>Cancel</ButtonLogin>
+              <ButtonLogin type="submit">Login</ButtonLogin>
+            </ButtonRow>
+            <SignUpAccount>
+              Don't have an account?
               <SignUpLink to="/support/portal/agent/supportsignuppage">
                 Sign Up Here
               </SignUpLink>
-            </div>
+            </SignUpAccount>
           </Buttons>
         </LoginInfo>
         <LoginMessage>{loginMessage ? loginMessage : ""}</LoginMessage>
@@ -110,6 +113,12 @@ function SupportLoginPage() {
     </LoginPage>
   );
 }
+const SignUpAccount = styled.div`
+  display: flex;
+`;
+const ButtonRow = styled.div`
+  display: flex;
+`;
 const SignUpLink = styled(Link)`
   color: #457b9d;
 `;

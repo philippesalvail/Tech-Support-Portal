@@ -5,11 +5,13 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import Loading from "../../Loading";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import {useParams} from "react-router-dom";
 
 function SupportPendingTickets() {
+  let {supporter} = useParams();
   const [pendingTickets, setPendingTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch("/support/tickets/getpendingtickets")
+    fetch(`/support/tickets/getpendingtickets/${supporter}`)
       .then((response) => response.json())
       .then((tickets) => setPendingTickets(tickets.data))
       .catch((error) => console.log("error: ", error));

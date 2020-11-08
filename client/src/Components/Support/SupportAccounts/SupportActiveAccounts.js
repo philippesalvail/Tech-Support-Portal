@@ -24,7 +24,7 @@ function SupportActiveAccounts() {
           <AccountSideBar />
         </SideBar>
         <NewAccountsDisplay>
-          <NewAccountItems>
+          <AccountItems>
             <ActiveAccountSectionHeader />
             {allActiveAccounts ? (
               <AccountHeader>
@@ -43,7 +43,7 @@ function SupportActiveAccounts() {
             ) : (
               <Loading />
             )}
-          </NewAccountItems>
+          </AccountItems>
         </NewAccountsDisplay>
       </AccountDashBoard>
     </AdminPage>
@@ -69,10 +69,7 @@ const AccountHeader = styled.div`
   text-align: center;
 `;
 
-const NewAccountItems = styled.div`
-  width: 95%;
-  margin: 0 auto;
-`;
+const AccountItems = styled.div``;
 const NewAccountsDisplay = styled.div`
   flex: 5;
   background-color: #f1faee;

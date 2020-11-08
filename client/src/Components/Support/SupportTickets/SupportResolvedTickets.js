@@ -4,11 +4,13 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import {useParams} from "react-router-dom";
 
-function SupportClosedTickets() {
+function SupportResolvedTickets() {
+  let {supporter} = useParams();
   const [closedTickets, setClosedTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch("/support/tickets/getclosedtickets")
+    fetch(`/support/tickets/getresolvedtickets/${supporter}`)
       .then((response) => response.json())
       .then((tickets) => setClosedTickets(tickets.data))
       .catch((error) => console.log("error: ", error));
@@ -64,4 +66,4 @@ const NewTicketsDisplay = styled.div`
   flex: 5;
 `;
 
-export default SupportClosedTickets;
+export default SupportResolvedTickets;

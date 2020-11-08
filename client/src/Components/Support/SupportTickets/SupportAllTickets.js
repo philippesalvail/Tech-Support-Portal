@@ -8,9 +8,10 @@ import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 
 function SupportAllTickets() {
+  let {supporter} = useParams();
   const [allTickets, setAllTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch("/support/tickets/getalltickets")
+    fetch(`/support/tickets/getalltickets/${supporter}`)
       .then((response) => response.json())
       .then((tickets) => setAllTickets(tickets.data))
       .catch((error) =>
