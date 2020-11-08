@@ -10,7 +10,7 @@ import ClientAllTickets from "./Components/Client/ClientAllTickets";
 import SupportTicketDetail from "./Components/Support/SupportTickets/SupportTicketDetail";
 import SupportAllTickets from "./Components/Support/SupportTickets/SupportAllTickets";
 import SupportNewTickets from "./Components/Support/SupportTickets/SupportNewTickets";
-import SupportClosedTickets from "./Components/Support/SupportTickets/SupportClosedTickets";
+import SupportResolvedTickets from "./Components/Support/SupportTickets/SupportResolvedTickets";
 import SupportPendingTickets from "./Components/Support/SupportTickets/SupportPendingTickets";
 
 import SupportTeamTickets from "./Components/Support/SupportTickets/SupportTeamTickets";
@@ -52,45 +52,45 @@ function App() {
             component={ClientAllTickets}
           />
           <Route
-            path="/support/portal/admin/newtickets"
+            path="/support/portal/:supporter/newtickets"
             exact
             component={SupportNewTickets}
           />
 
           <Route
-            path="/support/portal/admin/pendingtickets"
+            path="/support/portal/:supporter/pendingtickets"
             exact
             component={SupportPendingTickets}
           />
           <Route
-            path="/support/portal/admin/alltickets"
+            path="/support/portal/:supporter/alltickets"
             exact
             component={SupportAllTickets}
           />
 
           <Route
-            path="/support/portal/admin/closedtickets"
+            path="/support/portal/:supporter/closedtickets"
             exact
-            component={SupportClosedTickets}
+            component={SupportResolvedTickets}
           />
-          <Route
-            path="/support/portal/:username/newtickets"
+          {/* <Route
+            path="/support/portal/:supporter/newtickets"
             exact
             component={SupportAgentNewTickets}
-          />
+          /> */}
           <Route
-            path="/support/portal/:username/teamtickets"
+            path="/support/portal/:supporter/teamtickets"
             exact
             component={SupportAgentTeamTickets}
           />
 
-          <Route
+          {/* <Route
             path="/support/portal/admin/teamtickets/:teamtickets"
             exact
             component={SupportTeamTickets}
-          />
+          /> */}
           <Route
-            path="/support/portal/admin/teamaccounts/:teamaccounts"
+            path="/support/portal/:supporter/teamaccounts/:teamaccounts"
             exact
             component={SupportTeamAccounts}
           />

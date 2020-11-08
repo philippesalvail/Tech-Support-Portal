@@ -1,51 +1,35 @@
 import React from "react";
 import styled from "styled-components";
+import LogOutButton from "../LogButtons/logout-button";
 
 function TicketSectionHeader() {
   return (
     <TicketHeader>
-      <TicketCustomerName>Name</TicketCustomerName>
-      <TicketDesc>Description</TicketDesc>
-      <TicketPriority>Priority</TicketPriority>
-      <TicketState>State</TicketState>
-      <TicketGroup>Group</TicketGroup>
-      <TicketAssignee>Assignee</TicketAssignee>
+      <Header>Name</Header>
+      <Header>Description</Header>
+      <Header>Priority</Header>
+      <Header>State</Header>
+      <Header>Group</Header>
+      <Header>Assignee</Header>
     </TicketHeader>
   );
 }
 
+const LogOutBtn = styled.button`
+  width: 10%;
+  margin-bottom: 2%;
+  background-color: #457b9d;
+  color: #f1faee;
+  padding: 1%;
+  font-weight: bold;
+  width: 8%;
+`;
+
 const TicketHeader = styled.div`
   display: flex;
-  padding-left: 5%;
 `;
 
-const TicketCustomerName = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-const TicketDesc = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-
-const TicketPriority = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-const TicketState = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-const TicketGroup = styled.h3`
-  flex: 1;
-  text-decoration: underline;
-  text-align: left;
-`;
-const TicketAssignee = styled.h3`
+const Header = styled.h3`
   flex: 1;
   text-decoration: underline;
   text-align: left;

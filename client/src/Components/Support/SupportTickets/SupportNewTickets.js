@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
+import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import {useParams} from "react-router-dom";
 
 function SupportNewTickets() {
+  let {supporter} = useParams();
+  console.log("supporter: ", supporter);
   const [newTickets, setNewTickets] = React.useState([]);
   React.useEffect(() => {
-    fetch("/support/tickets/getnewtickets")
+    fetch(`/support/tickets/getnewtickets/${supporter}`)
       .then((response) => response.json())
       .then((newTickets) => setNewTickets(newTickets.data))
       .catch((error) => console.log("error: ", error));
@@ -17,10 +21,17 @@ function SupportNewTickets() {
   return (
     <AdminPage>
       <TicketDashBoard>
-        <SideBar>
-          <AdminSideBar />
-          <AccountSideBar />
-        </SideBar>
+        {supporter == "admin" ? (
+          <SideBar>
+            <AdminSideBar />
+            <AccountSideBar />
+          </SideBar>
+        ) : (
+          <SideBar>
+            <AgentSideBar />
+          </SideBar>
+        )}
+
         <NewTicketsDisplay>
           <NewTicketItems>
             <TicketSectionHeader />
