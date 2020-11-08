@@ -23,7 +23,7 @@ const {
   changeAccountState,
   updateSupporter,
   searchSupporter,
-  createAccount,
+  createSupportAccount,
 } = require("./handlers");
 
 router.post("/client/clientCreated", createClientAccount);
@@ -61,6 +61,6 @@ router.get("/support/supporter/searchSupporter/:username", searchSupporter);
 
 router.patch("/support/supporter/updateSupporter/:username", updateSupporter);
 router.patch("/support/accounts/lockAccount/:username", lockSupportAccount);
-router.post("/support/accounts/createAccount", createAccount);
+router.post("/support/accounts/createAccount", createSupportAccount);
 
 module.exports = router;

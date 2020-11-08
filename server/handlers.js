@@ -391,6 +391,23 @@ const activateSupportAccount = async (req, res) => {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
+
+    const userName = await database
+      .collection("Supporters")
+      .findOne({username: username});
+
+    if (userName) {
+      res.status(200).json({
+        status: 200,
+        message:
+          "Account for " +
+          userName.username +
+          " already exists.\nAccount not created",
+        accountCreated: false,
+      });
+      return;
+    }
+
     const supporter = await database.collection("Supporters").updateOne(
       {_id: objID(supportaccount._id)},
       {
@@ -421,6 +438,7 @@ const activateSupportAccount = async (req, res) => {
             "Support Account for " +
             supportaccount.name +
             " has been created Successfully",
+          accountCreated: true,
         })
       : res.status(409).json({
           status: 409,
@@ -465,7 +483,7 @@ const doesSupportUserNameExists = async (req, res) => {
     const supporter = await database
       .collection("Supporters")
       .findOne({username: username});
-    res.status(200).json({status: 200, supporter: supporter});
+    res.status(200).json({status: 200, supporter: supporter ? true : false});
   } catch (error) {
     res.status(500).json({status: 500, message: error.message});
   }
@@ -546,7 +564,7 @@ const getTeamTickets = async (req, res) => {
   }
 };
 
-const createAccount = async (req, res) => {
+const createSupportAccount = async (req, res) => {
   const {
     name,
     team,
@@ -570,9 +588,27 @@ const createAccount = async (req, res) => {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
+
+    const supporter = await database
+      .collection("Supporters")
+      .findOne({username: username});
+
+    if (supporter) {
+      res.status(200).json({
+        status: 200,
+        message:
+          "Account for " +
+          supporter.username +
+          " already exists.\nAccount not created",
+        accountCreated: false,
+      });
+      return;
+    }
+
     const agent = await database
       .collection("Supporters")
       .insertOne(newSupporter);
+
     const teamAssigned = await database
       .collection("Support_Teams")
       .update({supportName: team}, {$push: {supporters: newSupporter.name}});
@@ -581,7 +617,11 @@ const createAccount = async (req, res) => {
       console.log("inside ");
       res.status(201).json({
         status: 201,
-        message: "Support Account for has been created Successfully",
+        message:
+          "Support Account for " +
+          newSupporter.name +
+          " been created Successfully",
+        accountCreated: true,
       });
     } else {
       res.status(409).json({
@@ -619,5 +659,5 @@ module.exports = {
   changeAccountState,
   updateSupporter,
   searchSupporter,
-  createAccount,
+  createSupportAccount,
 };

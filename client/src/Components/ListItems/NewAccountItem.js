@@ -11,6 +11,11 @@ function NewAccountItem(props) {
   const [teamSelected, setTeamSelected] = React.useState("");
   const [teams, setTeams] = React.useState(null);
 
+  const valid = {
+    username: username.length > 3,
+    password: password.length > 6,
+  };
+
   React.useEffect(() => {
     fetch("/support/supportteams/getSupportTeams")
       .then((response) => response.json())
@@ -18,27 +23,34 @@ function NewAccountItem(props) {
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
-  const checkIfAccountExists = (username) =>
-    fetch(`/support/accounts/checkUsername/${user}`)
-      .then((response) => response.json())
-      .then((user) => user.supporter.username === username)
-      .catch((error) => console.log("error: ", error.messaage));
-
   const checkPasswordComplexity = (password) => {
     let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     return format.test(password);
   };
 
-  const activateAccountHandler = (id) => {
-    if (checkIfAccountExists(username)) {
-      alert("username " + username + " already exists");
-      return;
+  const activateAccountHandler = (e) => {
+    e.preventDefault();
+    let errorMessage = "";
+    const valid = {
+      username: username.length > 3,
+      password: password.length > 6,
+    };
+
+    for (var key of Object.keys(valid)) {
+      if (!valid[key]) {
+        errorMessage += key + " does not meet the length requirement\n";
+      }
     }
 
     if (!checkPasswordComplexity(password)) {
-      alert("password must contain at least one special character");
+      errorMessage += "password must contain at least one special character\n";
+    }
+
+    if (errorMessage !== "") {
+      alert(errorMessage);
       return;
     }
+
     fetch("/support/accounts/enableAccount", {
       method: "put",
       headers: {"Content-type": "application/json"},
@@ -55,9 +67,14 @@ function NewAccountItem(props) {
     })
       .then((response) => response.json())
       .then((statusMessage) => {
-        setEnableAccount(!enableAccount);
-        setPassword("");
-        setUsername("");
+        if (statusMessage.accountCreated) {
+          alert(statusMessage.message);
+          setEnableAccount(!enableAccount);
+          setPassword("");
+          setUsername("");
+        } else {
+          alert(statusMessage.message);
+        }
       })
       .catch((error) => console.log("error: ", error.message));
   };
@@ -73,12 +90,14 @@ function NewAccountItem(props) {
             <UserName
               onChange={(e) => setUsername(e.target.value)}
               value={username}
+              usernameLength={valid.username || !username}
             />
           </SupporterUserName>
           <SupporterPassword>
             <Password
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              passwordLength={valid.password || !password}
             />
           </SupporterPassword>
           <SupporterTeam>
@@ -142,6 +161,8 @@ const SupporterUserName = styled.div`
 `;
 const UserName = styled.input`
   width: 75%;
+  border: ${(props) =>
+    props.usernameLength ? "1px solid black" : "1px solid black"};
 `;
 const SupporterPassword = styled.div`
   flex: 1;
@@ -152,6 +173,8 @@ const SupporterPassword = styled.div`
 `;
 const Password = styled.input`
   width: 75%;
+  border: ${(props) =>
+    props.passwordLength ? "1px solid black" : "1px solid black"};
 `;
 
 const SupporterTeam = styled.div`

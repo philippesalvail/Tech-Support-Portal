@@ -26,7 +26,7 @@ const SubCategory = styled.div`
   flex-direction: column;
   border: 1px black solid;
   border-radius: 25px;
-  width: 30%;
+  width: 35%;
   padding: 2%;
   background-color: #a8dadc;
 `;
