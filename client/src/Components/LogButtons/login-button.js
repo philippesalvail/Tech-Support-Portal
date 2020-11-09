@@ -43,6 +43,7 @@ const LogBtn = styled.button`
   margin-top: 5%;
   font-size: 15px;
   padding: 2%;
+  outline: none;
 `;
 
 export default LoginButton;

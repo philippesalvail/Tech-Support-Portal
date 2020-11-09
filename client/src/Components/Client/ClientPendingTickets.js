@@ -1,5 +1,5 @@
 import React from "react";
-import ClientSideBar from "./ClientSideBar";
+import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import styled from "styled-components";
 function ClientPendingTickets() {
   return (

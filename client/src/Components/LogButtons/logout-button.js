@@ -1,19 +1,19 @@
-import React from 'react';
-import {useAuth0} from '@auth0/auth0-react';
-import {Button} from 'react-bootstrap';
+import React from "react";
+import {useAuth0} from "@auth0/auth0-react";
+import styled from "styled-components";
 
 const LogOutButton = () => {
   const {logout} = useAuth0();
-  return (
-    <Button
-      onClick={() => logout()}
-      id="qsLogoutBtn"
-      variant="danger"
-      className="btn-margin"
-    >
-      Log Out
-    </Button>
-  );
+  return <LogOutBtn onClick={() => logout()}>Logout</LogOutBtn>;
 };
+
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  margin-right: 1%;
+  outline: none;
+`;
 
 export default LogOutButton;

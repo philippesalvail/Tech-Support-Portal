@@ -1,15 +1,24 @@
 import React from "react";
-import ClientSideBar from "./ClientSideBar";
+import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import styled from "styled-components";
 
 function ClientClosedTickets() {
   return (
     <Closed>
-      <ClientSideBar />
+      <SideBar>
+        <ClientSideBar />
+      </SideBar>
       <ClosedTicketRows>History</ClosedTicketRows>
     </Closed>
   );
 }
+
+const SideBar = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 
 const Closed = styled.div`
   display: flex;

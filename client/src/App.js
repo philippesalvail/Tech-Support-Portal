@@ -32,7 +32,7 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/client/signup" exact component={ClientSignUp} />
           <Route
-            path="/client/portal/newticket"
+            path="/client/portal/:username/newticket"
             exact
             component={ClientNewTicket}
           />
