@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {HomePageData} from "./HomePageData";
 import {useAuth0} from "@auth0/auth0-react";
 import Loading from "../Loading";
-import UserDirection from "../Client/UserDirection";
+import ClientDirection from "../Client/ClientDirection";
 
 function HomePage() {
   const {isAuthenticated, user, isLoading} = useAuth0();
@@ -24,7 +24,7 @@ function HomePage() {
           </Entries>
         </LandingPage>
       ) : (
-        <UserDirection />
+        <ClientDirection />
       )}
     </>
   );

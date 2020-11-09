@@ -7,53 +7,80 @@ import {
   HistoryIcon,
   PendingIcon,
   ClosedIcon,
-} from "../../ReactIcons";
+} from "../../../ReactIcons";
 
 function ClientSideBar() {
   return (
     <Side>
+      <TitleLbl>Tickets</TitleLbl>
       <SideLink strict to={"/client/portal/:customerEmailAddress/newticket"}>
-        <NewTicketIcon />
-        <CreateNew>Create New</CreateNew>
+        <IconImg>
+          <NewTicketIcon />
+        </IconImg>
+        <LinkSelection>Create New</LinkSelection>
       </SideLink>
       <SideLink
         strict
         to={"/client/portal/:customerEmailAddress/pendingtickets"}
       >
-        <PendingIcon />
-        <ViewPending>View Pending</ViewPending>
+        <IconImg>
+          <PendingIcon />
+        </IconImg>
+        <LinkSelection>View Pending</LinkSelection>
       </SideLink>
       <SideLink
         strict
         to={"/client/portal/:customerEmailAddress/closedtickets"}
       >
-        <HistoryIcon />
-        <ViewHistory>View History</ViewHistory>
+        <IconImg>
+          <HistoryIcon />
+        </IconImg>
+        <LinkSelection>View History</LinkSelection>
       </SideLink>
       <SideLink strict to={"/client/portal/:customerEmailAddress/alltickets"}>
-        <ClosedIcon />
-        <ViewAll>View All</ViewAll>
+        <IconImg>
+          <ClosedIcon />
+        </IconImg>
+        <LinkSelection>View All</LinkSelection>
       </SideLink>
     </Side>
   );
 }
+const IconImg = styled.div`
+  flex: 1;
+`;
+const PaddedLink = styled.span`
+  font-weight: bold;
+`;
+
+const LinkSelection = styled(PaddedLink)`
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const Side = styled.div`
   display: flex;
   flex-direction: column;
+  color: #f1faee;
+  background-color: #457b9d;
   flex: 1;
+`;
+const TitleLbl = styled.h3`
+  text-decoration: underline;
+  padding-left: 5%;
 `;
 const SideLink = styled(NavLink)`
   display: flex;
-  padding-left: 2%;
+  text-decoration: none;
+  color: #f1faee;
+  padding-left: 5%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  &:hover {
+    background-color: #e63946;
+  }
 `;
-const PaddedLink = styled.span`
-  font-weight: bold;
-  padding: 5%;
-`;
-const CreateNew = styled(PaddedLink)``;
-const ViewPending = styled(PaddedLink)``;
-const ViewHistory = styled(PaddedLink)``;
-const ViewAll = styled(PaddedLink)``;
 
 export default ClientSideBar;

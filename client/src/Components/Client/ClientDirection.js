@@ -9,7 +9,7 @@ import {
   receiveUserAccountError,
 } from "../../actions";
 
-const UserDirection = () => {
+const ClientDirection = () => {
   const dispatch = useDispatch();
   const {user} = useAuth0();
   console.log("user: ", user);
@@ -21,7 +21,9 @@ const UserDirection = () => {
       .then((account) => {
         account.userFound
           ? dispatch(receiveUserAccount(account.userFound)) &&
-            history.push("/client/portal/newticket")
+            history.push(
+              `/client/portal/${account.userFound.username}/newticket`
+            )
           : history.push("/client/signup", {user: user});
       })
       .catch((err) => dispatch(receiveUserAccountError(err.message)));
@@ -30,4 +32,4 @@ const UserDirection = () => {
   return <></>;
 };
 
-export default UserDirection;
+export default ClientDirection;

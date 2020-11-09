@@ -2,14 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import ClientSideBar from "./ClientSideBar";
+import ClientSideBar from "../Support/SideBars/ClientSideBar";
 
 import {useAuth0} from "@auth0/auth0-react";
 import {createTicket} from "./ClientFunctions";
 
 const ClientNewTicket = () => {
   const {user, isAuthenticated, isLoading, getTokenSilently} = useAuth0();
-  const clientAccount = useSelector((state) => state.client);
+  const clientAccount = useSelector((state) => state);
+  console.log("clientAccount: ", clientAccount);
   const [productTypeSelected, setProductTypeSelected] = React.useState(
     "Select Product Type"
   );
@@ -72,7 +73,9 @@ const ClientNewTicket = () => {
 
   return (
     <Portal>
-      <ClientSideBar />
+      <SideBar>
+        <ClientSideBar />
+      </SideBar>
       <TicketForm onSubmit={ticketHandler}>
         <SupportTicketBanner>Report an Incident </SupportTicketBanner>
         <TopHalf>
@@ -162,6 +165,13 @@ const ClientNewTicket = () => {
   );
 };
 
+const SideBar = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
 const Portal = styled.div`
   display: flex;
 `;
@@ -182,10 +192,11 @@ const SupportTicketBanner = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #428bca;
+
   justify-content: center;
   color: white;
   padding: 1%;
+  background-color: #457b9d;
 `;
 
 const TicketNumberProductTypeRow = styled.div`

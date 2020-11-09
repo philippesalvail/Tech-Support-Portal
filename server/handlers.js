@@ -29,9 +29,10 @@ const getClientAccount = async (req, res) => {
 };
 
 const createClientAccount = async (req, res) => {
+  console.log("createClientAccount: ", req.body);
   const {loginInfo, billingInfo} = req.body;
   let newUser = {
-    username: loginInfo.email,
+    username: billingInfo.username,
     loginInfo: loginInfo,
     billingInfo: billingInfo,
     isSupportPerson: false,
@@ -41,13 +42,37 @@ const createClientAccount = async (req, res) => {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    const table = await database.collection("Clients").insertOne(newUser);
-    assert.equal(1, table.insertedCount);
-    res.status(201).json({
-      status: 201,
-      data: newUser,
-      message: "Account for " + loginInfo.name + " has been created",
-    });
+
+    const usernameFound = await database
+      .collection("Clients")
+      .findOne({username: billingInfo.username});
+
+    if (usernameFound) {
+      res.status(200).json({
+        status: 200,
+        message:
+          "Account for " +
+          billingInfo.username +
+          " already exists.\nAccount not created",
+        accountCreated: false,
+      });
+      return;
+    } else {
+      console.log("new user: ", newUser);
+      const table = await database.collection("Clients").insertOne(newUser);
+      assert.equal(1, table.insertedCount);
+      res.status(201).json({
+        status: 201,
+        data: newUser,
+        message:
+          "Account for " +
+          newUser.loginInfo.given_name +
+          " " +
+          newUser.loginInfo.family_name +
+          " has been created successfully",
+        accountCreated: true,
+      });
+    }
     client.close();
   } catch (error) {
     res.status(500).json({status: 500, data: newUser, message: error.message});
