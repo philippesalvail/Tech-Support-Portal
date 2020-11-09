@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
+import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import Loading from "../../Loading";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
@@ -20,10 +21,16 @@ function SupportPendingTickets() {
   return (
     <AdminPage>
       <TicketDashBoard>
-        <SideBar>
-          <AdminSideBar />
-          <AccountSideBar />
-        </SideBar>
+        {supporter == "admin" ? (
+          <SideBar>
+            <AdminSideBar />
+            <AccountSideBar />
+          </SideBar>
+        ) : (
+          <SideBar>
+            <AgentSideBar />
+          </SideBar>
+        )}
         <NewTicketsDisplay>
           <NewTicketItems>
             <TicketSectionHeader />

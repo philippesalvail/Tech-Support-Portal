@@ -1,11 +1,11 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import HomePage from "./Components/HomePage/HomePage";
-import ClientTicket from "./Components/Client/ClientTicket";
-import SignUp from "./Components/Client/SignUp";
-import PendingTickets from "./Components/Client/PendingTickets";
-import ClosedTickets from "./Components/Client/ClosedTickets";
-import ClientAllTickets from "./Components/Client/ClientAllTickets";
+import ClientNewTicket from "./Components/Client/ClientNewTicket";
+import ClientSignUp from "./Components/Client/ClientSignUp";
+import ClientPendingTickets from "./Components/Client/ClientPendingTickets";
+import ClientClosedTickets from "./Components/Client/ClientClosedTickets";
+import ClientClientAllTickets from "./Components/Client/ClientAllTickets";
 
 import SupportTicketDetail from "./Components/Support/SupportTickets/SupportTicketDetail";
 import SupportAllTickets from "./Components/Support/SupportTickets/SupportAllTickets";
@@ -30,26 +30,26 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/client/signup" component={SignUp} />
+          <Route path="/client/signup" exact component={ClientSignUp} />
           <Route
             path="/client/portal/newticket"
             exact
-            component={ClientTicket}
+            component={ClientNewTicket}
           />
           <Route
             path="/client/portal/pendingtickets"
             exact
-            component={PendingTickets}
+            component={ClientPendingTickets}
           />
           <Route
             path="/client/portal/closedtickets"
             exact
-            component={ClosedTickets}
+            component={ClientClosedTickets}
           />
           <Route
             path="/client/portal/alltickets"
             exact
-            component={ClientAllTickets}
+            component={ClientClientAllTickets}
           />
           <Route
             path="/support/portal/:supporter/newtickets"

@@ -28,15 +28,12 @@ const {
 
 router.post("/client/clientCreated", createClientAccount);
 router.post("/client/tickets/ticketCreated", createClientTicket);
-router.get("/client/account/:emailId", getClientAccount);
+router.get("/client/:emailId", getClientAccount);
 
-router.get("/support/tickets/getnewtickets/:supporter", getNewTickets);
-router.get("/support/tickets/getpendingtickets/:supporter", getPendingTickets);
-router.get(
-  "/support/tickets/getresolvedtickets/:supporter",
-  getResolvedTickets
-);
-router.get("/support/tickets/getalltickets/:supporter", getAllTickets);
+router.get("/support/tickets/getnewtickets/:username", getNewTickets);
+router.get("/support/tickets/getpendingtickets/:username", getPendingTickets);
+router.get("/support/tickets/getresolvedtickets/:username", getResolvedTickets);
+router.get("/support/tickets/getalltickets/:username", getAllTickets);
 
 router.put("/support/tickets/updateTicket", updateTicketDetail);
 router.get("/support/tickets/:getTicket", getTicketDetail);

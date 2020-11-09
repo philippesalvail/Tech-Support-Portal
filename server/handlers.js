@@ -96,7 +96,7 @@ const getTicketDetail = async (req, res) => {
     const teams = await database.collection("Support_Teams").find().toArray();
     data && teams
       ? res.status(200).json({status: 200, data: data, teams: teams})
-      : res.status(404).json({
+      : res.status(409).json({
           status: 200,
           message: "Something went wrong, please submit again",
         });
@@ -163,32 +163,55 @@ const updateTicketDetail = async (req, res) => {
 };
 
 const getNewTickets = async (req, res) => {
-  const {supporter} = req.params;
+  const {username} = req.params;
+
+  console.log("username in getNewTickets: ", username);
 
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    if (supporter === "admin") {
+    if (username === "admin") {
       const data = await database
         .collection("Support_Tickets")
         .find({ticketStatus: "New"})
         .toArray();
-      res.status(200).json({status: 200, data: data});
+      res.status(200).json({status: 200, data: data, username: username});
+    } else {
+      const agent = await database
+        .collection("Supporters")
+        .findOne({username: username});
+
+      const getAgentTickets = await database
+        .collection("Support_Tickets")
+        .find({assignee: agent.name})
+        .toArray();
+      agent && getAgentTickets
+        ? res.status(200).json({
+            status: 200,
+            agent: agent,
+            getAgentTickets: getAgentTickets,
+            username: username,
+          })
+        : res.status(409).json({
+            status: 409,
+            message: "Something went wrong!, Please Update again",
+          });
     }
     client.close();
   } catch (error) {
-    res.status(500).json({status: 500, data: data, message: error.message});
+    console.log("error getNewTickets: ", error);
+    res.status(500).json({status: 500, message: error.message});
   }
 };
 
 const getPendingTickets = async (req, res) => {
-  const {supporter} = req.params;
+  const {username} = req.params;
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    if (supporter == "admin") {
+    if (username == "admin") {
       const data = await database
         .collection("Support_Tickets")
         .find({ticketStatus: "In Progress"})
@@ -203,12 +226,12 @@ const getPendingTickets = async (req, res) => {
 };
 
 const getResolvedTickets = async (req, res) => {
-  const {supporter} = req.params;
+  const {username} = req.params;
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    if (supporter == "admin") {
+    if (username == "admin") {
       const data = await database
         .collection("Support_Tickets")
         .find({ticketStatus: "Resolved"})
@@ -222,12 +245,12 @@ const getResolvedTickets = async (req, res) => {
 };
 
 const getAllTickets = async (req, res) => {
-  const {supporter} = req.params;
+  const {username} = req.params;
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    if (supporter == "admin") {
+    if (username == "admin") {
       const data = await database
         .collection("Support_Tickets")
         .find()

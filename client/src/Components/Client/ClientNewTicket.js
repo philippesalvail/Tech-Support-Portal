@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import SideBar from "./SideBar";
+import ClientSideBar from "./ClientSideBar";
 
 import {useAuth0} from "@auth0/auth0-react";
 import {createTicket} from "./ClientFunctions";
 
-const ClientTicket = () => {
+const ClientNewTicket = () => {
   const {user, isAuthenticated, isLoading, getTokenSilently} = useAuth0();
   const clientAccount = useSelector((state) => state.client);
   const [productTypeSelected, setProductTypeSelected] = React.useState(
@@ -72,7 +72,7 @@ const ClientTicket = () => {
 
   return (
     <Portal>
-      <SideBar />
+      <ClientSideBar />
       <TicketForm onSubmit={ticketHandler}>
         <SupportTicketBanner>Report an Incident </SupportTicketBanner>
         <TopHalf>
@@ -277,4 +277,4 @@ const ButtonRow = styled.div`
 `;
 const ButtonSubmit = styled.button``;
 
-export default ClientTicket;
+export default ClientNewTicket;

@@ -1,10 +1,10 @@
 import React from "react";
-import SideBar from "./SideBar";
+import ClientSideBar from "./ClientSideBar";
 import styled from "styled-components";
-function PendingTickets() {
+function ClientPendingTickets() {
   return (
     <Pending>
-      <SideBar />
+      <ClientSideBar />
       <TicketRows>Pending Tickets</TicketRows>
     </Pending>
   );
@@ -17,4 +17,4 @@ const TicketRows = styled.div`
   flex: 5;
 `;
 
-export default PendingTickets;
+export default ClientPendingTickets;

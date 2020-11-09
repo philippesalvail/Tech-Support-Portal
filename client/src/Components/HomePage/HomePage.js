@@ -12,7 +12,7 @@ function HomePage() {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(user);
+
   return (
     <>
       {!isAuthenticated ? (

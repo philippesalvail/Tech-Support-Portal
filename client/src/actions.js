@@ -9,3 +9,16 @@ export const receiveUserAccountError = (error) => ({
   type: "RECEIVE_USER_ACCOUNT_ERROR",
   error,
 });
+
+export const requestSupporterProfile = () => ({
+  type: "REQUEST_SUPPORT_PROFILE",
+});
+
+export const receiveSupporterProfile = (supportData) => ({
+  type: "RECEIVE_SUPPORT_PROFILE",
+  supportData,
+});
+export const receiveSupporterProfileError = (error) => ({
+  type: "REQUEST_SUPPORT_PROFILE_ERROR",
+  error,
+});

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
+import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
 import {useParams} from "react-router-dom";

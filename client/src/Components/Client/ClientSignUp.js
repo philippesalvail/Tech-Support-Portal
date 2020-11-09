@@ -9,7 +9,7 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const SignUp = () => {
+const ClientSignUp = () => {
   const [address, setAddress] = React.useState("");
   const [creditCard, setCreditCard] = React.useState("");
   const [csc, setCsc] = React.useState("");
@@ -246,4 +246,4 @@ const CancelBtn = styled.button`
 `;
 const SignUpBtn = styled.button``;
 
-export default SignUp;
+export default ClientSignUp;
