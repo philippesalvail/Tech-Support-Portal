@@ -8,17 +8,17 @@ function AgentSideBar() {
   return (
     <Side>
       <TitleLbl>Tickets</TitleLbl>
-      <SideLink strict to={"/support/portal/admin/newtickets"}>
+      <SideLink strict to={"/support/portal/:supporter/newtickets"}>
         <IconImg>
           <NewTicketIcon />
         </IconImg>
-        <LinkSelection>New</LinkSelection>
+        <LinkSelection>Assigned To Me</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/admin/pendingtickets"}>
+      <SideLink strict to={"/support/portal/:supporter/pendingtickets"}>
         <IconImg>
           <PendingIcon />
         </IconImg>
-        <LinkSelection>Pending</LinkSelection>
+        <LinkSelection>Team Queue</LinkSelection>
       </SideLink>
     </Side>
   );

@@ -1,11 +1,11 @@
 import React from "react";
-import SideBar from "./SideBar";
+import ClientSideBar from "./ClientSideBar";
 import styled from "styled-components";
 
-function ClosedTickets() {
+function ClientClosedTickets() {
   return (
     <Closed>
-      <SideBar />
+      <ClientSideBar />
       <ClosedTicketRows>History</ClosedTicketRows>
     </Closed>
   );
@@ -17,4 +17,4 @@ const Closed = styled.div`
 const ClosedTicketRows = styled.div`
   flex: 5;
 `;
-export default ClosedTickets;
+export default ClientClosedTickets;

@@ -1,11 +1,11 @@
 import React from "react";
-import SideBar from "./SideBar";
+import ClientSideBar from "./ClientSideBar";
 import styled from "styled-components";
 
 function AllTickets() {
   return (
     <All>
-      <SideBar />
+      <ClientSideBar />
       <AllTicketRows>All Tickets</AllTicketRows>
     </All>
   );

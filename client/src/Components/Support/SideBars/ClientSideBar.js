@@ -9,22 +9,28 @@ import {
   ClosedIcon,
 } from "../../ReactIcons";
 
-function SideBar() {
+function ClientSideBar() {
   return (
     <Side>
-      <SideLink strict to={"/client/portal/newticket"}>
+      <SideLink strict to={"/client/portal/:customerEmailAddress/newticket"}>
         <NewTicketIcon />
         <CreateNew>Create New</CreateNew>
       </SideLink>
-      <SideLink strict to={"/client/portal/pendingtickets"}>
+      <SideLink
+        strict
+        to={"/client/portal/:customerEmailAddress/pendingtickets"}
+      >
         <PendingIcon />
         <ViewPending>View Pending</ViewPending>
       </SideLink>
-      <SideLink strict to={"/client/portal/closedtickets"}>
+      <SideLink
+        strict
+        to={"/client/portal/:customerEmailAddress/closedtickets"}
+      >
         <HistoryIcon />
         <ViewHistory>View History</ViewHistory>
       </SideLink>
-      <SideLink strict to={"/client/portal/alltickets"}>
+      <SideLink strict to={"/client/portal/:customerEmailAddress/alltickets"}>
         <ClosedIcon />
         <ViewAll>View All</ViewAll>
       </SideLink>
@@ -50,4 +56,4 @@ const ViewPending = styled(PaddedLink)``;
 const ViewHistory = styled(PaddedLink)``;
 const ViewAll = styled(PaddedLink)``;
 
-export default SideBar;
+export default ClientSideBar;

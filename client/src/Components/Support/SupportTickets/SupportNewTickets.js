@@ -5,18 +5,36 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import {useSelector, useDispatch} from "react-redux";
 import {useParams} from "react-router-dom";
 
+import {
+  requestSupporterProfile,
+  receiveSupporterProfile,
+  receiveSupporterProfileError,
+} from "../../../actions";
+
 function SupportNewTickets() {
+  const dispatch = useDispatch();
+  const supportProfile = useSelector((state) => state.supporter);
   let {supporter} = useParams();
-  console.log("supporter: ", supporter);
   const [newTickets, setNewTickets] = React.useState([]);
   React.useEffect(() => {
     fetch(`/support/tickets/getnewtickets/${supporter}`)
       .then((response) => response.json())
-      .then((newTickets) => setNewTickets(newTickets.data))
-      .catch((error) => console.log("error: ", error));
+      .then((supporter) => {
+        if (supporter.username === "admin") {
+          setNewTickets(supporter.data);
+        } else {
+          dispatch(requestSupporterProfile());
+          dispatch(receiveSupporterProfile(supporter));
+        }
+      })
+      .catch((error) => dispatch(receiveSupporterProfileError(error)));
   }, []);
+  if (supportProfile) {
+    console.log("supportProfile: ", supportProfile);
+  }
 
   return (
     <AdminPage>
