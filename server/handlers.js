@@ -14,7 +14,7 @@ const options = {
 
 const getClientProfile = async (req, res) => {
   const {username} = req.params;
-
+  console.log("username in getClientProfile: ", username);
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
@@ -22,8 +22,16 @@ const getClientProfile = async (req, res) => {
     let userFound = await database
       .collection("Clients")
       .findOne({username: username});
-    console.log("userFound: ", userFound);
-    res.status(200).send({status: "success", userFound: userFound});
+    let clientTickets = await database
+      .collection("Support_Tickets")
+      .find({customerUsername: username})
+      .toArray();
+    console.log("clientTickets: ", clientTickets);
+    res.status(200).send({
+      status: "success",
+      userFound: userFound,
+      clientTickets: clientTickets,
+    });
     client.close();
   } catch (error) {
     res.status(404).send({status: "error", error: error.message});
@@ -40,8 +48,17 @@ const verifyClientAccount = async (req, res) => {
     let userFound = await database
       .collection("Clients")
       .findOne({"loginInfo.email": emailId});
-    console.log("userFound: ", userFound);
-    res.status(200).send({status: "success", userFound: userFound});
+    if (userFound) {
+      let clientTickets = await database
+        .collection("Support_Tickets")
+        .find({customerEmail: emailId})
+        .toArray();
+      res.status(200).send({
+        status: "success",
+        userFound: userFound,
+        tickets: clientTickets,
+      });
+    }
     client.close();
   } catch (error) {
     res.status(404).send({status: "error", error: error.message});
@@ -103,11 +120,12 @@ const createClientTicket = async (req, res) => {
   const {ticketInfo} = req.body;
 
   let newTicket = {
+    customerUsername: ticketInfo.clientUsername,
     customerName: ticketInfo.clientInfo.name,
     customerEmail: ticketInfo.clientInfo.email,
     productType: ticketInfo.productTypeSelected,
     priority: ticketInfo.prioritySelected,
-    shortDescrption: ticketInfo.shortDesc,
+    shortDescription: ticketInfo.shortDesc,
     description: ticketInfo.desc,
     impact: ticketInfo.impactSelected,
     dateOfTicketCreated: new Date().toLocaleDateString(),
@@ -120,7 +138,13 @@ const createClientTicket = async (req, res) => {
     const table = await database
       .collection("Support_Tickets")
       .insertOne(newTicket);
-    res.status(201).json({status: 201, data: newTicket});
+    res.status(201).json({
+      status: 201,
+      message:
+        "Ticket for issue: " +
+        newTicket.shortDescription +
+        " was created successfully",
+    });
     client.close();
   } catch (error) {
     res

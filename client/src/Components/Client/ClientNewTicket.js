@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import {useAuth0} from "@auth0/auth0-react";
 import {createTicket} from "./ClientFunctions";
+
 import Loading from "../Loading";
 import LogOutButton from "../LogButtons/logout-button";
-
 import {
   requestClientAccount,
   receiveClientAccount,
@@ -15,18 +15,18 @@ import {
 } from "../../actions";
 
 const ClientNewTicket = () => {
-  const {user, isAuthenticated, isLoading, getTokenSilently} = useAuth0();
   const dispatch = useDispatch();
-  const {username} = useParams();
   React.useEffect(() => {
     dispatch(requestClientAccount());
     fetch(`/client/getClientProfile/${username}`)
       .then((response) => response.json())
-      .then((clientAccount) =>
-        dispatch(receiveClientAccount(clientAccount.userFound))
-      )
+      .then((clientAccount) => dispatch(receiveClientAccount(clientAccount)))
       .catch((error) => dispatch(receiveClientAccountError(error)));
   }, []);
+  const {user, isAuthenticated} = useAuth0();
+  const {username} = useParams();
+
+  console.log("isAuthenticated:", isAuthenticated);
 
   const clientAccount = useSelector((state) => state.client);
 
@@ -62,29 +62,36 @@ const ClientNewTicket = () => {
       alert(errorMessage);
     } else {
       createTicket({
+        clientUsername: username,
         clientInfo: user,
         productTypeSelected: productTypeSelected,
         prioritySelected: prioritySelected,
         shortDesc: shortDesc,
         desc: desc,
         impactSelected: impactSelected,
-      });
-
-      alert("Ticket Submitted");
-      setImpactSelected("Select Impact Level");
-      setPrioritySelected("Select Priority Level");
-      setProductTypeSelected("Select Product Type");
-      setShortDesc("");
-      setDesc("");
+      })
+        .then((response) => response.json())
+        .then((ticket) => {
+          alert(ticket.message);
+          setImpactSelected("Select Impact Level");
+          setPrioritySelected("Select Priority Level");
+          setProductTypeSelected("Select Product Type");
+          setShortDesc("");
+          setDesc("");
+        })
+        .catch((error) => console.log(error.message));
     }
   };
+  if (clientAccount) {
+    console.log("clientAccount: ", clientAccount);
+  }
 
   return (
     <>
       {clientAccount.loginInfo ? (
         <Portal>
           <SideBar>
-            <ClientSideBar />
+            <ClientSideBar username={clientAccount.username} />
           </SideBar>
           <Ticket>
             <SupportTicketBanner>
@@ -93,8 +100,7 @@ const ClientNewTicket = () => {
                 <Wrapper>
                   {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`}
                 </Wrapper>
-
-                <LogOut />
+                <LogOutButton />
               </BannerUserAccount>
             </SupportTicketBanner>
             <TopHalf>
@@ -183,13 +189,11 @@ const ClientNewTicket = () => {
         </Portal>
       ) : (
         <Loading />
+        // <Redirect to="/" />
       )}
     </>
   );
 };
-const LogOut = styled(LogOutButton)`
-  background-color: #f1faee;
-`;
 
 const SideBar = styled.div`
   flex: 1;
@@ -207,7 +211,7 @@ const TopHalf = styled.div`
   padding-bottom: 2%;
 `;
 
-const Ticket = styled.form`
+const Ticket = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;

@@ -5,7 +5,7 @@ import Loading from "../../Loading";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import TicketItem from "../../ListItems/TicketItem";
-import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 
 function SupportTeamTickets() {
   const [tickets, setTickets] = React.useState(null);
@@ -27,7 +27,7 @@ function SupportTeamTickets() {
         </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
-            <TicketSectionHeader />
+            <SupportTicketSectionHeader />
             {tickets ? (
               <TicketHeader>
                 {tickets.map((ticket, index) => {

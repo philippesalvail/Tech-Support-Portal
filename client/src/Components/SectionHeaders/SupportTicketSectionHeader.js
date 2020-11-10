@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import LogOutButton from "../LogButtons/logout-button";
 
-function TicketSectionHeader() {
+function SupportTicketSectionHeader() {
   return (
     <TicketHeader>
       <Header>Name</Header>
@@ -29,10 +29,10 @@ const TicketHeader = styled.div`
   display: flex;
 `;
 
-const Header = styled.h3`
+const Header = styled.h4`
   flex: 1;
   text-decoration: underline;
   text-align: left;
 `;
 
-export default TicketSectionHeader;
+export default SupportTicketSectionHeader;

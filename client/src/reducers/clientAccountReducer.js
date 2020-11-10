@@ -15,9 +15,10 @@ export default function ClientAccountReducer(state = initialState, action) {
     case "RECEIVE_CLIENT_ACCOUNT": {
       return {
         status: "idle",
-        userName: action.clientAccountData.username,
-        loginInfo: action.clientAccountData.loginInfo,
-        billingInfo: action.clientAccountData.billingInfo,
+        username: action.clientAccountData.userFound.username,
+        loginInfo: action.clientAccountData.userFound.loginInfo,
+        billingInfo: action.clientAccountData.userFound.billingInfo,
+        tickets: action.clientAccountData.clientTickets,
       };
     }
     case "RECEIVE_CLIENT_ACCOUNT_ERROR": {
