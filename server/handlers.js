@@ -12,15 +12,35 @@ const options = {
   useUnifiedTopology: true,
 };
 
-const getClientAccount = async (req, res) => {
-  const {emailId} = req.params;
+const getClientProfile = async (req, res) => {
+  const {username} = req.params;
+
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
     let userFound = await database
       .collection("Clients")
-      .findOne({username: emailId});
+      .findOne({username: username});
+    console.log("userFound: ", userFound);
+    res.status(200).send({status: "success", userFound: userFound});
+    client.close();
+  } catch (error) {
+    res.status(404).send({status: "error", error: error.message});
+  }
+};
+
+const verifyClientAccount = async (req, res) => {
+  const {emailId} = req.params;
+  console.log("emailId: ", emailId);
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    let userFound = await database
+      .collection("Clients")
+      .findOne({"loginInfo.email": emailId});
+    console.log("userFound: ", userFound);
     res.status(200).send({status: "success", userFound: userFound});
     client.close();
   } catch (error) {
@@ -703,7 +723,7 @@ const createSupportAccount = async (req, res) => {
 };
 
 module.exports = {
-  getClientAccount,
+  verifyClientAccount,
   createClientAccount,
   createClientTicket,
   getAllTickets,
@@ -727,4 +747,5 @@ module.exports = {
   updateSupporter,
   searchSupporter,
   createSupportAccount,
+  getClientProfile,
 };

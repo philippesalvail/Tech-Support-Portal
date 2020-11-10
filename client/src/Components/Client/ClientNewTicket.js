@@ -1,16 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 import {useLocation, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import ClientSideBar from "../Support/SideBars/ClientSideBar";
-
 import {useAuth0} from "@auth0/auth0-react";
 import {createTicket} from "./ClientFunctions";
+import Loading from "../Loading";
+import LogOutButton from "../LogButtons/logout-button";
+
+import {
+  requestClientAccount,
+  receiveClientAccount,
+  receiveClientAccountError,
+} from "../../actions";
 
 const ClientNewTicket = () => {
   const {user, isAuthenticated, isLoading, getTokenSilently} = useAuth0();
-  const clientAccount = useSelector((state) => state);
-  console.log("clientAccount: ", clientAccount);
+  const dispatch = useDispatch();
+  const {username} = useParams();
+  React.useEffect(() => {
+    dispatch(requestClientAccount());
+    fetch(`/client/getClientProfile/${username}`)
+      .then((response) => response.json())
+      .then((clientAccount) =>
+        dispatch(receiveClientAccount(clientAccount.userFound))
+      )
+      .catch((error) => dispatch(receiveClientAccountError(error)));
+  }, []);
+
+  const clientAccount = useSelector((state) => state.client);
+
   const [productTypeSelected, setProductTypeSelected] = React.useState(
     "Select Product Type"
   );
@@ -20,8 +39,6 @@ const ClientNewTicket = () => {
   const [impactSelected, setImpactSelected] = React.useState(
     "Select Impact Level"
   );
-  console.log("user: ", user);
-  console.log("is authenticated: ", isAuthenticated);
 
   const [shortDesc, setShortDesc] = React.useState("");
   const [desc, setDesc] = React.useState("");
@@ -32,15 +49,6 @@ const ClientNewTicket = () => {
     impactLevel: impactSelected !== "Select Impact Level",
     productType: productTypeSelected !== "Select Product Type",
   };
-
-  React.useEffect(() => {
-    const doSomething = async () => {
-      console.log(isAuthenticated);
-    };
-    if (!isLoading) {
-      console.log("user in useffect: ", user);
-    }
-  }, [isLoading, getTokenSilently]);
 
   const ticketHandler = (e) => {
     e.preventDefault();
@@ -72,98 +80,116 @@ const ClientNewTicket = () => {
   };
 
   return (
-    <Portal>
-      <SideBar>
-        <ClientSideBar />
-      </SideBar>
-      <TicketForm onSubmit={ticketHandler}>
-        <SupportTicketBanner>Report an Incident </SupportTicketBanner>
-        <TopHalf>
-          <TicketNumberProductTypeRow>
-            <ProductType>
-              <SelectLbl htmlFor="Products">Product Type </SelectLbl>
-              <DropDownSelect
-                id="productType"
-                name="Product"
-                value="SelectProduct"
-                onChange={(e) => {
-                  setProductTypeSelected(e.target.value);
-                }}
-              >
-                <option value="SelectProduct" disabled hidden>
-                  {productTypeSelected}
-                </option>
-                <option value="Hardware">Hardware</option>
-                <option value="Software">Software</option>
-                <option value="CellPhone">CellPhone</option>
-                <option value="Email">Email</option>
-              </DropDownSelect>
-            </ProductType>
-          </TicketNumberProductTypeRow>
-          <RequestorAndStateRow></RequestorAndStateRow>
-          <PriorityAndAssignmentGroupRow>
-            <Priority>
-              <SelectLbl htmlFor="Priority">Priority </SelectLbl>
-              <DropDownSelect
-                id="Priority"
-                name="Priority"
-                onChange={(e) => setPrioritySelected(e.currentTarget.value)}
-                value="SelectPriority"
-              >
-                <option value="SelectPriority" disabled hidden>
-                  {prioritySelected}
-                </option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </DropDownSelect>
-            </Priority>
-          </PriorityAndAssignmentGroupRow>
-          <RiskAndAssignTooRow></RiskAndAssignTooRow>
-          <ImpactRow>
-            <Impact>
-              <SelectLbl htmlFor="Impact">Impact </SelectLbl>
-              <DropDownSelect
-                id="Impact"
-                name="Impact"
-                onChange={(e) => setImpactSelected(e.currentTarget.value)}
-                value="SelectImpact"
-              >
-                <option value="SelectImpact" disabled hidden>
-                  {impactSelected}
-                </option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </DropDownSelect>
-            </Impact>
-          </ImpactRow>
-        </TopHalf>
-        <DescriptionRow>
-          <ShortDescription>
-            <ShortDescriptionLbl>Title of Description </ShortDescriptionLbl>
-            <ShortDescriptionTxt
-              onChange={(e) => setShortDesc(e.target.value)}
-              valid={!shortDesc || valid.shortDesc}
-              value={shortDesc}
-            />
-          </ShortDescription>
-          <Description>
-            <DescriptionLbl>Description</DescriptionLbl>
-            <DescriptionTxt
-              onChange={(e) => setDesc(e.target.value)}
-              valid={!desc || valid.desc}
-              value={desc}
-            />
-          </Description>
-        </DescriptionRow>
-        <ButtonRow>
-          <ButtonSubmit type="submit">Create Ticket</ButtonSubmit>
-        </ButtonRow>
-      </TicketForm>
-    </Portal>
+    <>
+      {clientAccount.loginInfo ? (
+        <Portal>
+          <SideBar>
+            <ClientSideBar />
+          </SideBar>
+          <Ticket>
+            <SupportTicketBanner>
+              <BannerTitle>Report An Incident</BannerTitle>
+              <BannerUserAccount>
+                <Wrapper>
+                  {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`}
+                </Wrapper>
+
+                <LogOut />
+              </BannerUserAccount>
+            </SupportTicketBanner>
+            <TopHalf>
+              <TicketNumberProductTypeRow>
+                <ProductType>
+                  <SelectLbl htmlFor="Products">Product Type </SelectLbl>
+                  <DropDownSelect
+                    id="productType"
+                    name="Product"
+                    value="SelectProduct"
+                    onChange={(e) => {
+                      setProductTypeSelected(e.target.value);
+                    }}
+                  >
+                    <option value="SelectProduct" disabled hidden>
+                      {productTypeSelected}
+                    </option>
+                    <option value="Hardware">Hardware</option>
+                    <option value="Software">Software</option>
+                    <option value="CellPhone">CellPhone</option>
+                    <option value="Email">Email</option>
+                  </DropDownSelect>
+                </ProductType>
+              </TicketNumberProductTypeRow>
+              <RequestorAndStateRow></RequestorAndStateRow>
+              <PriorityAndAssignmentGroupRow>
+                <Priority>
+                  <SelectLbl htmlFor="Priority">Priority </SelectLbl>
+                  <DropDownSelect
+                    id="Priority"
+                    name="Priority"
+                    onChange={(e) => setPrioritySelected(e.currentTarget.value)}
+                    value="SelectPriority"
+                  >
+                    <option value="SelectPriority" disabled hidden>
+                      {prioritySelected}
+                    </option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </DropDownSelect>
+                </Priority>
+              </PriorityAndAssignmentGroupRow>
+              <RiskAndAssignTooRow></RiskAndAssignTooRow>
+              <ImpactRow>
+                <Impact>
+                  <SelectLbl htmlFor="Impact">Impact </SelectLbl>
+                  <DropDownSelect
+                    id="Impact"
+                    name="Impact"
+                    onChange={(e) => setImpactSelected(e.currentTarget.value)}
+                    value="SelectImpact"
+                  >
+                    <option value="SelectImpact" disabled hidden>
+                      {impactSelected}
+                    </option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </DropDownSelect>
+                </Impact>
+              </ImpactRow>
+            </TopHalf>
+            <DescriptionRow>
+              <ShortDescription>
+                <ShortDescriptionLbl>Title of Description </ShortDescriptionLbl>
+                <ShortDescriptionTxt
+                  onChange={(e) => setShortDesc(e.target.value)}
+                  valid={!shortDesc || valid.shortDesc}
+                  value={shortDesc}
+                />
+              </ShortDescription>
+              <Description>
+                <DescriptionLbl>Description</DescriptionLbl>
+                <DescriptionTxt
+                  onChange={(e) => setDesc(e.target.value)}
+                  valid={!desc || valid.desc}
+                  value={desc}
+                />
+              </Description>
+            </DescriptionRow>
+            <ButtonRow>
+              <ButtonSubmit onClick={ticketHandler}>Create Ticket</ButtonSubmit>
+            </ButtonRow>
+          </Ticket>
+        </Portal>
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 };
+const LogOut = styled(LogOutButton)`
+  background-color: #f1faee;
+`;
 
 const SideBar = styled.div`
   flex: 1;
@@ -181,22 +207,35 @@ const TopHalf = styled.div`
   padding-bottom: 2%;
 `;
 
-const TicketForm = styled.form`
+const Ticket = styled.form`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   flex: 5;
+  background-color: #a8dadc;
   margin: 0 auto;
 `;
 const SupportTicketBanner = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
-
-  justify-content: center;
+  justify-content: space-between;
   color: white;
   padding: 1%;
   background-color: #457b9d;
+`;
+
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 25%;
+`;
+const Wrapper = styled.div`
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const TicketNumberProductTypeRow = styled.div`
@@ -286,6 +325,12 @@ const ButtonRow = styled.div`
   padding: 1%;
   text-align: right;
 `;
-const ButtonSubmit = styled.button``;
+const ButtonSubmit = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
 
 export default ClientNewTicket;

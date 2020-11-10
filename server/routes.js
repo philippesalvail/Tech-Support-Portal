@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-  getClientAccount,
+  verifyClientAccount,
   createClientAccount,
   createClientTicket,
   getAllTickets,
@@ -24,11 +24,13 @@ const {
   updateSupporter,
   searchSupporter,
   createSupportAccount,
+  getClientProfile,
 } = require("./handlers");
 
 router.post("/client/clientCreated", createClientAccount);
 router.post("/client/tickets/ticketCreated", createClientTicket);
-router.get("/client/:emailId", getClientAccount);
+router.get("/client/getClientProfile/:username", getClientProfile);
+router.get("/client/:emailId", verifyClientAccount);
 
 router.get("/support/tickets/getnewtickets/:username", getNewTickets);
 router.get("/support/tickets/getpendingtickets/:username", getPendingTickets);
