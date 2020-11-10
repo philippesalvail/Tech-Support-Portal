@@ -1,12 +1,12 @@
-export const requestUserAccount = () => ({
-  type: "REQUEST_USER_ACCOUNT",
+export const requestClientAccount = () => ({
+  type: "REQUEST_CLIENT_ACCOUNT",
 });
-export const receiveUserAccount = (clientAccountData) => ({
-  type: "RECEIVE_USER_ACCOUNT",
+export const receiveClientAccount = (clientAccountData) => ({
+  type: "RECEIVE_CLIENT_ACCOUNT",
   clientAccountData,
 });
-export const receiveUserAccountError = (error) => ({
-  type: "RECEIVE_USER_ACCOUNT_ERROR",
+export const receiveClientAccountError = (error) => ({
+  type: "RECEIVE_CLIENT_ACCOUNT_ERROR",
   error,
 });
 
