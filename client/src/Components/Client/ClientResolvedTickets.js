@@ -1,19 +1,19 @@
 import React from "react";
 import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import styled from "styled-components";
+import {useParams} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
-import Loading from "../Loading";
 import LogOutButton from "../LogButtons/logout-button";
 import ClientTicketSectionHeader from "../SectionHeaders/ClientTicketSectionHeader";
+import Loading from "../Loading";
 import ClientTicketItem from "../ListItems/ClientTicketItem";
-import {useParams} from "react-router-dom";
 import {
   requestClientAccount,
   receiveClientAccount,
   receiveClientAccountError,
 } from "../../actions";
 
-function AllTickets() {
+function ClientResolvedTickets() {
   const {username} = useParams();
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -23,10 +23,8 @@ function AllTickets() {
       .then((clientAccount) => dispatch(receiveClientAccount(clientAccount)))
       .catch((error) => dispatch(receiveClientAccountError(error)));
   }, []);
-
   const clientAccount = useSelector((state) => state.client);
   const tickets = useSelector((state) => state.client.tickets);
-
   return (
     <>
       {clientAccount.loginInfo ? (
@@ -36,7 +34,7 @@ function AllTickets() {
           </SideBar>
           <Ticket>
             <SupportTicketBanner>
-              <BannerTitle>All Tickets</BannerTitle>
+              <BannerTitle>Resolved Tickets</BannerTitle>
               <BannerUserAccount>
                 <Wrapper>
                   {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`}
@@ -46,7 +44,9 @@ function AllTickets() {
             </SupportTicketBanner>
             <ClientTicketSectionHeader />
             {tickets.map((ticket, index) => {
-              return <ClientTicketItem ticket={ticket} index={index} />;
+              if (ticket.ticketStatus === "Resolved") {
+                return <ClientTicketItem ticket={ticket} index={index} />;
+              }
             })}
           </Ticket>
         </DashBoard>
@@ -96,5 +96,4 @@ const BannerUserAccount = styled.div`
   justify-content: space-between;
   width: 25%;
 `;
-
-export default AllTickets;
+export default ClientResolvedTickets;
