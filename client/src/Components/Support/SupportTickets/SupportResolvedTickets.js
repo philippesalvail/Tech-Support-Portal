@@ -4,7 +4,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
-import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {useParams} from "react-router-dom";
 
 function SupportResolvedTickets() {
@@ -25,7 +25,7 @@ function SupportResolvedTickets() {
         </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
-            <TicketSectionHeader />
+            <SupportTicketSectionHeader />
             {closedTickets ? (
               <TicketHeader>
                 {closedTickets.map((ticket) => {

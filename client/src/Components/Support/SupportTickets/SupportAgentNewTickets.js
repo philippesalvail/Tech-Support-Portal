@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import AgentSideBar from "../SideBars/AgentSideBar";
-import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {useParams} from "react-router-dom";
 
 function SupportAgentNewTickets() {

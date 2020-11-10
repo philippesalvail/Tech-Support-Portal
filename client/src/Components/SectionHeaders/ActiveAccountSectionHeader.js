@@ -10,7 +10,7 @@ function AccountSectionHeader() {
     </AccountHeader>
   );
 }
-const Header = styled.h3`
+const Header = styled.h4`
   flex: 1;
   text-decoration: underline;
   text-align: left;

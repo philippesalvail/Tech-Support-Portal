@@ -15,7 +15,7 @@ const ClientDirection = () => {
             )
           : history.push("/client/signup", {user: user});
       })
-      .catch((err) => console.log("Error: ", err));
+      .catch((err) => console.log("err: ", err.message));
   }, []);
 
   return <></>;

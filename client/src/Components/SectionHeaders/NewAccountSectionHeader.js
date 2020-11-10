@@ -22,7 +22,7 @@ function AccountSectionHeader() {
 const TicketHeader = styled.div`
   display: flex;
 `;
-const Header = styled.h3`
+const Header = styled.h4`
   flex: 1;
   text-decoration: underline;
   text-align: left;

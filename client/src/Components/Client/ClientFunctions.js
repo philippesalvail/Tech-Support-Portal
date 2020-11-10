@@ -59,7 +59,7 @@ export const createClient = async (signUp, billing) => {
 };
 
 export const createTicket = async (ticketInfo) => {
-  return await fetch("/client/ticketCreated", {
+  return await fetch("/client/tickets/ticketCreated", {
     method: "POST",
     body: JSON.stringify({
       ticketInfo: ticketInfo,

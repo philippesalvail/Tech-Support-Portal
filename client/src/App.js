@@ -6,6 +6,7 @@ import ClientSignUp from "./Components/Client/ClientSignUp";
 import ClientPendingTickets from "./Components/Client/ClientPendingTickets";
 import ClientClosedTickets from "./Components/Client/ClientClosedTickets";
 import ClientClientAllTickets from "./Components/Client/ClientAllTickets";
+import ClientTicketDetail from "./Components/Client/ClientTicketDetail";
 
 import SupportTicketDetail from "./Components/Support/SupportTickets/SupportTicketDetail";
 import SupportAllTickets from "./Components/Support/SupportTickets/SupportAllTickets";
@@ -32,22 +33,27 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/client/signup" exact component={ClientSignUp} />
           <Route
+            path="/client/portal/ticket/:ticketnumber"
+            exact
+            component={ClientTicketDetail}
+          />
+          <Route
             path="/client/portal/:username/newticket"
             exact
             component={ClientNewTicket}
           />
           <Route
-            path="/client/portal/pendingtickets"
+            path="/client/portal/:username/pendingtickets"
             exact
             component={ClientPendingTickets}
           />
           <Route
-            path="/client/portal/closedtickets"
+            path="/client/portal/:username/closedtickets"
             exact
             component={ClientClosedTickets}
           />
           <Route
-            path="/client/portal/alltickets"
+            path="/client/portal/:username/alltickets"
             exact
             component={ClientClientAllTickets}
           />

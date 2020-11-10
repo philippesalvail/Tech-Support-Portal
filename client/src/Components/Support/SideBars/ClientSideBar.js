@@ -9,35 +9,29 @@ import {
   ClosedIcon,
 } from "../../../ReactIcons";
 
-function ClientSideBar() {
+function ClientSideBar({username}) {
   return (
     <Side>
       <TitleLbl>Tickets</TitleLbl>
-      <SideLink strict to={"/client/portal/:customerEmailAddress/newticket"}>
+      <SideLink strict to={`/client/portal/${username}/newticket`}>
         <IconImg>
           <NewTicketIcon />
         </IconImg>
         <LinkSelection>Create New</LinkSelection>
       </SideLink>
-      <SideLink
-        strict
-        to={"/client/portal/:customerEmailAddress/pendingtickets"}
-      >
+      <SideLink strict to={`/client/portal/${username}/pendingtickets`}>
         <IconImg>
           <PendingIcon />
         </IconImg>
         <LinkSelection>View Pending</LinkSelection>
       </SideLink>
-      <SideLink
-        strict
-        to={"/client/portal/:customerEmailAddress/closedtickets"}
-      >
+      <SideLink strict to={"/client/portal/:username/closedtickets"}>
         <IconImg>
           <HistoryIcon />
         </IconImg>
         <LinkSelection>View History</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/client/portal/:customerEmailAddress/alltickets"}>
+      <SideLink strict to={"/client/portal/:username/alltickets"}>
         <IconImg>
           <ClosedIcon />
         </IconImg>

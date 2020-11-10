@@ -5,7 +5,7 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import Loading from "../../Loading";
-import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {useParams} from "react-router-dom";
 
 function SupportPendingTickets() {
@@ -33,7 +33,7 @@ function SupportPendingTickets() {
         )}
         <NewTicketsDisplay>
           <NewTicketItems>
-            <TicketSectionHeader />
+            <SupportTicketSectionHeader />
             {pendingTickets ? (
               <TicketHeader>
                 {pendingTickets.map((ticket) => {

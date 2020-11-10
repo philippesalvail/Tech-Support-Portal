@@ -5,7 +5,7 @@ import Loading from "../../Loading";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import TicketItem from "../../ListItems/TicketItem";
-import TicketSectionHeader from "../../SectionHeaders/TicketSectionHeader";
+import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 
 function SupportAllTickets() {
   let {supporter} = useParams();
@@ -28,7 +28,7 @@ function SupportAllTickets() {
         </SideBar>
         <NewTicketsDisplay>
           <NewTicketItems>
-            <TicketSectionHeader />
+            <SupportTicketSectionHeader />
             {allTickets ? (
               <TicketHeader>
                 {allTickets.map((ticket) => {
