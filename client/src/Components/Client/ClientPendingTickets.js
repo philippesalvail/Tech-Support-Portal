@@ -23,11 +23,11 @@ function ClientPendingTickets() {
       .catch((error) => dispatch(receiveClientAccountError(error)));
   }, []);
   const clientAccount = useSelector((state) => state.client);
-  const clientPendingTickets = useSelector((state) => state.client.tickets);
+  const tickets = useSelector((state) => state.client.tickets);
   return (
     <>
       {clientAccount.loginInfo ? (
-        <Pending>
+        <DashBoard>
           <SideBar>
             <ClientSideBar username={clientAccount.username} />
           </SideBar>
@@ -42,13 +42,13 @@ function ClientPendingTickets() {
               </BannerUserAccount>
             </SupportTicketBanner>
             <ClientTicketSectionHeader />
-            {clientPendingTickets.map((ticket, index) => {
+            {tickets.map((ticket, index) => {
               if (ticket.ticketStatus !== "Resolved") {
                 return <ClientTicketItem ticket={ticket} index={index} />;
               }
             })}
           </Ticket>
-        </Pending>
+        </DashBoard>
       ) : (
         <Loading />
       )}
@@ -79,12 +79,8 @@ const SupportTicketBanner = styled.div`
 const BannerTitle = styled.div`
   text-align: left;
 `;
-const Pending = styled.div`
+const DashBoard = styled.div`
   display: flex;
-`;
-
-const TicketRows = styled.div`
-  flex: 5;
 `;
 
 const Wrapper = styled.div`

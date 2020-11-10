@@ -25,13 +25,13 @@ function ClientSideBar({username}) {
         </IconImg>
         <LinkSelection>View Pending</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/client/portal/:username/closedtickets"}>
+      <SideLink strict to={`/client/portal/${username}/resolvedtickets`}>
         <IconImg>
           <HistoryIcon />
         </IconImg>
-        <LinkSelection>View History</LinkSelection>
+        <LinkSelection>View Resolved</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/client/portal/:username/alltickets"}>
+      <SideLink strict to={`/client/portal/${username}/alltickets`}>
         <IconImg>
           <ClosedIcon />
         </IconImg>
