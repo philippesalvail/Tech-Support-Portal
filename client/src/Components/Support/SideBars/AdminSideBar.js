@@ -85,6 +85,7 @@ const DropDownSelect = styled.select`
   text-align-last: center;
   min-width: 164px;
   height: 30px;
+  outline: none;
 `;
 const TitleLbl = styled.h3`
   text-decoration: underline;

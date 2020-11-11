@@ -24,7 +24,6 @@ function TicketItem(props) {
     </Item>
   );
 }
-const Emtpy = styled.div``;
 
 const Item = styled.li`
   display: flex;
