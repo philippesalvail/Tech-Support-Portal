@@ -127,7 +127,7 @@ function App() {
             component={SupportActiveAccounts}
           />
           <Route
-            path="/support/portal/accounts/accountdetail"
+            path="/support/portal/accounts/admin/accountdetail"
             exact
             component={SupportAccountDetail}
           />

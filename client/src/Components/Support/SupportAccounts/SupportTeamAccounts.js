@@ -5,10 +5,10 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
 import ActiveAccountSectionHeader from "../../SectionHeaders/ActiveAccountSectionHeader";
 import Loading from "../../Loading";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 
 function SupportTeamAccounts() {
-  console.log("SupportTeamAccounts");
+  let history = useHistory();
   let {teamaccounts} = useParams();
   const [team, setTeam] = React.useState(null);
   const [resetList, setResetList] = React.useState(false);
@@ -20,6 +20,10 @@ function SupportTeamAccounts() {
       .catch((error) => console.log("error: ", error));
   }, [teamaccounts]);
 
+  const logOut = () => {
+    history.push("/");
+  };
+
   return (
     <AdminPage>
       <AccountDashBoard>
@@ -27,7 +31,20 @@ function SupportTeamAccounts() {
           <AdminSideBar />
           <AccountSideBar />
         </SideBar>
-        <NewAccountsDisplay>
+        <AccountsDisplay>
+          <SupportTicketBanner>
+            <BannerTitle>{teamaccounts} Accounts</BannerTitle>
+            <BannerUserAccount>
+              <Wrapper>Welcome: Admin</Wrapper>
+              <LogOutBtn
+                onClick={() => {
+                  logOut();
+                }}
+              >
+                Log Out
+              </LogOutBtn>
+            </BannerUserAccount>
+          </SupportTicketBanner>
           <AccountItems>
             <ActiveAccountSectionHeader />
             {team ? (
@@ -47,11 +64,19 @@ function SupportTeamAccounts() {
               <Loading />
             )}
           </AccountItems>
-        </NewAccountsDisplay>
+        </AccountsDisplay>
       </AccountDashBoard>
     </AdminPage>
   );
 }
+
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
 
 const AccountItems = styled.div`
   width: 97%;
@@ -79,9 +104,26 @@ const AccountHeader = styled.div`
   text-align: center;
 `;
 
-const NewAccountItems = styled.div``;
-const NewAccountsDisplay = styled.div`
+const AccountsDisplay = styled.div`
   flex: 5;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
 `;
 
 export default SupportTeamAccounts;

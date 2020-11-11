@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
-
+import {useHistory} from "react-router-dom";
 import {SearchIcon} from "../../../ReactIcons";
 
 function SupportAccountDetail() {
@@ -16,6 +16,11 @@ function SupportAccountDetail() {
   const [oldteam, setOldTeam] = React.useState(null);
   const [supporterName, setSupporterName] = React.useState("");
   const [accountState, setAccountState] = React.useState(false);
+
+  let history = useHistory();
+  const logOut = () => {
+    history.push("/");
+  };
 
   const changeAccountState = () => {
     fetch(`/support/accounts/changeAccountState/${username}`, {
@@ -103,6 +108,19 @@ function SupportAccountDetail() {
       </SideBar>
 
       <AccountInformation>
+        <SupportTicketBanner>
+          <BannerTitle>Account Detail</BannerTitle>
+          <BannerUserAccount>
+            <Wrapper>Welcome: Admin</Wrapper>
+            <LogOutBtn
+              onClick={() => {
+                logOut();
+              }}
+            >
+              Log Out
+            </LogOutBtn>
+          </BannerUserAccount>
+        </SupportTicketBanner>
         <AccountWrapper>
           <AccountHeader>Account Detail</AccountHeader>
           <SearchRow>
@@ -188,12 +206,37 @@ function SupportAccountDetail() {
     </Account>
   );
 }
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
+`;
 const AccountWrapper = styled.div`
   width: 50%;
   margin: 0 auto;
   border: 1px solid black;
   border-radius: 25px;
-  margin-top: 18px;
+  margin-top: 5%;
   background-color: #a8dadc;
 `;
 const Account = styled.div`
