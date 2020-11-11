@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
+import {useHistory} from "react-router-dom";
 
 function SupportCreateAccount() {
+  let history = useHistory();
   const [teams, setTeams] = React.useState(null);
   const [password, setPassword] = React.useState("");
   const [newteam, setNewTeam] = React.useState("Select Support Team");
@@ -14,6 +16,10 @@ function SupportCreateAccount() {
   const valid = {
     username: username.length > 3,
     password: password.length > 6,
+  };
+
+  const logOut = () => {
+    history.push("/");
   };
 
   React.useEffect(() => {
@@ -91,6 +97,19 @@ function SupportCreateAccount() {
           <AccountSideBar />
         </SideBar>
         <AccountInformation onSubmit={registerAccountHandler}>
+          <SupportTicketBanner>
+            <BannerTitle>Create Account</BannerTitle>
+            <BannerUserAccount>
+              <Wrapper>Welcome: Admin</Wrapper>
+              <LogOutBtn
+                onClick={() => {
+                  logOut();
+                }}
+              >
+                Log Out
+              </LogOutBtn>
+            </BannerUserAccount>
+          </SupportTicketBanner>
           <AccountWrapper>
             <AccountHeader>Create Support Account</AccountHeader>
             <DetailRow>
@@ -168,12 +187,38 @@ function SupportCreateAccount() {
     </AdminPage>
   );
 }
+const BannerUserAccount = styled.div`
+  display: flex;
+`;
+
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
 const AccountWrapper = styled.div`
   width: 50%;
   margin: 0 auto;
   border: 1px solid black;
   border-radius: 25px;
-  margin-top: 18px;
+  margin-top: 5%;
   background-color: #a8dadc;
 `;
 const AdminPage = styled.div`

@@ -5,19 +5,25 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import styled from "styled-components";
 import NewAccountSectionHeader from "../../SectionHeaders/NewAccountSectionHeader";
 import Loading from "../../Loading";
+import {useHistory} from "react-router-dom";
 
 function SupportNewAccounts() {
-  const [newAccounts, setNewAccounts] = React.useState(null);
+  let history = useHistory();
+  const [accounts, setAccounts] = React.useState(null);
   const [enableAccount, setEnableAccount] = React.useState(false);
 
   React.useEffect(() => {
-    fetch("/support/supporter/getNewSupporters")
+    fetch("/support/supporter/getNewSupportAccounts")
       .then((response) => response.json())
       .then((accounts) => {
-        setNewAccounts(accounts.accounts);
+        setAccounts(accounts.accounts);
       })
       .catch((error) => console.log("error: ", error));
   }, [enableAccount]);
+
+  const logOut = () => {
+    history.push("/");
+  };
 
   return (
     <AdminPage>
@@ -26,12 +32,25 @@ function SupportNewAccounts() {
           <AdminSideBar />
           <AccountSideBar />
         </SideBar>
-        <NewAccountsDisplay>
+        <AccountsDisplay>
+          <SupportTicketBanner>
+            <BannerTitle>New Accounts</BannerTitle>
+            <BannerUserAccount>
+              <Wrapper>Welcome: Admin</Wrapper>
+              <LogOutBtn
+                onClick={() => {
+                  logOut();
+                }}
+              >
+                Log Out
+              </LogOutBtn>
+            </BannerUserAccount>
+          </SupportTicketBanner>
           <AccountItems>
             <NewAccountSectionHeader />
-            {newAccounts ? (
+            {accounts ? (
               <AccountHeader>
-                {newAccounts.map((account, index) => {
+                {accounts.map((account, index) => {
                   return (
                     <NewAccountItem
                       key={account + index}
@@ -47,17 +66,42 @@ function SupportNewAccounts() {
               <Loader />
             )}
           </AccountItems>
-        </NewAccountsDisplay>
+        </AccountsDisplay>
       </AccountDashBoard>
     </AdminPage>
   );
 }
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
 const Loader = styled(Loading)``;
 const AdminPage = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background-color: #f1faee;
+`;
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
 `;
 const SideBar = styled.div`
   flex: 1;
@@ -74,7 +118,7 @@ const AccountHeader = styled.div`
 `;
 
 const AccountItems = styled.div``;
-const NewAccountsDisplay = styled.div`
+const AccountsDisplay = styled.div`
   flex: 5;
 `;
 

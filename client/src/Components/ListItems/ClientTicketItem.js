@@ -43,17 +43,5 @@ const Ticket = styled.li`
   padding-top: 1%;
   padding-bottom: 1%;
 `;
-const EnableBtn = styled.div`
-  flex: 1;
-  text-align: left;
-`;
-const Btn = styled.button`
-  background-color: #457b9d;
-  color: #f1faee;
-  font-weight: bold;
-  margin: 1%;
-  font-size: 15px;
-  padding: 1%;
-`;
 
 export default ClientTicketItem;

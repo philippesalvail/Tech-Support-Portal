@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../../Loading";
 import AdminSideBar from "../SideBars/AdminSideBar";
@@ -8,6 +8,7 @@ import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 
 function SupportAllTickets() {
+  let history = useHistory();
   let {supporter} = useParams();
   const [allTickets, setAllTickets] = React.useState(null);
   React.useEffect(() => {
@@ -18,6 +19,9 @@ function SupportAllTickets() {
         console.log("Error in support portal: ", error.message)
       );
   }, []);
+  const logOut = () => {
+    history.push("/");
+  };
 
   return (
     <AdminPage>
@@ -26,8 +30,22 @@ function SupportAllTickets() {
           <AdminSideBar />
           <AccountSideBar />
         </SideBar>
-        <NewTicketsDisplay>
-          <NewTicketItems>
+        <TicketsDisplay>
+          <SupportTicketBanner>
+            <BannerTitle>All Tickets</BannerTitle>
+            <BannerUserAccount>
+              <Wrapper>Welcome: {supporter}</Wrapper>
+              <LogOutBtn
+                onClick={() => {
+                  logOut();
+                }}
+              >
+                Log Out
+              </LogOutBtn>
+            </BannerUserAccount>
+          </SupportTicketBanner>
+
+          <TicketItems>
             <SupportTicketSectionHeader />
             {allTickets ? (
               <TicketHeader>
@@ -38,12 +56,20 @@ function SupportAllTickets() {
             ) : (
               <Loading />
             )}
-          </NewTicketItems>
-        </NewTicketsDisplay>
+          </TicketItems>
+        </TicketsDisplay>
       </TicketDashBoard>
     </AdminPage>
   );
 }
+
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
 
 const SideBar = styled.div`
   flex: 1;
@@ -65,9 +91,27 @@ const TicketDashBoard = styled.div`
 const TicketHeader = styled.div`
   text-align: center;
 `;
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
+`;
 
-const NewTicketItems = styled.div``;
-const NewTicketsDisplay = styled.div`
+const TicketItems = styled.div``;
+const TicketsDisplay = styled.div`
   flex: 5;
 `;
 

@@ -26,6 +26,7 @@ const Header = styled.h4`
   flex: 1;
   text-decoration: underline;
   text-align: left;
+  padding-left: 1%;
 `;
 
 export default AccountSectionHeader;

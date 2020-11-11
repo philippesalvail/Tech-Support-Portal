@@ -30,6 +30,10 @@ const ClientNewTicket = () => {
 
   const clientAccount = useSelector((state) => state.client);
 
+  if (clientAccount) {
+    console.log("clientAccount: ", clientAccount);
+  }
+
   const [productTypeSelected, setProductTypeSelected] = React.useState(
     "Select Product Type"
   );
@@ -69,6 +73,7 @@ const ClientNewTicket = () => {
         shortDesc: shortDesc,
         desc: desc,
         impactSelected: impactSelected,
+        clientAccount: clientAccount.loginInfo,
       })
         .then((response) => response.json())
         .then((ticket) => {

@@ -15,17 +15,10 @@ const Header = styled.h4`
   text-decoration: underline;
   text-align: left;
 `;
-const LogOutBtn = styled.button`
-  width: 10%;
-  margin-bottom: 2%;
-  background-color: #457b9d;
-  color: #f1faee;
-  padding: 1%;
-  font-weight: bold;
-`;
 
 const AccountHeader = styled.div`
   display: flex;
+  padding-left: 1%;
 `;
 
 export default AccountSectionHeader;
