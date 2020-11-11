@@ -117,12 +117,18 @@ const createClientAccount = async (req, res) => {
 };
 
 const createClientTicket = async (req, res) => {
-  const {ticketInfo} = req.body;
+  const {ticketInfo, clientAccount} = req.body;
+
+  console.log("ticketInfo createClientTicket: ", ticketInfo);
+  console.log("clientAccount createClientTicket: ", clientAccount);
 
   let newTicket = {
     customerUsername: ticketInfo.clientUsername,
-    customerName: ticketInfo.clientInfo.name,
-    customerEmail: ticketInfo.clientInfo.email,
+    customerName:
+      ticketInfo.clientAccount.given_name +
+      " " +
+      ticketInfo.clientAccount.family_name,
+    customerEmail: ticketInfo.clientAccount.email,
     productType: ticketInfo.productTypeSelected,
     priority: ticketInfo.prioritySelected,
     shortDescription: ticketInfo.shortDesc,
@@ -146,7 +152,9 @@ const createClientTicket = async (req, res) => {
         " was created successfully",
     });
     client.close();
+    console.log("success in createClientTicket: ");
   } catch (error) {
+    console.log("error in createClientTicket: ", error.message);
     res
       .status(500)
       .json({status: 500, data: newTicket, message: error.message});
@@ -234,8 +242,6 @@ const updateTicketDetail = async (req, res) => {
 const getNewTickets = async (req, res) => {
   const {username} = req.params;
 
-  console.log("username in getNewTickets: ", username);
-
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
@@ -285,7 +291,7 @@ const getPendingTickets = async (req, res) => {
         .collection("Support_Tickets")
         .find({ticketStatus: "In Progress"})
         .toArray();
-      res.status(200).json({status: 200, data: data});
+      res.status(200).json({status: 200, data: data, username: username});
     }
 
     client.close();
@@ -398,7 +404,7 @@ const createSupporter = async (req, res) => {
   }
 };
 
-const getNewSupporters = async (req, res) => {
+const getNewSupportAccounts = async (req, res) => {
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
@@ -413,7 +419,7 @@ const getNewSupporters = async (req, res) => {
   }
 };
 
-const getAllSupporters = async (req, res) => {
+const getAllSupporterAccounts = async (req, res) => {
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
@@ -759,9 +765,9 @@ module.exports = {
   getSupportTeams,
   getSupporter,
   createSupporter,
-  getNewSupporters,
+  getNewSupportAccounts,
   activateSupportAccount,
-  getAllSupporters,
+  getAllSupporterAccounts,
   doesSupportUserNameExists,
   getAllActiveAccounts,
   lockSupportAccount,

@@ -8,6 +8,7 @@ import Loading from "../../Loading";
 import {useParams} from "react-router-dom";
 
 function SupportTeamAccounts() {
+  console.log("SupportTeamAccounts");
   let {teamaccounts} = useParams();
   const [team, setTeam] = React.useState(null);
   const [resetList, setResetList] = React.useState(false);

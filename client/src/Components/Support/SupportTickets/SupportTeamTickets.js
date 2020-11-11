@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../../Loading";
 import AdminSideBar from "../SideBars/AdminSideBar";
@@ -8,10 +8,13 @@ import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 
 function SupportTeamTickets() {
+  let history = useHistory();
   const [tickets, setTickets] = React.useState(null);
   let {teamtickets} = useParams();
+  const logOut = () => {
+    history.push("/");
+  };
   React.useEffect(() => {
-    console.log("called");
     fetch(`/support/supportteams/tickets/${teamtickets}`)
       .then((response) => response.json())
       .then((supportTeams) => setTickets(supportTeams.tickets))
@@ -25,8 +28,22 @@ function SupportTeamTickets() {
           <AdminSideBar />
           <AccountSideBar />
         </SideBar>
-        <NewTicketsDisplay>
-          <NewTicketItems>
+        <TicketsDisplay>
+          <SupportTicketBanner>
+            <BannerTitle>{teamtickets} Tickets</BannerTitle>
+            <BannerUserAccount>
+              <Wrapper>Welcome: Admin</Wrapper>
+              <LogOutBtn
+                onClick={() => {
+                  logOut();
+                }}
+              >
+                Log Out
+              </LogOutBtn>
+            </BannerUserAccount>
+          </SupportTicketBanner>
+
+          <TicketItems>
             <SupportTicketSectionHeader />
             {tickets ? (
               <TicketHeader>
@@ -37,8 +54,8 @@ function SupportTeamTickets() {
             ) : (
               <Loading />
             )}
-          </NewTicketItems>
-        </NewTicketsDisplay>
+          </TicketItems>
+        </TicketsDisplay>
       </TicketDashBoard>
     </AdminPage>
   );
@@ -48,6 +65,33 @@ const SideBar = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+`;
+
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
+
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
 `;
 
 const AdminPage = styled.div`
@@ -64,8 +108,8 @@ const TicketHeader = styled.div`
   text-align: center;
 `;
 
-const NewTicketItems = styled.div``;
-const NewTicketsDisplay = styled.div`
+const TicketItems = styled.div``;
+const TicketsDisplay = styled.div`
   flex: 5;
 `;
 

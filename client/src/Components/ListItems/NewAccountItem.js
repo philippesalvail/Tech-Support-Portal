@@ -141,6 +141,7 @@ const Supporter = styled.li`
   font-weight: bold;
   padding-top: 1%;
   padding-bottom: 1%;
+  padding-left: 1%;
 `;
 const SupporterName = styled.div`
   flex: 1;

@@ -6,16 +6,36 @@ import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import Loading from "../../Loading";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
-import {useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {useHistory, useParams} from "react-router-dom";
+
+import {
+  requestSupporterProfile,
+  receiveSupporterProfile,
+  receiveSupporterProfileError,
+} from "../../../actions";
 
 function SupportPendingTickets() {
+  const dispatch = useDispatch();
+  let history = useHistory();
+  const [tickets, setTickets] = React.useState([]);
   let {supporter} = useParams();
   const [pendingTickets, setPendingTickets] = React.useState(null);
+  const logOut = () => {
+    history.push("/");
+  };
   React.useEffect(() => {
     fetch(`/support/tickets/getpendingtickets/${supporter}`)
       .then((response) => response.json())
-      .then((tickets) => setPendingTickets(tickets.data))
-      .catch((error) => console.log("error: ", error));
+      .then((supporter) => {
+        if (supporter.username === "admin") {
+          setTickets(supporter.data);
+        } else {
+          dispatch(requestSupporterProfile());
+          dispatch(receiveSupporterProfile(supporter));
+        }
+      })
+      .catch((error) => dispatch(receiveSupporterProfileError(error)));
   }, []);
 
   return (
@@ -31,29 +51,78 @@ function SupportPendingTickets() {
             <AgentSideBar />
           </SideBar>
         )}
-        <NewTicketsDisplay>
-          <NewTicketItems>
+        <TicketsDisplay>
+          {supporter !== "admin" ? (
+            <SupportTicketBanner>
+              <BannerTitle>New Tickets</BannerTitle>
+              <BannerUserAccount>
+                <Wrapper>
+                  {/* {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`} */}
+                </Wrapper>
+              </BannerUserAccount>
+            </SupportTicketBanner>
+          ) : (
+            <SupportTicketBanner>
+              <BannerTitle>Pending Tickets</BannerTitle>
+              <BannerUserAccount>
+                <Wrapper>Welcome: {supporter}</Wrapper>
+                <LogOutBtn
+                  onClick={() => {
+                    logOut();
+                  }}
+                >
+                  Log Out
+                </LogOutBtn>
+              </BannerUserAccount>
+            </SupportTicketBanner>
+          )}
+          <TicketItems>
             <SupportTicketSectionHeader />
-            {pendingTickets ? (
+            {tickets ? (
               <TicketHeader>
-                {pendingTickets.map((ticket) => {
-                  return <TicketItem ticket={ticket} />;
+                {tickets.map((ticket, index) => {
+                  return <TicketItem ticket={ticket} index={index} />;
                 })}
               </TicketHeader>
             ) : (
               <Loading />
             )}
-          </NewTicketItems>
-        </NewTicketsDisplay>
+          </TicketItems>
+        </TicketsDisplay>
       </TicketDashBoard>
     </AdminPage>
   );
 }
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
 const SideBar = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+`;
+const BannerTitle = styled.div`
+  text-align: left;
+`;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const SupportTicketBanner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 1%;
+  background-color: #457b9d;
+`;
+const BannerUserAccount = styled.div`
+  display: flex;
 `;
 
 const AdminPage = styled.div`
@@ -70,8 +139,8 @@ const TicketHeader = styled.div`
   text-align: center;
 `;
 
-const NewTicketItems = styled.div``;
-const NewTicketsDisplay = styled.div`
+const TicketItems = styled.div``;
+const TicketsDisplay = styled.div`
   flex: 5;
 `;
 

@@ -26,26 +26,26 @@ function AccountSideBar() {
   return (
     <Side>
       <TitleLbl>Accounts</TitleLbl>
-      <SideLink strict to={"/support/portal/accounts/newaccounts"}>
+      <SideLink strict to={"/support/portal/accounts/admin/newaccounts"}>
         <IconImg>
           <WaitingSupportersIcon />
         </IconImg>
         <LinkSelection>New</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/accounts/activeaccounts"}>
+      <SideLink strict to={"/support/portal/accounts/admin/activeaccounts"}>
         <IconImg>
           <AllSupportersIcon />
         </IconImg>
         <LinkSelection>Active</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/accounts/createaccount"}>
+      <SideLink strict to={"/support/portal/accounts/admin/createaccount"}>
         <IconImg>
           <WaitingSupportersIcon />
         </IconImg>
         <LinkSelection>Create</LinkSelection>
       </SideLink>
 
-      <SideLink strict to={"/support/portal/accounts/accountdetail"}>
+      <SideLink strict to={"/support/portal/accounts/admin/accountdetail"}>
         <IconImg>
           <TeamSupportersIcon />
         </IconImg>

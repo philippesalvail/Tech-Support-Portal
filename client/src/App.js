@@ -90,13 +90,13 @@ function App() {
             component={SupportAgentTeamTickets}
           />
 
-          {/* <Route
+          <Route
             path="/support/portal/admin/teamtickets/:teamtickets"
             exact
             component={SupportTeamTickets}
-          /> */}
+          />
           <Route
-            path="/support/portal/:supporter/teamaccounts/:teamaccounts"
+            path="/support/portal/admin/teamaccounts/:teamaccounts"
             exact
             component={SupportTeamAccounts}
           />
@@ -117,12 +117,12 @@ function App() {
             component={SupportTicketDetail}
           />
           <Route
-            path="/support/portal/accounts/newaccounts"
+            path="/support/portal/accounts/admin/newaccounts"
             exact
             component={SupportNewAccounts}
           />
           <Route
-            path="/support/portal/accounts/activeaccounts"
+            path="/support/portal/accounts/admin/activeaccounts"
             exact
             component={SupportActiveAccounts}
           />
@@ -132,7 +132,7 @@ function App() {
             component={SupportAccountDetail}
           />
           <Route
-            path="/support/portal/accounts/createaccount"
+            path="/support/portal/accounts/admin/createaccount"
             exact
             component={SupportCreateAccount}
           />

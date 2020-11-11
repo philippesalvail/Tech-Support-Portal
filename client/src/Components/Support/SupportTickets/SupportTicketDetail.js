@@ -6,7 +6,6 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import Loading from "../../Loading";
 
 const SupportTicketDetail = () => {
-  const [ticketState, setTicketState] = React.useState("New");
   const [priority, setPriority] = React.useState("Low");
   const [risk, setRisk] = React.useState("Select Risk Level");
   const [impact, setImpact] = React.useState("Low");
@@ -15,6 +14,7 @@ const SupportTicketDetail = () => {
   const [supportTeams, setSupportTeams] = React.useState([]);
   const [assGroup, setAssGroup] = React.useState("Select Assignment Group");
   const [assignee, setAssignee] = React.useState(null);
+  const [ticketStatus, setTicketStatus] = React.useState(null);
 
   let {ticketId} = useParams();
 
@@ -22,10 +22,15 @@ const SupportTicketDetail = () => {
     fetch(`/support/tickets/${ticketId}`)
       .then((response) => response.json())
       .then((ticket) => {
+        console.log("ticket: ", ticket);
         setTicketDetail(ticket.data);
         setSupportTeams(ticket.teams);
         setImpact(ticket.data.impact);
         setPriority(ticket.data.priority);
+        setAssGroup(ticket.data.assignmentGroup);
+        setTicketStatus(ticket.data.ticketStatus);
+        setAssignee(ticket.data.assignee);
+        setRisk(ticket.data.risk);
       })
       .catch((error) => console.log("error: ", error));
   }, []);
@@ -39,10 +44,7 @@ const SupportTicketDetail = () => {
   const updateTicket = (e) => {
     e.preventDefault();
     let errorMessage = "";
-    if (ticketState === "New") {
-      errorMessage += "Please change the state of the ticket\n";
-    }
-    if (assGroup === "Select Assignment Group") {
+    if (assGroup === null) {
       errorMessage += "Please select an assignment group\n";
     }
     if (risk === "Select Risk Level") {
@@ -54,8 +56,8 @@ const SupportTicketDetail = () => {
       return;
     }
 
-    fetch("/support/updateTicket", {
-      method: "put",
+    fetch("/support/tickets/updateTicket", {
+      method: "PUT",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
         _id: ticketDetail._id,
@@ -66,11 +68,14 @@ const SupportTicketDetail = () => {
         impact: impact,
         priority: priority,
         risk: risk,
-        ticketStatus: ticketState,
+        ticketStatus: ticketStatus,
         assignmentGroup: assGroup,
         assignee: assignee,
       }),
-    });
+    })
+      .then((response) => response.json())
+      .then((update) => alert(update.message))
+      .catch((error) => alert(error.message));
   };
 
   return (
@@ -116,16 +121,15 @@ const SupportTicketDetail = () => {
                   <DropDownSelect
                     id="state"
                     name="state"
-                    defaultValue="new"
-                    onChange={(e) => setTicketState(e.currentTarget.value)}
+                    defaultValue="selectStatus"
+                    onChange={(e) => setTicketStatus(e.currentTarget.value)}
                   >
-                    <option value="new">
-                      {ticketDetail.ticketStatus
-                        ? ticketDetail.ticketStatus
-                        : "New"}
+                    <option value="selectStatus" disabled hidden>
+                      {ticketStatus ? ticketStatus : "New"}
                     </option>
+                    <option value="New">New</option>
                     <option value="In Progress">In Progress</option>
-                    <option value="resolved">Resolved</option>
+                    <option value="Resolved">Resolved</option>
                   </DropDownSelect>
                 </Detail>
               </Row>
@@ -138,7 +142,7 @@ const SupportTicketDetail = () => {
                     onChange={(e) => setPriority(e.currentTarget.value)}
                     defaultValue="selectPriority"
                   >
-                    <option value="selectPriority">
+                    <option value="selectPriority" disabled hidden>
                       {ticketDetail.priority}
                     </option>
                     <option value="low">Low</option>
@@ -157,9 +161,7 @@ const SupportTicketDetail = () => {
                     onChange={(e) => assignmentGroupSelected(e.target.value)}
                   >
                     <option value="selectAssignmentGroup" disabled hidden>
-                      {ticketDetail.assignmentGroup
-                        ? ticketDetail.assignmentGroup
-                        : "Select Assignment Group"}
+                      {assGroup ? assGroup : "Select Assignment Group"}
                     </option>
                     {supportTeams.map((team) => {
                       return (
@@ -181,9 +183,7 @@ const SupportTicketDetail = () => {
                     defaultValue="selectRisk"
                   >
                     <option value="selectRisk" disabled hidden>
-                      {ticketDetail.risk
-                        ? ticketDetail.risk
-                        : "Select Risk Level"}
+                      {risk ? risk : "Select Risk Level"}
                     </option>
                     <option value="low">Low</option>
                     <option value="moderate">Medium</option>
@@ -199,9 +199,7 @@ const SupportTicketDetail = () => {
                     onChange={(e) => setAssignee(e.currentTarget.value)}
                   >
                     <option value="selectAssignee" disabled hidden>
-                      {ticketDetail.assignee
-                        ? ticketDetail.assignee
-                        : "Select Assignee"}
+                      {assignee ? assignee : "Select Assignee"}
                     </option>
                     {assGroupMembers.map((assignee) => {
                       return (
@@ -240,7 +238,7 @@ const SupportTicketDetail = () => {
               <ShortDescription>
                 <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
                 <ShortDescriptionTxt
-                  defaultValue={ticketDetail.shortDescrption}
+                  defaultValue={ticketDetail.shortDescription}
                 />
               </ShortDescription>
               <Description>

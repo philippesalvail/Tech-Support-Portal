@@ -12,9 +12,9 @@ const {
   getSupportTeams,
   getSupporter,
   createSupporter,
-  getNewSupporters,
+  getNewSupportAccounts,
   activateSupportAccount,
-  getAllSupporters,
+  getAllSupporterAccounts,
   doesSupportUserNameExists,
   getAllActiveAccounts,
   lockSupportAccount,
@@ -56,8 +56,8 @@ router.get("/support/supportteams/getSupportTeams", getSupportTeams);
 router.get("/support/supportteams/tickets/:getTeamTickets", getTeamTickets);
 router.get("/support/supportteams/accounts/:getTeamAccounts", getTeamAccounts);
 
-router.get("/support/supporter/getNewSupporters", getNewSupporters);
-router.get("/support/supporter/getAllSupporters", getAllSupporters);
+router.get("/support/supporter/getNewSupportAccounts", getNewSupportAccounts);
+router.get("/support/supporter/getAllSupporters", getAllSupporterAccounts);
 router.post("/support/supporter/createSupportUser", createSupporter);
 router.get("/support/supporter/:getSupportUser", getSupporter);
 router.get("/support/supporter/searchSupporter/:username", searchSupporter);

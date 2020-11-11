@@ -15,18 +15,9 @@ function SupportTicketSectionHeader() {
   );
 }
 
-const LogOutBtn = styled.button`
-  width: 10%;
-  margin-bottom: 2%;
-  background-color: #457b9d;
-  color: #f1faee;
-  padding: 1%;
-  font-weight: bold;
-  width: 8%;
-`;
-
 const TicketHeader = styled.div`
   display: flex;
+  padding-left: 1%;
 `;
 
 const Header = styled.h4`
