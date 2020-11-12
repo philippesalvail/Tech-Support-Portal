@@ -5,9 +5,9 @@ import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectio
 import {useParams} from "react-router-dom";
 
 function SupportAgentNewTickets() {
-  let {username} = useParams();
+  console.log("useParams(): ", useParams());
   return (
-    <div>Welcome {username}</div>
+    <div>Welcome </div>
     // <AdminPage>
     //   <TicketDashBoard>
     //     <SideBar>

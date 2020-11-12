@@ -148,6 +148,15 @@ function ClientTicketDetail() {
                 />
               </Description>
             </DescriptionRow>
+            <TicketNote>
+              <NoteContainer>
+                <NoteLbl>Add Update: </NoteLbl>
+                <NoteArea />
+                <ButtonRow>
+                  <UpdateBtn>Update</UpdateBtn>
+                </ButtonRow>
+              </NoteContainer>
+            </TicketNote>
           </Ticket>
         </TicketDetail>
       ) : (
@@ -156,6 +165,34 @@ function ClientTicketDetail() {
     </>
   );
 }
+
+const NoteLbl = styled.label``;
+
+const NoteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+`;
+
+const UpdateBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+
+  outline: none;
+`;
+
+const ButtonRow = styled.div`
+  text-align: right;
+`;
+
+const TicketNote = styled.div``;
+
+const NoteArea = styled.textarea`
+  margin: 1% 0;
+  height: 40px;
+`;
 
 const DateCreated = styled.div`
   padding: 1%;
@@ -298,6 +335,7 @@ const DescriptionTxt = styled.textarea`
   flex: 3;
   outline: none;
   background-color: ${(props) => (props.isCreated ? "#F8F8F8" : "#FFFFFF")};
+  height: 40px;
 `;
 
 export default ClientTicketDetail;

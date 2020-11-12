@@ -79,11 +79,11 @@ function App() {
             exact
             component={SupportResolvedTickets}
           />
-          {/* <Route
+          <Route
             path="/support/portal/:supporter/newtickets"
             exact
             component={SupportAgentNewTickets}
-          /> */}
+          />
           <Route
             path="/support/portal/:supporter/teamtickets"
             exact
@@ -112,7 +112,7 @@ function App() {
           />
 
           <Route
-            path="/support/portal/ticket/:ticketId"
+            path="/support/portal/:supporter/ticket/:ticketId"
             exact
             component={SupportTicketDetail}
           />

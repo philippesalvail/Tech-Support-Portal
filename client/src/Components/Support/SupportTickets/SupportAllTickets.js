@@ -10,11 +10,11 @@ import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectio
 function SupportAllTickets() {
   let history = useHistory();
   let {supporter} = useParams();
-  const [allTickets, setAllTickets] = React.useState(null);
+  const [tickets, setTickets] = React.useState(null);
   React.useEffect(() => {
     fetch(`/support/tickets/getalltickets/${supporter}`)
       .then((response) => response.json())
-      .then((tickets) => setAllTickets(tickets.data))
+      .then((tickets) => setTickets(tickets.data))
       .catch((error) =>
         console.log("Error in support portal: ", error.message)
       );
@@ -47,10 +47,16 @@ function SupportAllTickets() {
 
           <TicketItems>
             <SupportTicketSectionHeader />
-            {allTickets ? (
+            {tickets ? (
               <TicketHeader>
-                {allTickets.map((ticket) => {
-                  return <TicketItem ticket={ticket} />;
+                {tickets.map((ticket, index) => {
+                  return (
+                    <TicketItem
+                      ticket={ticket}
+                      supporter={supporter}
+                      index={index}
+                    />
+                  );
                 })}
               </TicketHeader>
             ) : (
