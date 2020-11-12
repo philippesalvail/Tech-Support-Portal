@@ -93,6 +93,10 @@ function SupportLoginPage() {
               onChange={(e) => {
                 setPasswordTyped(e.target.value);
               }}
+              type="password"
+              id="txthidden"
+              name="txthidden"
+              size="15"
             />
           </Password>
           <Buttons>

@@ -29,12 +29,11 @@ function NewAccountItem(props) {
   };
 
   const activateAccountHandler = (e) => {
-    e.preventDefault();
     let errorMessage = "";
-    const valid = {
-      username: username.length > 3,
-      password: password.length > 6,
-    };
+    // const valid = {
+    //   username: username.length > 3,
+    //   password: password.length > 6,
+    // };
 
     for (var key of Object.keys(valid)) {
       if (!valid[key]) {
@@ -52,7 +51,7 @@ function NewAccountItem(props) {
     }
 
     fetch("/support/accounts/enableAccount", {
-      method: "put",
+      method: "PUT",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
         _id: _id,
@@ -67,6 +66,7 @@ function NewAccountItem(props) {
     })
       .then((response) => response.json())
       .then((statusMessage) => {
+        console.log("statusMessage: ", statusMessage);
         if (statusMessage.accountCreated) {
           alert(statusMessage.message);
           setEnableAccount(!enableAccount);
@@ -140,8 +140,8 @@ const Supporter = styled.li`
   color: ${(props) => (props.index % 2 === 0 ? "#1d3557" : "#000000")};
   font-weight: bold;
   padding-top: 1%;
-  padding-bottom: 1%;
   padding-left: 1%;
+  padding-bottom: 1%;
 `;
 const SupporterName = styled.div`
   flex: 1;

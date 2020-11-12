@@ -4,6 +4,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import {useHistory} from "react-router-dom";
 import {SearchIcon} from "../../../ReactIcons";
+import Loading from "../../Loading";
 
 function SupportAccountDetail() {
   const [teams, setTeams] = React.useState(null);
@@ -58,6 +59,13 @@ function SupportAccountDetail() {
     })
       .then((response) => response.json())
       .then((statusMessage) => {
+        setUserNameTyped("");
+        setAccountStatus("");
+        setPassword("");
+        setUsername("");
+        setNewTeam("");
+        setOldTeam("");
+        setSupporterName("");
         alert(statusMessage.message);
       })
       .catch((error) => console.log("error: ", error.message));
@@ -147,7 +155,10 @@ function SupportAccountDetail() {
           </DetailRow>
           <DetailRow>
             <Lbl>Status: </Lbl>
-            <Txt value={supporterFound.isEnabled !== null && accountStatus} />
+            <Txt
+              value={supporterFound.isEnabled !== null && accountStatus}
+              disabled={true}
+            />
           </DetailRow>
           <DetailRow>
             <Lbl>Username: </Lbl>
@@ -198,7 +209,7 @@ function SupportAccountDetail() {
           <ButtonRow>
             <UpdateBtn onClick={updateSupporterHandler}>Update</UpdateBtn>
             <EnableBtn onClick={changeAccountState}>
-              {supporterFound.isEnabled ? "Disable" : "Enable"}
+              {accountStatus === "Enabled" ? "Disable" : "Enable"}
             </EnableBtn>
           </ButtonRow>
         </AccountWrapper>

@@ -31,11 +31,19 @@ const SupportTicketDetail = () => {
         setTicketStatus(ticket.data.ticketStatus);
         setAssignee(ticket.data.assignee);
         setRisk(ticket.data.risk);
+        ticket.teams.forEach((element) => {
+          if (element.supportName === ticket.data.assignmentGroup) {
+            setAssGroupMembers(element.supporters);
+          }
+        });
       })
       .catch((error) => console.log("error: ", error));
   }, []);
 
+  console.log("assGroupMembers: ", assGroupMembers);
+
   const assignmentGroupSelected = (group) => {
+    console.log("group: ", group);
     setAssGroup(group);
     let team = supportTeams.find((team) => group == team.supportName);
     team && setAssGroupMembers(team.supporters);
@@ -201,13 +209,14 @@ const SupportTicketDetail = () => {
                     <option value="selectAssignee" disabled hidden>
                       {assignee ? assignee : "Select Assignee"}
                     </option>
-                    {assGroupMembers.map((assignee) => {
-                      return (
-                        <option key={assignee} value={assignee}>
-                          {assignee}
-                        </option>
-                      );
-                    })}
+                    {assGroupMembers &&
+                      assGroupMembers.map((member) => {
+                        return (
+                          <option key={member} value={member}>
+                            {member}
+                          </option>
+                        );
+                      })}
                   </DropDownSelect>
                 </Detail>
               </Row>

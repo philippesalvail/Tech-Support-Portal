@@ -4,17 +4,18 @@ import {NavLink} from "react-router-dom";
 
 import {NewTicketIcon, PendingIcon} from "../../../ReactIcons";
 
-function AgentSideBar() {
+function AgentSideBar(props) {
+  const {username} = props;
   return (
     <Side>
       <TitleLbl>Tickets</TitleLbl>
-      <SideLink strict to={"/support/portal/:supporter/newtickets"}>
+      <SideLink strict to={`/support/portal/${username}/newtickets`}>
         <IconImg>
           <NewTicketIcon />
         </IconImg>
         <LinkSelection>Assigned To Me</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/:supporter/pendingtickets"}>
+      <SideLink strict to={`/support/portal/${username}/pendingtickets`}>
         <IconImg>
           <PendingIcon />
         </IconImg>

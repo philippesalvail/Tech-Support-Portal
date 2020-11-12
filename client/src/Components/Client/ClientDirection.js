@@ -5,6 +5,7 @@ import {useHistory} from "react-router-dom";
 const ClientDirection = () => {
   const {user} = useAuth0();
   let history = useHistory();
+  console.log("user: ", user);
   React.useEffect(() => {
     fetch(`/client/${user.email}`)
       .then((response) => response.json())
