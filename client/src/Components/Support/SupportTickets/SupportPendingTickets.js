@@ -67,6 +67,7 @@ function SupportPendingTickets() {
                           key={ticket + index}
                           ticket={ticket}
                           index={index}
+                          supporter={supporter}
                         />
                       );
                     })}
@@ -84,7 +85,7 @@ function SupportPendingTickets() {
             <AdminPage>
               <TicketDashBoard>
                 <SideBar>
-                  <AgentSideBar username={agentProfile.username} />
+                  <AgentSideBar supporter={agentProfile.username} />
                 </SideBar>
                 <TicketsDisplay>
                   <SupportTicketBanner>
@@ -104,6 +105,7 @@ function SupportPendingTickets() {
                               key={ticket + index}
                               ticket={ticket}
                               index={index}
+                              supporter={supporter}
                             />
                           );
                         })}

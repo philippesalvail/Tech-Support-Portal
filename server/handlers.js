@@ -135,6 +135,7 @@ const createClientTicket = async (req, res) => {
     impact: ticketInfo.impactSelected,
     dateOfTicketCreated: new Date().toLocaleDateString(),
     ticketStatus: "New",
+    followUps: ticketInfo.followups,
   };
   try {
     const client = await MongoClient(MONGO_URI, options);
@@ -234,7 +235,7 @@ const updateTicketDetail = async (req, res) => {
         },
       }
     );
-    res.status(200).json({message: `Ticket :${_id} updated sucessfully`});
+    res.status(200).json({message: `Ticket: ${_id}\nupdated sucessfully`});
   } catch (error) {
     res.status(404).json({status: 404, _id: _id, message: error.message});
   }

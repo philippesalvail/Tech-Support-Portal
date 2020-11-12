@@ -3,9 +3,11 @@ import styled from "styled-components";
 import {useParams} from "react-router-dom";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
+import AgentSideBar from "../SideBars/AgentSideBar";
 import Loading from "../../Loading";
 
 const SupportTicketDetail = () => {
+  console.log("SupportTicketDetail");
   const [priority, setPriority] = React.useState("Low");
   const [risk, setRisk] = React.useState("Select Risk Level");
   const [impact, setImpact] = React.useState("Low");
@@ -15,14 +17,16 @@ const SupportTicketDetail = () => {
   const [assGroup, setAssGroup] = React.useState("Select Assignment Group");
   const [assignee, setAssignee] = React.useState(null);
   const [ticketStatus, setTicketStatus] = React.useState(null);
+  const [followUps, setFollowUps] = React.useState([]);
 
-  let {ticketId} = useParams();
+  let {supporter, ticketId} = useParams();
+
+  console.log("supporter: ", supporter);
 
   React.useEffect(() => {
     fetch(`/support/tickets/${ticketId}`)
       .then((response) => response.json())
       .then((ticket) => {
-        console.log("ticket: ", ticket);
         setTicketDetail(ticket.data);
         setSupportTeams(ticket.teams);
         setImpact(ticket.data.impact);
@@ -31,6 +35,8 @@ const SupportTicketDetail = () => {
         setTicketStatus(ticket.data.ticketStatus);
         setAssignee(ticket.data.assignee);
         setRisk(ticket.data.risk);
+        setFollowUps(ticket.data.followUps);
+
         ticket.teams.forEach((element) => {
           if (element.supportName === ticket.data.assignmentGroup) {
             setAssGroupMembers(element.supporters);
@@ -79,6 +85,7 @@ const SupportTicketDetail = () => {
         ticketStatus: ticketStatus,
         assignmentGroup: assGroup,
         assignee: assignee,
+        followUps: followUps,
       }),
     })
       .then((response) => response.json())
@@ -88,10 +95,16 @@ const SupportTicketDetail = () => {
 
   return (
     <Portal>
-      <SideBar>
-        <AdminSideBar />
-        <AccountSideBar />
-      </SideBar>
+      {supporter === "admin" ? (
+        <SideBar>
+          <AdminSideBar supporter={supporter} />
+          <AccountSideBar supporter={supporter} />
+        </SideBar>
+      ) : (
+        <SideBar>
+          <AgentSideBar supporter={supporter} />
+        </SideBar>
+      )}
       <TicketForm onSubmit={updateTicket}>
         <SupportTicketBanner>Incident Report </SupportTicketBanner>
         {ticketDetail ? (
@@ -100,7 +113,11 @@ const SupportTicketDetail = () => {
               <Row>
                 <Detail>
                   <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
-                  <TicketNumberTxt defaultValue={ticketDetail._id} />
+                  <TicketNumberTxt
+                    defaultValue={ticketDetail._id}
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
+                  />
                 </Detail>
                 <Detail>
                   <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
@@ -108,6 +125,8 @@ const SupportTicketDetail = () => {
                     id="productType"
                     name="product"
                     defaultValue="selectProduct"
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
                   >
                     <option value="selectProduct" disabled hidden>
                       {ticketDetail.productType}
@@ -149,6 +168,8 @@ const SupportTicketDetail = () => {
                     name="priority"
                     onChange={(e) => setPriority(e.currentTarget.value)}
                     defaultValue="selectPriority"
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
                   >
                     <option value="selectPriority" disabled hidden>
                       {ticketDetail.priority}
@@ -167,6 +188,8 @@ const SupportTicketDetail = () => {
                     name="assignmentGroup"
                     defaultValue="selectAssignmentGroup"
                     onChange={(e) => assignmentGroupSelected(e.target.value)}
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
                   >
                     <option value="selectAssignmentGroup" disabled hidden>
                       {assGroup ? assGroup : "Select Assignment Group"}
@@ -189,6 +212,8 @@ const SupportTicketDetail = () => {
                     name="risk"
                     onChange={(e) => setRisk(e.currentTarget.value)}
                     defaultValue="selectRisk"
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
                   >
                     <option value="selectRisk" disabled hidden>
                       {risk ? risk : "Select Risk Level"}
@@ -228,6 +253,8 @@ const SupportTicketDetail = () => {
                     name="impact"
                     onChange={(e) => setImpact(e.currentTarget.value)}
                     defaultValue="selectImpact"
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
                   >
                     <option value="selectImpact" disabled hidden>
                       {ticketDetail.impact}
@@ -239,7 +266,11 @@ const SupportTicketDetail = () => {
                 </Detail>
                 <Detail>
                   <DateLbl>Date Opened</DateLbl>
-                  <DateTxt defaultValue={ticketDetail.dateOfTicketCreated} />
+                  <DateTxt
+                    defaultValue={ticketDetail.dateOfTicketCreated}
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
+                  />
                 </Detail>
               </Row>
             </TopHalf>
@@ -248,16 +279,38 @@ const SupportTicketDetail = () => {
                 <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
                 <ShortDescriptionTxt
                   defaultValue={ticketDetail.shortDescription}
+                  disabled={supporter !== "admin"}
+                  supporter={supporter !== "admin"}
                 />
               </ShortDescription>
               <Description>
                 <DescriptionLbl>Description</DescriptionLbl>
-                <DescriptionTxt defaultValue={ticketDetail.description} />
+                <DescriptionTxt
+                  defaultValue={ticketDetail.description}
+                  disabled={supporter !== "admin"}
+                  supporter={supporter !== "admin"}
+                />
               </Description>
             </DescriptionRow>
             <ButtonRow>
-              <ButtonSubmit>Submit</ButtonSubmit>
+              <ButtonSubmit
+                disabled={supporter !== "admin"}
+                supporter={supporter !== "admin"}
+              >
+                Submit
+              </ButtonSubmit>
             </ButtonRow>
+            {supporter !== "admin" && (
+              <TicketNote>
+                <NoteContainer>
+                  <NoteLbl>Add Update: </NoteLbl>
+                  <NoteArea />
+                  <UpdateButtonRow>
+                    <UpdateBtn>Update</UpdateBtn>
+                  </UpdateButtonRow>
+                </NoteContainer>
+              </TicketNote>
+            )}
           </Details>
         ) : (
           <Loader>
@@ -273,6 +326,33 @@ const SideBar = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+`;
+
+const NoteLbl = styled.label``;
+
+const NoteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+`;
+
+const UpdateBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
+`;
+
+const UpdateButtonRow = styled.div`
+  text-align: right;
+`;
+
+const TicketNote = styled.div``;
+
+const NoteArea = styled.textarea`
+  margin: 1% 0;
+  height: 40px;
 `;
 
 const Portal = styled.div`
@@ -385,6 +465,7 @@ const ButtonSubmit = styled.button`
   margin: 1%;
   font-size: 15px;
   padding: 1%;
+  opacity: ${(props) => (props.supporter ? "0.5" : "1.0")};
 `;
 
 const Details = styled.div`

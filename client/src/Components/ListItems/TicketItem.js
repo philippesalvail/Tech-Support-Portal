@@ -3,14 +3,17 @@ import styled from "styled-components";
 import {useHistory} from "react-router-dom";
 
 function TicketItem(props) {
-  const {index, ticket} = props;
-  console.log("props in TicketItem: ", props);
+  const {index, ticket, supporter} = props;
+  console.log("props in TicketItem: ", supporter);
   let history = useHistory();
-  const ticketDetailHandler = (ticketId) => {
-    history.push(`/support/portal/ticket/${ticketId}`);
+  const ticketDetailHandler = (ticketId, supporter) => {
+    history.push(`/support/portal/${supporter}/ticket/${ticketId}`);
   };
   return (
-    <Item onClick={() => ticketDetailHandler(ticket._id)} index={index}>
+    <Item
+      onClick={() => ticketDetailHandler(ticket._id, supporter)}
+      index={index}
+    >
       <CustomerName>{ticket.customerName}</CustomerName>
       <TicketShortDesc>{ticket.shortDescription}</TicketShortDesc>
       <TicketPriority>{ticket.priority}</TicketPriority>

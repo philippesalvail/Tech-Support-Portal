@@ -74,6 +74,7 @@ const ClientNewTicket = () => {
         desc: desc,
         impactSelected: impactSelected,
         clientAccount: clientAccount.loginInfo,
+        followups: [],
       })
         .then((response) => response.json())
         .then((ticket) => {
@@ -329,6 +330,7 @@ const DescriptionTxt = styled.textarea`
   flex: 3;
   border: ${(props) => (props.valid ? "1px solid black" : "1px solid red")};
   outline: none;
+  height: 40px;
 `;
 const ButtonRow = styled.div`
   padding: 1%;
