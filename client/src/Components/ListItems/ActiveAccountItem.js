@@ -35,6 +35,10 @@ function ActiveAccountItem(props) {
             <Username>{props.account.username}</Username>
           </Row>
           <Row>
+            <Username>{props.account.team}</Username>
+          </Row>
+
+          <Row>
             <Btn
               onClick={() =>
                 unlockAccountHandler(
@@ -53,6 +57,7 @@ function ActiveAccountItem(props) {
     </>
   );
 }
+
 const Supporter = styled.li`
   display: flex;
   background-color: ${(props) =>
@@ -60,6 +65,7 @@ const Supporter = styled.li`
   color: ${(props) => (props.index % 2 === 0 ? "#1d3557" : "#000000")};
   font-weight: bold;
   padding-top: 1%;
+  padding-left: 1%;
   padding-bottom: 1%;
 `;
 const SupporterName = styled.label``;
@@ -79,7 +85,7 @@ const Btn = styled.button`
   font-weight: bold;
   margin: 1%;
   font-size: 15px;
-  width: 20%;
+  width: 25%;
   padding: 1%;
 `;
 

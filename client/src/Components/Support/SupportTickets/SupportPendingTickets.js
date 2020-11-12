@@ -6,7 +6,7 @@ import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import Loading from "../../Loading";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useHistory, useParams} from "react-router-dom";
 
 import {
@@ -18,12 +18,14 @@ import {
 function SupportPendingTickets() {
   const dispatch = useDispatch();
   let history = useHistory();
-  const [tickets, setTickets] = React.useState([]);
+
   let {supporter} = useParams();
-  const [pendingTickets, setPendingTickets] = React.useState(null);
+  const [tickets, setTickets] = React.useState([]);
   const logOut = () => {
     history.push("/");
   };
+  const agentProfile = useSelector((state) => state.supporter.agent);
+  console.log("agentProfile: ", agentProfile);
   React.useEffect(() => {
     fetch(`/support/tickets/getpendingtickets/${supporter}`)
       .then((response) => response.json())
@@ -31,66 +33,94 @@ function SupportPendingTickets() {
         if (supporter.username === "admin") {
           setTickets(supporter.data);
         } else {
-          dispatch(requestSupporterProfile());
-          dispatch(receiveSupporterProfile(supporter));
+          setTickets(supporter.getTeamTickets);
         }
       })
       .catch((error) => dispatch(receiveSupporterProfileError(error)));
   }, []);
 
   return (
-    <AdminPage>
-      <TicketDashBoard>
-        {supporter == "admin" ? (
-          <SideBar>
-            <AdminSideBar />
-            <AccountSideBar />
-          </SideBar>
-        ) : (
-          <SideBar>
-            <AgentSideBar />
-          </SideBar>
-        )}
-        <TicketsDisplay>
-          {supporter !== "admin" ? (
-            <SupportTicketBanner>
-              <BannerTitle>New Tickets</BannerTitle>
-              <BannerUserAccount>
-                <Wrapper>
-                  {/* {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`} */}
-                </Wrapper>
-              </BannerUserAccount>
-            </SupportTicketBanner>
+    <>
+      {supporter === "admin" ? (
+        <AdminPage>
+          <TicketDashBoard>
+            <SideBar>
+              <AdminSideBar />
+              <AccountSideBar />
+            </SideBar>
+            <TicketsDisplay>
+              <SupportTicketBanner>
+                <BannerTitle>Pending Tickets</BannerTitle>
+                <BannerUserAccount>
+                  <Wrapper>Welcome: {supporter} </Wrapper>
+                  <LogOutBtn onClick={logOut}>Log Out</LogOutBtn>
+                </BannerUserAccount>
+              </SupportTicketBanner>
+
+              <TicketItems>
+                <SupportTicketSectionHeader />
+                {tickets ? (
+                  <TicketHeader>
+                    {tickets.map((ticket, index) => {
+                      return (
+                        <TicketItem
+                          key={ticket + index}
+                          ticket={ticket}
+                          index={index}
+                        />
+                      );
+                    })}
+                  </TicketHeader>
+                ) : (
+                  <div></div>
+                )}
+              </TicketItems>
+            </TicketsDisplay>
+          </TicketDashBoard>
+        </AdminPage>
+      ) : (
+        <>
+          {agentProfile && tickets ? (
+            <AdminPage>
+              <TicketDashBoard>
+                <SideBar>
+                  <AgentSideBar username={agentProfile.username} />
+                </SideBar>
+                <TicketsDisplay>
+                  <SupportTicketBanner>
+                    <BannerTitle>Pending Tickets</BannerTitle>
+                    <BannerUserAccount>
+                      <Wrapper>Welcome: {agentProfile.name}</Wrapper>
+                      <LogOutBtn onClick={logOut}>Log Out</LogOutBtn>
+                    </BannerUserAccount>
+                  </SupportTicketBanner>
+                  <TicketItems>
+                    <SupportTicketSectionHeader />
+                    {tickets ? (
+                      <TicketHeader>
+                        {tickets.map((ticket, index) => {
+                          return (
+                            <TicketItem
+                              key={ticket + index}
+                              ticket={ticket}
+                              index={index}
+                            />
+                          );
+                        })}
+                      </TicketHeader>
+                    ) : (
+                      <div></div>
+                    )}
+                  </TicketItems>
+                </TicketsDisplay>
+              </TicketDashBoard>
+            </AdminPage>
           ) : (
-            <SupportTicketBanner>
-              <BannerTitle>Pending Tickets</BannerTitle>
-              <BannerUserAccount>
-                <Wrapper>Welcome: {supporter}</Wrapper>
-                <LogOutBtn
-                  onClick={() => {
-                    logOut();
-                  }}
-                >
-                  Log Out
-                </LogOutBtn>
-              </BannerUserAccount>
-            </SupportTicketBanner>
+            <div>loading</div>
           )}
-          <TicketItems>
-            <SupportTicketSectionHeader />
-            {tickets ? (
-              <TicketHeader>
-                {tickets.map((ticket, index) => {
-                  return <TicketItem ticket={ticket} index={index} />;
-                })}
-              </TicketHeader>
-            ) : (
-              <Loading />
-            )}
-          </TicketItems>
-        </TicketsDisplay>
-      </TicketDashBoard>
-    </AdminPage>
+        </>
+      )}
+    </>
   );
 }
 const LogOutBtn = styled.button`

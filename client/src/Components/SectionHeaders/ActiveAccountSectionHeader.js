@@ -6,6 +6,7 @@ function AccountSectionHeader() {
     <AccountHeader>
       <Header>Name</Header>
       <Header>Username</Header>
+      <Header>Assignment Group</Header>
       <Header>AccountStatus</Header>
     </AccountHeader>
   );

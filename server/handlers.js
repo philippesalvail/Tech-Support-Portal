@@ -48,17 +48,17 @@ const verifyClientAccount = async (req, res) => {
     let userFound = await database
       .collection("Clients")
       .findOne({"loginInfo.email": emailId});
-    if (userFound) {
-      let clientTickets = await database
-        .collection("Support_Tickets")
-        .find({customerEmail: emailId})
-        .toArray();
-      res.status(200).send({
-        status: "success",
-        userFound: userFound,
-        tickets: clientTickets,
-      });
-    }
+
+    let clientTickets = await database
+      .collection("Support_Tickets")
+      .find({customerEmail: emailId})
+      .toArray();
+    res.status(200).send({
+      status: "success",
+      userFound: userFound,
+      tickets: clientTickets,
+    });
+
     client.close();
   } catch (error) {
     res.status(404).send({status: "error", error: error.message});
@@ -66,7 +66,6 @@ const verifyClientAccount = async (req, res) => {
 };
 
 const createClientAccount = async (req, res) => {
-  console.log("createClientAccount: ", req.body);
   const {loginInfo, billingInfo} = req.body;
   let newUser = {
     username: billingInfo.username,
@@ -170,7 +169,9 @@ const getTicketDetail = async (req, res) => {
     const data = await database
       .collection("Support_Tickets")
       .findOne({_id: objID(getTicket)});
+
     const teams = await database.collection("Support_Teams").find().toArray();
+
     data && teams
       ? res.status(200).json({status: 200, data: data, teams: teams})
       : res.status(409).json({
@@ -256,7 +257,6 @@ const getNewTickets = async (req, res) => {
       const agent = await database
         .collection("Supporters")
         .findOne({username: username});
-
       const getAgentTickets = await database
         .collection("Support_Tickets")
         .find({assignee: agent.name})
@@ -292,11 +292,33 @@ const getPendingTickets = async (req, res) => {
         .find({ticketStatus: "In Progress"})
         .toArray();
       res.status(200).json({status: 200, data: data, username: username});
+    } else {
+      const agent = await database
+        .collection("Supporters")
+        .findOne({username: username});
+
+      const getTeamTickets = await database
+        .collection("Support_Tickets")
+        .find({assignmentGroup: agent.team})
+        .toArray();
+
+      agent && getTeamTickets
+        ? res.status(200).json({
+            status: 200,
+            agent: agent,
+            getTeamTickets: getTeamTickets,
+            username: username,
+          })
+        : res.status(409).json({
+            status: 409,
+            message: "Something went wrong!, Please Update again",
+          });
     }
 
     client.close();
   } catch (error) {
-    res.status(500).json({status: 500, data: data, message: error.message});
+    console.log("error: ", error.message);
+    res.status(500).json({status: 500, message: error.message});
   }
 };
 
@@ -511,9 +533,9 @@ const activateSupportAccount = async (req, res) => {
 
     const userName = await database
       .collection("Supporters")
-      .findOne({username: username});
+      .findOne({username: supportaccount.username});
 
-    if (userName) {
+    if (userName !== null) {
       res.status(200).json({
         status: 200,
         message:
@@ -562,6 +584,7 @@ const activateSupportAccount = async (req, res) => {
           message: "Something went wrong!, Please submit again",
         });
   } catch (error) {
+    console.log("error: ", error.message);
     res.status(500).json({status: 500, message: error.message});
   }
 };
