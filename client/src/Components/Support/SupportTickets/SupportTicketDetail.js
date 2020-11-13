@@ -46,17 +46,21 @@ const SupportTicketDetail = () => {
       .catch((error) => console.log("error: ", error));
   }, [isUpdated]);
 
-  console.log("assGroupMembers: ", assGroupMembers);
+  console.log("followUps: ", followUps);
 
   const addUpdateToTicket = (updateNote) => {
+    console.log("addUpdateToTicket");
     if (updateNote.length < 4) {
       alert("Please add a valid update");
       return;
     }
     const ticketUpdate = {
+      customerEmail: ticketDetail.customerEmail,
       assigneeUsername: supporter,
       assignee: assignee,
       updateNote: updateNote,
+      ticketStatus: ticketStatus,
+
       dateOfUpdate:
         new Date().toLocaleDateString() +
         " at " +
@@ -77,6 +81,7 @@ const SupportTicketDetail = () => {
       .then((response) => response.json())
       .then((update) => {
         alert(update.message);
+        setUpdateNote("");
         setIsUpdated(!isUpdated);
       })
       .catch((error) => console.log(error.message));
@@ -176,7 +181,10 @@ const SupportTicketDetail = () => {
               <Row>
                 <Detail>
                   <RequestorLbl>Requested By &nbsp;</RequestorLbl>
-                  <RequestorTxt defaultValue={ticketDetail.customerName} />
+                  <RequestorTxt
+                    defaultValue={ticketDetail.customerName}
+                    disabled={supporter !== "admin"}
+                  />
                 </Detail>
                 <Detail>
                   <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
@@ -185,6 +193,7 @@ const SupportTicketDetail = () => {
                     name="state"
                     defaultValue="selectStatus"
                     onChange={(e) => setTicketStatus(e.currentTarget.value)}
+                    disabled={supporter !== "admin"}
                   >
                     <option value="selectStatus" disabled hidden>
                       {ticketStatus ? ticketStatus : "New"}
@@ -355,6 +364,7 @@ const SupportTicketDetail = () => {
                     onChange={(e) => {
                       setUpdateNote(e.target.value);
                     }}
+                    value={updateNote}
                   />
                   <UpdateButtonRow>
                     <UpdateBtn
