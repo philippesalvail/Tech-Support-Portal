@@ -97,6 +97,7 @@ const Side = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #457b9d;
+  color: #f1faee;
   flex: 1;
 `;
 const SideLink = styled(NavLink)`

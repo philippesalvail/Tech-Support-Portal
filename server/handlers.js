@@ -161,6 +161,27 @@ const createClientTicket = async (req, res) => {
   }
 };
 
+const addNoteToTicket = async (req, res) => {
+  const {ticketId} = req.params;
+  const {ticketUpdate} = req.body;
+
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const data = await database
+      .collection("Support_Tickets")
+      .update({_id: objID(ticketId)}, {$push: {followUps: ticketUpdate}});
+    res.status(200).json({
+      status: 200,
+      data: data,
+      message: "Note for ticket: " + ticketId + " added successfully",
+    });
+  } catch (error) {
+    res.status(500).json({status: 500, message: error.message});
+  }
+};
+
 const getTicketDetail = async (req, res) => {
   const {getTicket} = req.params;
   try {
@@ -802,4 +823,5 @@ module.exports = {
   searchSupporter,
   createSupportAccount,
   getClientProfile,
+  addNoteToTicket,
 };
