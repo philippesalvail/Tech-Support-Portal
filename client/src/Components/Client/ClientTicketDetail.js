@@ -5,7 +5,7 @@ import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import {useSelector} from "react-redux";
 import LogOutButton from "../LogButtons/logout-button";
 import Loading from "../Loading";
-
+import SupportTicketFollowUp from "../Support/SupportTickets/SupportTicketFollowUp";
 function ClientTicketDetail() {
   const [productTypeSelected, setProductTypeSelected] = React.useState(
     "Select Product Type"
@@ -22,7 +22,10 @@ function ClientTicketDetail() {
   const [shortDesc, setShortDesc] = React.useState("");
   const [desc, setDesc] = React.useState("");
   const {ticketnumber} = useParams();
+  const [followUps, setFollowUps] = React.useState([]);
   const clientAccount = useSelector((state) => state.client);
+  const [isUpdated, setIsUpdated] = React.useState(false);
+  const [updateNote, setUpdateNote] = React.useState("");
 
   React.useEffect(() => {
     fetch(`/support/tickets/${ticketnumber}`)
@@ -33,11 +36,49 @@ function ClientTicketDetail() {
         setDesc(ticket.data.description);
         setImpactSelected(ticket.data.impact);
         setDateCreated(ticket.data.dateOfTicketCreated);
+        setFollowUps(ticket.data.followUps);
       })
       .catch((error) =>
         console.log("error in ClientTicketDetail: ", error.message)
       );
-  });
+  }, [isUpdated]);
+
+  const addUpdateToTicket = (updateNote) => {
+    if (updateNote.length < 4) {
+      alert("Please add a valid update");
+      return;
+    }
+    const ticketUpdate = {
+      assigneeUsername: clientAccount.username,
+      assignee:
+        clientAccount.loginInfo.given_name +
+        " " +
+        clientAccount.loginInfo.family_name,
+      updateNote: updateNote,
+      dateOfUpdate:
+        new Date().toLocaleDateString() +
+        " at " +
+        new Date().toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        }),
+    };
+
+    fetch(`/support/tickets/addNoteToTicket/${ticketnumber}`, {
+      method: "PATCH",
+      headers: {"content-type": "application/json; charset=UTF-8"},
+      body: JSON.stringify({
+        ticketUpdate: ticketUpdate,
+      }),
+    })
+      .then((response) => response.json())
+      .then((update) => {
+        alert(update.message);
+        setIsUpdated(!isUpdated);
+      })
+      .catch((error) => console.log(error.message));
+  };
 
   return (
     <>
@@ -151,11 +192,31 @@ function ClientTicketDetail() {
             <TicketNote>
               <NoteContainer>
                 <NoteLbl>Add Update: </NoteLbl>
-                <NoteArea />
+                <NoteArea
+                  onChange={(e) => {
+                    setUpdateNote(e.target.value);
+                  }}
+                />
                 <ButtonRow>
-                  <UpdateBtn>Update</UpdateBtn>
+                  <UpdateBtn
+                    onClick={() => {
+                      addUpdateToTicket(updateNote);
+                    }}
+                  >
+                    Update
+                  </UpdateBtn>
                 </ButtonRow>
               </NoteContainer>
+              {followUps
+                .map((ticket) => {
+                  return (
+                    <SupportTicketFollowUp
+                      ticket={ticket}
+                      supporter={clientAccount.username}
+                    />
+                  );
+                })
+                .reverse()}
             </TicketNote>
           </Ticket>
         </TicketDetail>
@@ -165,6 +226,13 @@ function ClientTicketDetail() {
     </>
   );
 }
+
+const SideBar = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 
 const NoteLbl = styled.label``;
 
@@ -238,12 +306,6 @@ const Wrapper = styled.div`
 
 const TicketDetail = styled.div`
   display: flex;
-`;
-
-const SideBar = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
 `;
 

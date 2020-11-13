@@ -5,9 +5,9 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import Loading from "../../Loading";
+import SupportTicketFollowUp from "./SupportTicketFollowUp";
 
 const SupportTicketDetail = () => {
-  console.log("SupportTicketDetail");
   const [priority, setPriority] = React.useState("Low");
   const [risk, setRisk] = React.useState("Select Risk Level");
   const [impact, setImpact] = React.useState("Low");
@@ -18,10 +18,10 @@ const SupportTicketDetail = () => {
   const [assignee, setAssignee] = React.useState(null);
   const [ticketStatus, setTicketStatus] = React.useState(null);
   const [followUps, setFollowUps] = React.useState([]);
+  const [updateNote, setUpdateNote] = React.useState("");
+  const [isUpdated, setIsUpdated] = React.useState(false);
 
   let {supporter, ticketId} = useParams();
-
-  console.log("supporter: ", supporter);
 
   React.useEffect(() => {
     fetch(`/support/tickets/${ticketId}`)
@@ -44,9 +44,43 @@ const SupportTicketDetail = () => {
         });
       })
       .catch((error) => console.log("error: ", error));
-  }, []);
+  }, [isUpdated]);
 
   console.log("assGroupMembers: ", assGroupMembers);
+
+  const addUpdateToTicket = (updateNote) => {
+    if (updateNote.length < 4) {
+      alert("Please add a valid update");
+      return;
+    }
+    const ticketUpdate = {
+      assigneeUsername: supporter,
+      assignee: assignee,
+      updateNote: updateNote,
+      dateOfUpdate:
+        new Date().toLocaleDateString() +
+        " at " +
+        new Date().toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        }),
+    };
+
+    fetch(`/support/tickets/addNoteToTicket/${ticketId}`, {
+      method: "PATCH",
+      headers: {"content-type": "application/json; charset=UTF-8"},
+      body: JSON.stringify({
+        ticketUpdate: ticketUpdate,
+      }),
+    })
+      .then((response) => response.json())
+      .then((update) => {
+        alert(update.message);
+        setIsUpdated(!isUpdated);
+      })
+      .catch((error) => console.log(error.message));
+  };
 
   const assignmentGroupSelected = (group) => {
     console.log("group: ", group);
@@ -105,7 +139,8 @@ const SupportTicketDetail = () => {
           <AgentSideBar supporter={supporter} />
         </SideBar>
       )}
-      <TicketForm onSubmit={updateTicket}>
+
+      <TicketForm>
         <SupportTicketBanner>Incident Report </SupportTicketBanner>
         {ticketDetail ? (
           <Details>
@@ -296,19 +331,51 @@ const SupportTicketDetail = () => {
               <ButtonSubmit
                 disabled={supporter !== "admin"}
                 supporter={supporter !== "admin"}
+                onClick={updateTicket}
               >
                 Submit
               </ButtonSubmit>
             </ButtonRow>
+            {supporter == "admin" &&
+              followUps
+                .map((ticket) => {
+                  return (
+                    <SupportTicketFollowUp
+                      ticket={ticket}
+                      supporter={supporter}
+                    />
+                  );
+                })
+                .reverse()}
             {supporter !== "admin" && (
               <TicketNote>
                 <NoteContainer>
                   <NoteLbl>Add Update: </NoteLbl>
-                  <NoteArea />
+                  <NoteArea
+                    onChange={(e) => {
+                      setUpdateNote(e.target.value);
+                    }}
+                  />
                   <UpdateButtonRow>
-                    <UpdateBtn>Update</UpdateBtn>
+                    <UpdateBtn
+                      onClick={() => {
+                        addUpdateToTicket(updateNote);
+                      }}
+                    >
+                      Update
+                    </UpdateBtn>
                   </UpdateButtonRow>
                 </NoteContainer>
+                {followUps
+                  .map((ticket) => {
+                    return (
+                      <SupportTicketFollowUp
+                        ticket={ticket}
+                        supporter={supporter}
+                      />
+                    );
+                  })
+                  .reverse()}
               </TicketNote>
             )}
           </Details>
@@ -333,7 +400,7 @@ const NoteLbl = styled.label``;
 const NoteContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1%;
+  padding: 0 1%;
 `;
 
 const UpdateBtn = styled.button`
@@ -364,7 +431,7 @@ const TopHalf = styled.div`
   border-bottom: 1px solid black;
 `;
 
-const TicketForm = styled.form`
+const TicketForm = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -375,7 +442,6 @@ const TicketForm = styled.form`
 const SupportTicketBanner = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   background-color: #1d3557;
   justify-content: center;
   color: white;

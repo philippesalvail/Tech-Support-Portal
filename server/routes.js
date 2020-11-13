@@ -25,6 +25,7 @@ const {
   searchSupporter,
   createSupportAccount,
   getClientProfile,
+  addNoteToTicket,
 } = require("./handlers");
 
 router.post("/client/clientCreated", createClientAccount);
@@ -38,6 +39,7 @@ router.get("/support/tickets/getresolvedtickets/:username", getResolvedTickets);
 router.get("/support/tickets/getalltickets/:username", getAllTickets);
 
 router.put("/support/tickets/updateTicket", updateTicketDetail);
+router.patch("/support/tickets/addNoteToTicket/:ticketId", addNoteToTicket);
 router.get("/support/tickets/:getTicket", getTicketDetail);
 
 router.put("/support/accounts/enableAccount", activateSupportAccount);
