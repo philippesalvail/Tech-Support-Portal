@@ -26,6 +26,7 @@ function ClientTicketDetail() {
   const clientAccount = useSelector((state) => state.client);
   const [isUpdated, setIsUpdated] = React.useState(false);
   const [updateNote, setUpdateNote] = React.useState("");
+  const [supportAssignee, setSupportAssignee] = React.useState(null);
 
   React.useEffect(() => {
     fetch(`/support/tickets/${ticketnumber}`)
@@ -37,6 +38,7 @@ function ClientTicketDetail() {
         setImpactSelected(ticket.data.impact);
         setDateCreated(ticket.data.dateOfTicketCreated);
         setFollowUps(ticket.data.followUps);
+        setSupportAssignee(ticket.data.assignee);
       })
       .catch((error) =>
         console.log("error in ClientTicketDetail: ", error.message)
@@ -63,6 +65,7 @@ function ClientTicketDetail() {
           minute: "numeric",
           hour12: true,
         }),
+      email: clientAccount.loginInfo.email,
     };
 
     fetch(`/support/tickets/addNoteToTicket/${ticketnumber}`, {

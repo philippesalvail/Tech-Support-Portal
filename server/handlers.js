@@ -5,6 +5,16 @@ const {error} = require("console");
 require("dotenv").config();
 let objID = require("mongodb").ObjectID;
 
+const nodemailer = require("nodemailer");
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
 const {MONGO_URI} = process.env;
 
 const options = {
@@ -94,19 +104,28 @@ const createClientAccount = async (req, res) => {
       });
       return;
     } else {
-      console.log("new user: ", newUser);
       const table = await database.collection("Clients").insertOne(newUser);
       assert.equal(1, table.insertedCount);
-      res.status(201).json({
-        status: 201,
-        data: newUser,
-        message:
-          "Account for " +
-          newUser.loginInfo.given_name +
-          " " +
-          newUser.loginInfo.family_name +
-          " has been created successfully",
-        accountCreated: true,
+      let mailOptions = {
+        from: process.env.EMAIL_USERNAME,
+        to: newUser.loginInfo.email,
+        subject: "Client Account Confirmation",
+        text: `Your account ${billingInfo.username} was created succesfully`,
+      };
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          res.status(500).send({
+            status: 500,
+            message: "Account creation not confirmed",
+          });
+        } else {
+          res.status(201).json({
+            status: 201,
+            data: newUser,
+            message: `Account confirmation has been sent by email from ${process.env.EMAIL_USERNAME}`,
+            accountCreated: true,
+          });
+        }
       });
     }
     client.close();
@@ -144,15 +163,31 @@ const createClientTicket = async (req, res) => {
     const table = await database
       .collection("Support_Tickets")
       .insertOne(newTicket);
-    res.status(201).json({
-      status: 201,
-      message:
-        "Ticket for issue: " +
-        newTicket.shortDescription +
-        " was created successfully",
+
+    let mailOptions = {
+      from: process.env.EMAIL_USERNAME,
+      to: ticketInfo.clientAccount.email,
+      subject: `Incident Number Confirmation: ${table.ops[0]._id}`,
+      text: `Issue Description: ${ticketInfo.desc}\nOne of our tech support agents will contact you shortly`,
+    };
+
+    transporter.sendMail(mailOptions, function (err, data) {
+      if (err) {
+        res.status(500).send({
+          status: 500,
+          message: "Account creation not confirmed",
+        });
+      } else {
+        res.status(201).json({
+          status: 201,
+          message:
+            "Ticket for issue: " +
+            newTicket.shortDescription +
+            " was created successfully. Confirmation email was sent",
+        });
+      }
     });
     client.close();
-    console.log("success in createClientTicket: ");
   } catch (error) {
     console.log("error in createClientTicket: ", error.message);
     res
@@ -169,13 +204,31 @@ const addNoteToTicket = async (req, res) => {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    const data = await database
-      .collection("Support_Tickets")
-      .update({_id: objID(ticketId)}, {$push: {followUps: ticketUpdate}});
-    res.status(200).json({
-      status: 200,
-      data: data,
-      message: "Note for ticket: " + ticketId + " added successfully",
+    await database.collection("Support_Tickets").updateOne(
+      {_id: objID(ticketId)},
+      {
+        $push: {followUps: ticketUpdate},
+      }
+    );
+    let mailOptions = {
+      from: process.env.EMAIL_USERNAME,
+      to: ticketUpdate.email,
+      subject: `Ticket number: ${ticketId} has been Updated`,
+      text: `${ticketUpdate.assignee}\nWrote: ${ticketUpdate.updateNote}\nTicket will appear in \"Resolved\" section`,
+    };
+    transporter.sendMail(mailOptions, function (err, data) {
+      if (err) {
+        res.status(500).send({
+          status: 500,
+          message: "Ticket update not confirmed",
+        });
+      } else {
+        res.status(201).json({
+          status: 201,
+          message: `Ticket: ${ticketId} was updated. Email was sent.`,
+          accountCreated: true,
+        });
+      }
     });
   } catch (error) {
     res.status(500).json({status: 500, message: error.message});
@@ -191,7 +244,7 @@ const getTicketDetail = async (req, res) => {
     const data = await database
       .collection("Support_Tickets")
       .findOne({_id: objID(getTicket)});
-
+    console.log("data: ", data);
     const teams = await database.collection("Support_Teams").find().toArray();
 
     data && teams
@@ -318,10 +371,9 @@ const getPendingTickets = async (req, res) => {
       const agent = await database
         .collection("Supporters")
         .findOne({username: username});
-
       const getTeamTickets = await database
         .collection("Support_Tickets")
-        .find({assignmentGroup: agent.team})
+        .find({assignmentGroup: agent.team, ticketStatus: "In Progress"})
         .toArray();
 
       agent && getTeamTickets
@@ -610,31 +662,6 @@ const activateSupportAccount = async (req, res) => {
     res.status(500).json({status: 500, message: error.message});
   }
 };
-
-// const changeAccountState = async (req, res) => {
-//   const {username} = req.params;
-//   const {isEnabled} = req.body;
-//   try {
-//     const client = await MongoClient(MONGO_URI, options);
-//     await client.connect();
-//     const database = client.db("Tech_Support");
-//     const supporter = await database.collection("Supporters").updateOne(
-//       {username: username},
-//       {
-//         $set: {
-//           isEnabled: isEnabled,
-//         },
-//       }
-//     );
-//     let state = isEnabled
-//       ? "Account for username " + username + " has been re-enabled"
-//       : "Account for username " + username + " has been disabled";
-
-//     res.status(200).json({status: 200, message: state});
-//   } catch (error) {
-//     res.status(500).json({status: 500, message: error.message});
-//   }
-// };
 
 const doesSupportUserNameExists = async (req, res) => {
   const {username} = req.params;
