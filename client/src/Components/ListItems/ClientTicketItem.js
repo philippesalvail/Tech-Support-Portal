@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 function ClientTicketItem(props) {
   let history = useHistory();
   const {ticket, index} = props;
+  console.log("ticket: ", ticket);
   const clientTicketDetailHandler = (ticketId) => {
     console.log("ticketId: ", ticketId);
     history.push(`/client/portal/ticket/${ticketId}`);
