@@ -25,6 +25,9 @@ export default function SupportAccountReducer(state = initialState, action) {
         status: action.error,
       };
     }
+    case "DESTROY_SUPPORT_PROFILE": {
+      return initialState;
+    }
     default: {
       return state;
     }

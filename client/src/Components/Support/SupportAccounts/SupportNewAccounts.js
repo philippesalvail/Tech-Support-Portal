@@ -11,6 +11,7 @@ function SupportNewAccounts() {
   let history = useHistory();
   const [accounts, setAccounts] = React.useState(null);
   const [enableAccount, setEnableAccount] = React.useState(false);
+  const [resetList, setResetList] = React.useState(false);
 
   React.useEffect(() => {
     fetch("/support/supporter/getNewSupportAccounts")
@@ -19,7 +20,7 @@ function SupportNewAccounts() {
         setAccounts(accounts.accounts);
       })
       .catch((error) => console.log("error: ", error));
-  }, [enableAccount]);
+  }, [enableAccount, resetList]);
 
   const logOut = () => {
     history.push("/");
@@ -58,6 +59,8 @@ function SupportNewAccounts() {
                       setEnableAccount={setEnableAccount}
                       enableAccount={enableAccount}
                       index={index}
+                      setResetList={setResetList}
+                      resetList={resetList}
                     />
                   );
                 })}

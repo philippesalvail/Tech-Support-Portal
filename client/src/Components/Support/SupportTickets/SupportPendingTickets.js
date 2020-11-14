@@ -4,19 +4,11 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
-import Loading from "../../Loading";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 
-import {
-  requestSupporterProfile,
-  receiveSupporterProfile,
-  receiveSupporterProfileError,
-} from "../../../actions";
-
 function SupportPendingTickets() {
-  const dispatch = useDispatch();
   let history = useHistory();
 
   let {supporter} = useParams();
@@ -36,7 +28,7 @@ function SupportPendingTickets() {
           setTickets(supporter.getTeamTickets);
         }
       })
-      .catch((error) => dispatch(receiveSupporterProfileError(error)));
+      .catch((error) => alert(error.message));
   }, []);
 
   return (
@@ -52,7 +44,7 @@ function SupportPendingTickets() {
               <SupportTicketBanner>
                 <BannerTitle>Pending Tickets</BannerTitle>
                 <BannerUserAccount>
-                  <Wrapper>Welcome: {supporter} </Wrapper>
+                  <Wrapper>Welcome: {supporter}&nbsp;</Wrapper>
                   <LogOutBtn onClick={logOut}>Log Out</LogOutBtn>
                 </BannerUserAccount>
               </SupportTicketBanner>

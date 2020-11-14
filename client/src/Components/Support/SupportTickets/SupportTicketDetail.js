@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import {useParams} from "react-router-dom";
+import {Redirect, useParams, useHistory} from "react-router-dom";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import Loading from "../../Loading";
 import {useSelector, useDispatch} from "react-redux";
 import SupportTicketFollowUp from "./SupportTicketFollowUp";
+import {destroySupporterProfileError} from "../../../actions";
 
 const SupportTicketDetail = () => {
+  let dispatch = useDispatch();
+  let history = useHistory();
   const [priority, setPriority] = React.useState("Low");
   const [risk, setRisk] = React.useState("Select Risk Level");
   const [impact, setImpact] = React.useState("Low");
@@ -21,9 +24,20 @@ const SupportTicketDetail = () => {
   const [followUps, setFollowUps] = React.useState([]);
   const [updateNote, setUpdateNote] = React.useState("");
   const [isUpdated, setIsUpdated] = React.useState(false);
+
   let {supporter, ticketId} = useParams();
 
-  const supportAccount = useSelector((state) => state.agent);
+  const logOut = () => {
+    history.push("/");
+    if (supportAccount) {
+      let setAccountToNull = null;
+      dispatch(destroySupporterProfileError(setAccountToNull));
+    }
+  };
+
+  const supportAccount = useSelector((state) => state.supporter.agent);
+
+  console.log("supportAccount: ", supportAccount);
 
   React.useEffect(() => {
     fetch(`/support/tickets/${ticketId}`)
@@ -97,6 +111,12 @@ const SupportTicketDetail = () => {
   const updateTicket = (e) => {
     e.preventDefault();
     let errorMessage = "";
+    if (ticketStatus === "New") {
+      errorMessage += "Please change ticket status\n";
+    }
+    if (assGroup === null) {
+      errorMessage += "Please select an assignment group\n";
+    }
     if (assGroup === null) {
       errorMessage += "Please select an assignment group\n";
     }
@@ -145,237 +165,214 @@ const SupportTicketDetail = () => {
         </SideBar>
       )}
 
-      <TicketForm>
-        <SupportTicketBanner>Incident Report </SupportTicketBanner>
-        {ticketDetail ? (
-          <Details>
-            <TopHalf>
-              <Row>
-                <Detail>
-                  <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
-                  <TicketNumberTxt
-                    defaultValue={ticketDetail._id}
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  />
-                </Detail>
-                <Detail>
-                  <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
-                  <DropDownSelect
-                    id="productType"
-                    name="product"
-                    defaultValue="selectProduct"
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  >
-                    <option value="selectProduct" disabled hidden>
-                      {ticketDetail.productType}
-                    </option>
-                    <option value="hardware">Hardware</option>
-                    <option value="software">Software</option>
-                    <option value="cellPhone">CellPhone</option>
-                    <option value="email">Email</option>
-                  </DropDownSelect>
-                </Detail>
-              </Row>
-              <Row>
-                <Detail>
-                  <RequestorLbl>Requested By &nbsp;</RequestorLbl>
-                  <RequestorTxt
-                    defaultValue={ticketDetail.customerName}
-                    disabled={supporter !== "admin"}
-                  />
-                </Detail>
-                <Detail>
-                  <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
-                  <DropDownSelect
-                    id="state"
-                    name="state"
-                    defaultValue="selectStatus"
-                    onChange={(e) => setTicketStatus(e.currentTarget.value)}
-                  >
-                    <option value="selectStatus" disabled hidden>
-                      {ticketStatus ? ticketStatus : "New"}
-                    </option>
-                    <option value="New">New</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Resolved">Resolved</option>
-                  </DropDownSelect>
-                </Detail>
-              </Row>
-              <Row>
-                <Detail>
-                  <SelectLbl htmlFor="priority">Priority &nbsp;</SelectLbl>
-                  <DropDownSelect
-                    id="priority"
-                    name="priority"
-                    onChange={(e) => setPriority(e.currentTarget.value)}
-                    defaultValue="selectPriority"
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  >
-                    <option value="selectPriority" disabled hidden>
-                      {ticketDetail.priority}
-                    </option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </DropDownSelect>
-                </Detail>
-                <Detail>
-                  <SelectLbl htmlFor="assignmentGroup">
-                    Assignment group
-                  </SelectLbl>
-                  <DropDownSelect
-                    id="assignmentGroup"
-                    name="assignmentGroup"
-                    defaultValue="selectAssignmentGroup"
-                    onChange={(e) => assignmentGroupSelected(e.target.value)}
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  >
-                    <option value="selectAssignmentGroup" disabled hidden>
-                      {assGroup ? assGroup : "Select Assignment Group"}
-                    </option>
-                    {supportTeams.map((team) => {
-                      return (
-                        <option value={team.supportName}>
-                          {team.supportName}
-                        </option>
-                      );
-                    })}
-                  </DropDownSelect>
-                </Detail>
-              </Row>
-              <Row>
-                <Detail>
-                  <SelectLbl htmlFor="risk">Risk </SelectLbl>
-                  <DropDownSelect
-                    id="risk"
-                    name="risk"
-                    onChange={(e) => setRisk(e.currentTarget.value)}
-                    defaultValue="selectRisk"
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  >
-                    <option value="selectRisk" disabled hidden>
-                      {risk ? risk : "Select Risk Level"}
-                    </option>
-                    <option value="low">Low</option>
-                    <option value="moderate">Medium</option>
-                    <option value="severe">High</option>
-                  </DropDownSelect>
-                </Detail>
-                <Detail>
-                  <SelectLbl htmlFor="assignee">Select Assignee</SelectLbl>
-                  <DropDownSelect
-                    id="assignee"
-                    name="assignee"
-                    defaultValue="selectAssignee"
-                    onChange={(e) => setAssignee(e.currentTarget.value)}
-                  >
-                    <option value="selectAssignee" disabled hidden>
-                      {assignee ? assignee : "Select Assignee"}
-                    </option>
-                    {assGroupMembers &&
-                      assGroupMembers.map((member) => {
+      {supportAccount || supporter === "admin" ? (
+        <TicketForm>
+          <SupportTicketBanner>
+            <IncidentReportTitle>Incident Report </IncidentReportTitle>
+            <IncidentReportLogout>
+              {supportAccount ? supportAccount.name : "admin"} &nbsp;
+              <LogOutBtn onClick={logOut}>Log Out</LogOutBtn>
+            </IncidentReportLogout>
+          </SupportTicketBanner>
+          {ticketDetail ? (
+            <Details>
+              <TopHalf>
+                <Row>
+                  <Detail>
+                    <TicketNumberLbl>Incident number &nbsp;</TicketNumberLbl>
+                    <TicketNumberTxt
+                      defaultValue={ticketDetail._id}
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
+                    />
+                  </Detail>
+                  <Detail>
+                    <SelectLbl htmlFor="product">Product Type &nbsp;</SelectLbl>
+                    <DropDownSelect
+                      id="productType"
+                      name="product"
+                      defaultValue="selectProduct"
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
+                    >
+                      <option value="selectProduct" disabled hidden>
+                        {ticketDetail.productType}
+                      </option>
+                      <option value="hardware">Hardware</option>
+                      <option value="software">Software</option>
+                      <option value="cellPhone">CellPhone</option>
+                      <option value="email">Email</option>
+                    </DropDownSelect>
+                  </Detail>
+                </Row>
+                <Row>
+                  <Detail>
+                    <RequestorLbl>Requested By &nbsp;</RequestorLbl>
+                    <RequestorTxt
+                      defaultValue={ticketDetail.customerName}
+                      disabled={supporter !== "admin"}
+                    />
+                  </Detail>
+                  <Detail>
+                    <SelectLbl htmlFor="state">State &nbsp;</SelectLbl>
+                    <DropDownSelect
+                      id="state"
+                      name="state"
+                      defaultValue="selectStatus"
+                      onChange={(e) => setTicketStatus(e.currentTarget.value)}
+                    >
+                      <option value="selectStatus" disabled hidden>
+                        {ticketStatus ? ticketStatus : "New"}
+                      </option>
+                      <option value="New">New</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Resolved">Resolved</option>
+                    </DropDownSelect>
+                  </Detail>
+                </Row>
+                <Row>
+                  <Detail>
+                    <SelectLbl htmlFor="priority">Priority &nbsp;</SelectLbl>
+                    <DropDownSelect
+                      id="priority"
+                      name="priority"
+                      onChange={(e) => setPriority(e.currentTarget.value)}
+                      defaultValue="selectPriority"
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
+                    >
+                      <option value="selectPriority" disabled hidden>
+                        {ticketDetail.priority}
+                      </option>
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </DropDownSelect>
+                  </Detail>
+                  <Detail>
+                    <SelectLbl htmlFor="assignmentGroup">
+                      Assignment group
+                    </SelectLbl>
+                    <DropDownSelect
+                      id="assignmentGroup"
+                      name="assignmentGroup"
+                      defaultValue="selectAssignmentGroup"
+                      onChange={(e) => assignmentGroupSelected(e.target.value)}
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
+                    >
+                      <option value="selectAssignmentGroup" disabled hidden>
+                        {assGroup ? assGroup : "Select Assignment Group"}
+                      </option>
+                      {supportTeams.map((team) => {
                         return (
-                          <option key={member} value={member}>
-                            {member}
+                          <option value={team.supportName}>
+                            {team.supportName}
                           </option>
                         );
                       })}
-                  </DropDownSelect>
-                </Detail>
-              </Row>
-              <Row>
-                <Detail>
-                  <SelectLbl htmlFor="impact">Impact </SelectLbl>
-                  <DropDownSelect
-                    id="impact"
-                    name="impact"
-                    onChange={(e) => setImpact(e.currentTarget.value)}
-                    defaultValue="selectImpact"
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  >
-                    <option value="selectImpact" disabled hidden>
-                      {ticketDetail.impact}
-                    </option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </DropDownSelect>
-                </Detail>
-                <Detail>
-                  <DateLbl>Date Opened</DateLbl>
-                  <DateTxt
-                    defaultValue={ticketDetail.dateOfTicketCreated}
-                    disabled={supporter !== "admin"}
-                    supporter={supporter !== "admin"}
-                  />
-                </Detail>
-              </Row>
-            </TopHalf>
-            <DescriptionRow>
-              <ShortDescription>
-                <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
-                <ShortDescriptionTxt
-                  defaultValue={ticketDetail.shortDescription}
-                  disabled={supporter !== "admin"}
-                  supporter={supporter !== "admin"}
-                />
-              </ShortDescription>
-              <Description>
-                <DescriptionLbl>Description</DescriptionLbl>
-                <DescriptionTxt
-                  defaultValue={ticketDetail.description}
-                  disabled={supporter !== "admin"}
-                  supporter={supporter !== "admin"}
-                />
-              </Description>
-            </DescriptionRow>
-            <ButtonRow>
-              <ButtonSubmit
-                disabled={supporter !== "admin"}
-                supporter={supporter !== "admin"}
-                onClick={updateTicket}
-              >
-                Submit
-              </ButtonSubmit>
-            </ButtonRow>
-            {supporter == "admin" &&
-              followUps
-                .map((ticket) => {
-                  return (
-                    <SupportTicketFollowUp
-                      ticket={ticket}
-                      supporter={supporter}
-                    />
-                  );
-                })
-                .reverse()}
-            {supporter !== "admin" && (
-              <TicketNote>
-                <NoteContainer>
-                  <NoteLbl>Add Update: </NoteLbl>
-                  <NoteArea
-                    onChange={(e) => {
-                      setUpdateNote(e.target.value);
-                    }}
-                    value={updateNote}
-                  />
-                  <UpdateButtonRow>
-                    <UpdateBtn
-                      onClick={() => {
-                        addUpdateToTicket(updateNote);
-                      }}
+                    </DropDownSelect>
+                  </Detail>
+                </Row>
+                <Row>
+                  <Detail>
+                    <SelectLbl htmlFor="risk">Risk </SelectLbl>
+                    <DropDownSelect
+                      id="risk"
+                      name="risk"
+                      onChange={(e) => setRisk(e.currentTarget.value)}
+                      defaultValue="selectRisk"
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
                     >
-                      Update
-                    </UpdateBtn>
-                  </UpdateButtonRow>
-                </NoteContainer>
-                {followUps
+                      <option value="selectRisk" disabled hidden>
+                        {risk ? risk : "Select Risk Level"}
+                      </option>
+                      <option value="low">Low</option>
+                      <option value="moderate">Medium</option>
+                      <option value="severe">High</option>
+                    </DropDownSelect>
+                  </Detail>
+                  <Detail>
+                    <SelectLbl htmlFor="assignee">Select Assignee</SelectLbl>
+                    <DropDownSelect
+                      id="assignee"
+                      name="assignee"
+                      defaultValue="selectAssignee"
+                      onChange={(e) => setAssignee(e.currentTarget.value)}
+                    >
+                      <option value="selectAssignee" disabled hidden>
+                        {assignee ? assignee : "Select Assignee"}
+                      </option>
+                      {assGroupMembers &&
+                        assGroupMembers.map((member) => {
+                          return (
+                            <option key={member} value={member}>
+                              {member}
+                            </option>
+                          );
+                        })}
+                    </DropDownSelect>
+                  </Detail>
+                </Row>
+                <Row>
+                  <Detail>
+                    <SelectLbl htmlFor="impact">Impact </SelectLbl>
+                    <DropDownSelect
+                      id="impact"
+                      name="impact"
+                      onChange={(e) => setImpact(e.currentTarget.value)}
+                      defaultValue="selectImpact"
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
+                    >
+                      <option value="selectImpact" disabled hidden>
+                        {ticketDetail.impact}
+                      </option>
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </DropDownSelect>
+                  </Detail>
+                  <Detail>
+                    <DateLbl>Date Opened</DateLbl>
+                    <DateTxt
+                      defaultValue={ticketDetail.dateOfTicketCreated}
+                      disabled={supporter !== "admin"}
+                      supporter={supporter !== "admin"}
+                    />
+                  </Detail>
+                </Row>
+              </TopHalf>
+              <DescriptionRow>
+                <ShortDescription>
+                  <ShortDescriptionLbl>Short Description </ShortDescriptionLbl>
+                  <ShortDescriptionTxt
+                    defaultValue={ticketDetail.shortDescription}
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
+                  />
+                </ShortDescription>
+                <Description>
+                  <DescriptionLbl>Description</DescriptionLbl>
+                  <DescriptionTxt
+                    defaultValue={ticketDetail.description}
+                    disabled={supporter !== "admin"}
+                    supporter={supporter !== "admin"}
+                  />
+                </Description>
+              </DescriptionRow>
+              <ButtonRow>
+                <ButtonSubmit
+                  disabled={supporter !== "admin"}
+                  supporter={supporter !== "admin"}
+                  onClick={updateTicket}
+                >
+                  Submit
+                </ButtonSubmit>
+              </ButtonRow>
+              {supporter == "admin" &&
+                followUps
                   .map((ticket) => {
                     return (
                       <SupportTicketFollowUp
@@ -385,15 +382,48 @@ const SupportTicketDetail = () => {
                     );
                   })
                   .reverse()}
-              </TicketNote>
-            )}
-          </Details>
-        ) : (
-          <Loader>
-            <Loading />
-          </Loader>
-        )}
-      </TicketForm>
+              {supporter !== "admin" && (
+                <TicketNote>
+                  <NoteContainer>
+                    <NoteLbl>Add Update: </NoteLbl>
+                    <NoteArea
+                      onChange={(e) => {
+                        setUpdateNote(e.target.value);
+                      }}
+                      value={updateNote}
+                    />
+                    <UpdateButtonRow>
+                      <UpdateBtn
+                        onClick={() => {
+                          addUpdateToTicket(updateNote);
+                        }}
+                      >
+                        Update
+                      </UpdateBtn>
+                    </UpdateButtonRow>
+                  </NoteContainer>
+                  {followUps
+                    .map((ticket) => {
+                      return (
+                        <SupportTicketFollowUp
+                          ticket={ticket}
+                          supporter={supporter}
+                        />
+                      );
+                    })
+                    .reverse()}
+                </TicketNote>
+              )}
+            </Details>
+          ) : (
+            <Loader>
+              <Loading />
+            </Loader>
+          )}
+        </TicketForm>
+      ) : (
+        <Redirect to={"/"} />
+      )}
     </Portal>
   );
 };
@@ -403,6 +433,12 @@ const SideBar = styled.div`
   flex-direction: column;
   min-height: 100vh;
 `;
+const IncidentReportTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const IncidentReportLogout = styled.div``;
 
 const NoteLbl = styled.label``;
 
@@ -443,16 +479,14 @@ const TopHalf = styled.div`
 const TicketForm = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
   flex: 5;
   background-color: #f1faee;
   min-height: 100vh;
 `;
 const SupportTicketBanner = styled.div`
   display: flex;
-  flex-direction: column;
   background-color: #1d3557;
-  justify-content: center;
+  justify-content: space-between;
   color: white;
   font-weight: bold;
   padding: 1%;
@@ -545,10 +579,19 @@ const ButtonSubmit = styled.button`
 
 const Details = styled.div`
   background-color: #a8dadc;
+  min-height: 100vh;
 `;
 const Loader = styled.div`
   position: relative;
   flex: 5;
+`;
+
+const LogOutBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  outline: none;
 `;
 
 export default SupportTicketDetail;

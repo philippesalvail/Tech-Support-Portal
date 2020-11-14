@@ -56,7 +56,7 @@ function SupportSignUpPage() {
       {teams ? (
         <SignUp>
           <SupportBanner>Sign Up</SupportBanner>
-          <SignUpPage onSubmit={signUpHandler}>
+          <SignUpPage>
             <FirstName>
               <FirstNameLbl>First Name: </FirstNameLbl>
               <FirstNameTxt onChange={(e) => setFirstName(e.target.value)} />
@@ -93,7 +93,7 @@ function SupportSignUpPage() {
               >
                 Cancel
               </CancelBtn>
-              <SubmitBtn type="submit">Sign Up</SubmitBtn>
+              <SubmitBtn onClick={signUpHandler}>Sign Up</SubmitBtn>
             </ButtonRow>
           </SignUpPage>
         </SignUp>
@@ -103,13 +103,12 @@ function SupportSignUpPage() {
     </>
   );
 }
-const ErrorDisplayed = styled.div`
-  min-height: 25vh;
-`;
 
 const SignUp = styled.div`
-  width: 35%;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1faee;
+  min-height: 100vh;
 `;
 
 const ButtonRow = styled.div`
@@ -120,20 +119,38 @@ const ButtonRow = styled.div`
   gap: 12px;
 `;
 
-const SubmitBtn = styled.button``;
-const CancelBtn = styled.button``;
+const SubmitBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  margin-right: 1%;
+  outline: none;
+`;
+const CancelBtn = styled.button`
+  color: #f1faee;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #457b9d;
+  margin-right: 1%;
+  outline: none;
+`;
 
 const SignUpPage = styled.form`
   display: flex;
   flex-direction: column;
   border: 1px solid black;
-  padding: 5%;
+  padding: 2%;
   border-radius: 25px;
+  background-color: #a8dadc;
+  width: 35%;
+  margin: 0 auto;
 `;
 const SupportBanner = styled.div`
   text-align: center;
   margin: 2%;
-  color: blue;
+
+  color: #457b9d;
   font-size: 1.75em;
 `;
 
