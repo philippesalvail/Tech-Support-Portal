@@ -4,10 +4,11 @@ import styled from "styled-components";
 
 function NewAccountItem(props) {
   const {_id, name, team, isValidated} = props.account;
-  console.log("props: ", props.account);
+  const {setEnableAccount, enableAccount, setResetList, resetList} = props;
+
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const {setEnableAccount, enableAccount} = props;
+
   const [teamSelected, setTeamSelected] = React.useState(props.account.team);
   const [teams, setTeams] = React.useState(null);
 
@@ -72,6 +73,7 @@ function NewAccountItem(props) {
           setEnableAccount(!enableAccount);
           setPassword("");
           setUsername("");
+          setResetList(!resetList);
         } else {
           alert(statusMessage.message);
         }

@@ -22,3 +22,8 @@ export const receiveSupporterProfileError = (error) => ({
   type: "REQUEST_SUPPORT_PROFILE_ERROR",
   error,
 });
+
+export const destroySupporterProfileError = (setAccountToNull) => ({
+  type: "DESTROY_SUPPORT_PROFILE",
+  setAccountToNull,
+});
