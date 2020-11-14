@@ -7,7 +7,7 @@ import TicketItem from "../../ListItems/TicketItem";
 import Loading from "../../Loading";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {useDispatch, useSelector} from "react-redux";
-import {useHistory, useParams} from "react-router-dom";
+import {Redirect, useHistory, useParams} from "react-router-dom";
 
 import {
   requestSupporterProfile,
@@ -118,7 +118,7 @@ function SupportPendingTickets() {
               </TicketDashBoard>
             </AdminPage>
           ) : (
-            <div>loading</div>
+            <Redirect to={"/"} />
           )}
         </>
       )}

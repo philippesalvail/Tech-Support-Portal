@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 function NewAccountItem(props) {
   const {_id, name, team, isValidated} = props.account;
-  console.log("props: ", props.index);
+  console.log("props: ", props.account);
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const {setEnableAccount, enableAccount} = props;
-  const [teamSelected, setTeamSelected] = React.useState("");
+  const [teamSelected, setTeamSelected] = React.useState(props.account.team);
   const [teams, setTeams] = React.useState(null);
 
   const valid = {
@@ -95,6 +95,10 @@ function NewAccountItem(props) {
           </SupporterUserName>
           <SupporterPassword>
             <Password
+              type="password"
+              id="txthidden"
+              name="txthidden"
+              size="15"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               passwordLength={valid.password || !password}

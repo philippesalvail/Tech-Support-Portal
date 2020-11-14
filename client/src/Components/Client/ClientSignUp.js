@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {useLocation, useHistory} from "react-router-dom";
+import {useLocation, useHistory, Redirect} from "react-router-dom";
 import {
   creditCardVerification,
   cscVerification,
@@ -9,8 +9,10 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LogOutButton from "../LogButtons/logout-button";
+import {useAuth0} from "@auth0/auth0-react";
 
 const ClientSignUp = () => {
+  const {isAuthenticated} = useAuth0();
   const location = useLocation();
   const {
     given_name,
@@ -19,6 +21,8 @@ const ClientSignUp = () => {
     nickname,
     picture,
   } = location.state.user;
+  console.log("location: ", location.state.user);
+  console.log("isAuthenticated: ", isAuthenticated);
   const history = useHistory();
   const [address, setAddress] = React.useState("");
   const [creditCard, setCreditCard] = React.useState("");
@@ -82,100 +86,104 @@ const ClientSignUp = () => {
   };
   return (
     <>
-      <Wrapper>
-        <SignUpPage>
-          <SignUpTitle>Create Your Account</SignUpTitle>
-          <SignUp>
-            <ClientName>
-              <Row>
-                <Lbl>First Name: </Lbl>
-                <FirstNameTxt
-                  value={given_name}
-                  disabled={given_name}
-                  firstNameAppears={given_name !== null}
-                  onChange={(e) => setGivenname(e.target.value)}
-                />
-              </Row>
-              <Row>
-                <Lbl>Last Name: </Lbl>
-                <LastNameTxt
-                  value={family_name}
-                  disabled={family_name}
-                  lastNameAppears={family_name !== null}
-                  onChange={(e) => setFamilyname(e.target.value)}
-                />
-              </Row>
-            </ClientName>
-            <LoginInfo>
-              <EmailRow>
-                <EmailLbl>Email: </EmailLbl>
-                <EmailTxt value={email} disabled={email} />
-              </EmailRow>
-              <UserNameRow>
-                <Lbl>Username: </Lbl>
-                <UsernameTxt
-                  value={username}
+      {isAuthenticated ? (
+        <Wrapper>
+          <SignUpPage>
+            <SignUpTitle>Create Your Account</SignUpTitle>
+            <SignUp>
+              <ClientName>
+                <Row>
+                  <Lbl>First Name: </Lbl>
+                  <FirstNameTxt
+                    value={given_name}
+                    disabled={given_name}
+                    firstNameAppears={given_name !== null}
+                    onChange={(e) => setGivenname(e.target.value)}
+                  />
+                </Row>
+                <Row>
+                  <Lbl>Last Name: </Lbl>
+                  <LastNameTxt
+                    value={family_name}
+                    disabled={family_name}
+                    lastNameAppears={family_name !== null}
+                    onChange={(e) => setFamilyname(e.target.value)}
+                  />
+                </Row>
+              </ClientName>
+              <LoginInfo>
+                <EmailRow>
+                  <EmailLbl>Email: </EmailLbl>
+                  <EmailTxt value={email} disabled={email} />
+                </EmailRow>
+                <UserNameRow>
+                  <Lbl>Username: </Lbl>
+                  <UsernameTxt
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                    usernameLength={!username || valid.username}
+                  />
+                </UserNameRow>
+              </LoginInfo>
+              <Address>
+                <Lbl>Address</Lbl>
+                <AddressTxt
+                  value={address}
                   onChange={(e) => {
-                    setUsername(e.target.value);
+                    setAddress(e.target.value);
                   }}
-                  usernameLength={!username || valid.username}
+                  addressLength={address.length}
+                  valid={!address || valid.address}
                 />
-              </UserNameRow>
-            </LoginInfo>
-            <Address>
-              <Lbl>Address</Lbl>
-              <AddressTxt
-                value={address}
-                onChange={(e) => {
-                  setAddress(e.target.value);
-                }}
-                addressLength={address.length}
-                valid={!address || valid.address}
-              />
-            </Address>
-            <CreditCard>
-              <CreditCardNumber>
-                <Lbl>Credit Card Number</Lbl>
-                <CreditCardTxt
-                  value={creditCard}
-                  onChange={(e) => {
-                    setCreditCard(creditCardVerification(e.target.value));
-                  }}
-                  valid={!creditCard || valid.creditCard}
-                />
-              </CreditCardNumber>
-              <CSC>
-                <CSCLbl>CSC</CSCLbl>
-                <CSCTxt
-                  value={csc}
-                  onChange={(e) => {
-                    setCsc(cscVerification(e.target.value));
-                  }}
-                  valid={!csc || valid.csc}
-                />
-              </CSC>
-              <Exp>
-                <ExpLbl>Exp. Date (MM/YYYY)</ExpLbl>
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="MM/yyyy"
-                  showMonthYearPicker
-                  showFullMonthYearPicker
-                  showTwoColumnMonthYearPicker
-                  isClearable
-                  minDate={new Date()}
-                  valid={selectedDate}
-                />
-              </Exp>
-            </CreditCard>
-            <Buttons>
-              <LogOutButton />
-              <SignUpBtn onClick={registerClientHandler}>Register</SignUpBtn>
-            </Buttons>
-          </SignUp>
-        </SignUpPage>
-      </Wrapper>
+              </Address>
+              <CreditCard>
+                <CreditCardNumber>
+                  <Lbl>Credit Card Number</Lbl>
+                  <CreditCardTxt
+                    value={creditCard}
+                    onChange={(e) => {
+                      setCreditCard(creditCardVerification(e.target.value));
+                    }}
+                    valid={!creditCard || valid.creditCard}
+                  />
+                </CreditCardNumber>
+                <CSC>
+                  <CSCLbl>CSC</CSCLbl>
+                  <CSCTxt
+                    value={csc}
+                    onChange={(e) => {
+                      setCsc(cscVerification(e.target.value));
+                    }}
+                    valid={!csc || valid.csc}
+                  />
+                </CSC>
+                <Exp>
+                  <ExpLbl>Exp. Date (MM/YYYY)</ExpLbl>
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                    dateFormat="MM/yyyy"
+                    showMonthYearPicker
+                    showFullMonthYearPicker
+                    showTwoColumnMonthYearPicker
+                    isClearable
+                    minDate={new Date()}
+                    valid={selectedDate}
+                  />
+                </Exp>
+              </CreditCard>
+              <Buttons>
+                <LogOutButton />
+                <SignUpBtn onClick={registerClientHandler}>Register</SignUpBtn>
+              </Buttons>
+            </SignUp>
+          </SignUpPage>
+        </Wrapper>
+      ) : (
+        <Redirect to="/" />
+      )}
     </>
   );
 };
@@ -247,10 +255,6 @@ const LoginInfo = styled.div`
 `;
 const Row = styled.div``;
 const Lbl = styled.label``;
-
-const Txt = styled.input`
-  background-color: #d3d3d3;
-`;
 
 const Address = styled.div`
   display: flex;

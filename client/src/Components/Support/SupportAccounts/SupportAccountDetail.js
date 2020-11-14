@@ -64,7 +64,6 @@ function SupportAccountDetail() {
         setPassword("");
         setUsername("");
         setNewTeam("");
-        setOldTeam("");
         setSupporterName("");
         alert(statusMessage.message);
       })
@@ -83,12 +82,14 @@ function SupportAccountDetail() {
       alert("Please enter a username");
       return;
     }
+
     fetch(`/support/supporter/searchSupporter/${userNameTyped}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.user === null) {
           alert("username: " + userNameTyped + " does not exists");
         } else if (supporter.user !== null && supporter.user.isEnabled) {
+          console.log("supporter: ", supporter);
           setSupporterFound(supporter.user);
           setAccountStatus("Enabled");
           setOldTeam(supporter.user.team);
@@ -96,6 +97,7 @@ function SupportAccountDetail() {
           setUsername(supporter.user.username);
           setSupporterName(supporter.user.name);
           setAccountState(supporter.user.isEnabled);
+          setNewTeam(supporter.user.team);
         } else if (supporter.user !== null && !supporter.user.isEnabled) {
           setAccountStatus("Disabled");
           setOldTeam(supporter.user.team);
@@ -191,6 +193,7 @@ function SupportAccountDetail() {
               onChange={(e) => {
                 setNewTeam(e.target.value);
               }}
+              value={newteam}
             >
               <option value="selectAssignmentGroup" disabled hidden>
                 {oldteam}

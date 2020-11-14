@@ -3,9 +3,9 @@ import {useAuth0} from "@auth0/auth0-react";
 import {useHistory} from "react-router-dom";
 
 const ClientDirection = () => {
-  const {user} = useAuth0();
+  const {user, isAuthenticated} = useAuth0();
   let history = useHistory();
-  console.log("user: ", user);
+  console.log("isAuthenticated: ", isAuthenticated);
   React.useEffect(() => {
     fetch(`/client/${user.email}`)
       .then((response) => response.json())
