@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {useHistory, useParams} from "react-router-dom";
+import {Redirect, useHistory, useParams} from "react-router-dom";
 import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import {useSelector} from "react-redux";
 import LogOutButton from "../LogButtons/logout-button";
@@ -99,9 +99,14 @@ function ClientTicketDetail() {
             <SupportTicketBanner>
               <BannerTitle>Incident Number: {ticketnumber}</BannerTitle>
               <BannerUserAccount>
-                <Wrapper>
-                  {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`}
-                </Wrapper>
+                {clientAccount.loginInfo ? (
+                  <Wrapper>
+                    {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`}
+                  </Wrapper>
+                ) : (
+                  <Redirect to={`/`} />
+                )}
+
                 <LogOutButton />
               </BannerUserAccount>
             </SupportTicketBanner>

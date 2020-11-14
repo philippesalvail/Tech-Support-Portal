@@ -5,6 +5,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import Loading from "../../Loading";
+import {useSelector, useDispatch} from "react-redux";
 import SupportTicketFollowUp from "./SupportTicketFollowUp";
 
 const SupportTicketDetail = () => {
@@ -20,8 +21,9 @@ const SupportTicketDetail = () => {
   const [followUps, setFollowUps] = React.useState([]);
   const [updateNote, setUpdateNote] = React.useState("");
   const [isUpdated, setIsUpdated] = React.useState(false);
-
   let {supporter, ticketId} = useParams();
+
+  const supportAccount = useSelector((state) => state.agent);
 
   React.useEffect(() => {
     fetch(`/support/tickets/${ticketId}`)
@@ -46,8 +48,6 @@ const SupportTicketDetail = () => {
       .catch((error) => console.log("error: ", error));
   }, [isUpdated]);
 
-  console.log("followUps: ", followUps);
-
   const addUpdateToTicket = (updateNote) => {
     let ticketUpdate = {};
     if (updateNote.length < 4) {
@@ -58,7 +58,7 @@ const SupportTicketDetail = () => {
     ticketUpdate = {
       customerEmail: ticketDetail.customerEmail,
       assigneeUsername: supporter,
-      assignee: assignee,
+      assignee: supportAccount.name,
       updateNote: updateNote,
       status: ticketStatus,
       dateOfUpdate:
