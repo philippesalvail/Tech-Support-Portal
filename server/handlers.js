@@ -199,38 +199,76 @@ const createClientTicket = async (req, res) => {
 const addNoteToTicket = async (req, res) => {
   const {ticketId} = req.params;
   const {ticketUpdate} = req.body;
-
+  console.log("ticketUpdate: ", ticketUpdate);
   try {
     const client = await MongoClient(MONGO_URI, options);
     await client.connect();
     const database = client.db("Tech_Support");
-    await database.collection("Support_Tickets").updateOne(
-      {_id: objID(ticketId)},
-      {
-        $push: {followUps: ticketUpdate},
-      }
-    );
-    let mailOptions = {
-      from: process.env.EMAIL_USERNAME,
-      to: ticketUpdate.email,
-      subject: `Ticket number: ${ticketId} has been Updated`,
-      text: `${ticketUpdate.assignee}\nWrote: ${ticketUpdate.updateNote}\nTicket will appear in \"Resolved\" section`,
-    };
-    transporter.sendMail(mailOptions, function (err, data) {
-      if (err) {
-        res.status(500).send({
-          status: 500,
-          message: "Ticket update not confirmed",
-        });
-      } else {
-        res.status(201).json({
-          status: 201,
-          message: `Ticket: ${ticketId} was updated. Email was sent.`,
-          accountCreated: true,
-        });
-      }
-    });
+
+    let mailOptions = {};
+    if (ticketUpdate.status === "Resolved") {
+      await database.collection("Support_Tickets").updateOne(
+        {_id: objID(ticketId)},
+        {
+          $set: {
+            ticketStatus: ticketUpdate.status,
+            assignee: "",
+          },
+          $push: {followUps: ticketUpdate},
+        }
+      );
+
+      mailOptions = {
+        from: process.env.EMAIL_USERNAME,
+        to: ticketUpdate.customerEmail,
+        subject: `Ticket number: ${ticketId} has been Resolved`,
+        text: `${ticketUpdate.assignee}\nWrote: ${ticketUpdate.updateNote}\nTicket will appear in \"View Resolved\" section`,
+      };
+    } else {
+      await database.collection("Support_Tickets").updateOne(
+        {_id: objID(ticketId)},
+        {
+          $push: {followUps: ticketUpdate},
+        }
+      );
+      mailOptions = {
+        from: process.env.EMAIL_USERNAME,
+        to: ticketUpdate.customerEmail,
+        subject: `Ticket number: ${ticketId} has been Updated`,
+        text: `${ticketUpdate.assignee}\nWrote: ${ticketUpdate.updateNote}\nTicket will appear in \"View Pending\" section`,
+      };
+    }
+    if (ticketUpdate.isCustomer) {
+      const supportAssignee = database
+        .collection("Support_Tickets")
+        .findOne({_id: objID(ticketId)});
+      res.status(201).json({
+        status: 201,
+        message: `Ticket: ${ticketId} was updated. ${
+          ticketUpdate.supportAssignee
+            ? ticketUpdate.supportAssignee
+            : "A supporter"
+        } will contact you shortly.`,
+        accountCreated: true,
+      });
+    } else {
+      transporter.sendMail(mailOptions, function (err, data) {
+        if (err) {
+          res.status(500).send({
+            status: 500,
+            message: `Ticket update not confirmed: ${err.message}`,
+          });
+        } else {
+          res.status(201).json({
+            status: 201,
+            message: `Ticket: ${ticketId} was updated. Email was sent.`,
+            accountCreated: true,
+          });
+        }
+      });
+    }
   } catch (error) {
+    console.log("error in server: ", error.message);
     res.status(500).json({status: 500, message: error.message});
   }
 };

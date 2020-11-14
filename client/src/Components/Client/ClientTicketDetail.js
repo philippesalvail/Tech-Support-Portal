@@ -45,6 +45,8 @@ function ClientTicketDetail() {
       );
   }, [isUpdated]);
 
+  console.log("supportAssignee: ", supportAssignee);
+
   const addUpdateToTicket = (updateNote) => {
     if (updateNote.length < 4) {
       alert("Please add a valid update");
@@ -66,6 +68,8 @@ function ClientTicketDetail() {
           hour12: true,
         }),
       email: clientAccount.loginInfo.email,
+      supportAssignee: supportAssignee,
+      isCustomer: true,
     };
 
     fetch(`/support/tickets/addNoteToTicket/${ticketnumber}`, {
@@ -78,6 +82,7 @@ function ClientTicketDetail() {
       .then((response) => response.json())
       .then((update) => {
         alert(update.message);
+        setUpdateNote("");
         setIsUpdated(!isUpdated);
       })
       .catch((error) => console.log(error.message));
@@ -199,6 +204,7 @@ function ClientTicketDetail() {
                   onChange={(e) => {
                     setUpdateNote(e.target.value);
                   }}
+                  value={updateNote}
                 />
                 <ButtonRow>
                   <UpdateBtn

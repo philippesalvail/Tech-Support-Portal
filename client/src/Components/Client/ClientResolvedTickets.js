@@ -25,6 +25,7 @@ function ClientResolvedTickets() {
   }, []);
   const clientAccount = useSelector((state) => state.client);
   const tickets = useSelector((state) => state.client.tickets);
+  console.log("tickets: ", tickets);
   return (
     <>
       {clientAccount.loginInfo ? (

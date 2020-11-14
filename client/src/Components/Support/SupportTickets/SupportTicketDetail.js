@@ -49,18 +49,18 @@ const SupportTicketDetail = () => {
   console.log("followUps: ", followUps);
 
   const addUpdateToTicket = (updateNote) => {
-    console.log("addUpdateToTicket");
+    let ticketUpdate = {};
     if (updateNote.length < 4) {
       alert("Please add a valid update");
       return;
     }
-    const ticketUpdate = {
+
+    ticketUpdate = {
       customerEmail: ticketDetail.customerEmail,
       assigneeUsername: supporter,
       assignee: assignee,
       updateNote: updateNote,
-      ticketStatus: ticketStatus,
-
+      status: ticketStatus,
       dateOfUpdate:
         new Date().toLocaleDateString() +
         " at " +
@@ -193,7 +193,6 @@ const SupportTicketDetail = () => {
                     name="state"
                     defaultValue="selectStatus"
                     onChange={(e) => setTicketStatus(e.currentTarget.value)}
-                    disabled={supporter !== "admin"}
                   >
                     <option value="selectStatus" disabled hidden>
                       {ticketStatus ? ticketStatus : "New"}
