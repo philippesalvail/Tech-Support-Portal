@@ -7,7 +7,7 @@ import Loading from "../Loading";
 import ClientDirection from "../Client/ClientDirection";
 
 function HomePage() {
-  const {isAuthenticated, user, isLoading} = useAuth0();
+  const {isAuthenticated, isLoading} = useAuth0();
 
   if (isLoading) {
     return <Loading />;

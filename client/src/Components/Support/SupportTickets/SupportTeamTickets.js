@@ -48,7 +48,13 @@ function SupportTeamTickets() {
             {tickets ? (
               <TicketHeader>
                 {tickets.map((ticket, index) => {
-                  return <TicketItem key={ticket + index} ticket={ticket} />;
+                  return (
+                    <TicketItem
+                      key={ticket + index}
+                      ticket={ticket}
+                      index={index}
+                    />
+                  );
                 })}
               </TicketHeader>
             ) : (

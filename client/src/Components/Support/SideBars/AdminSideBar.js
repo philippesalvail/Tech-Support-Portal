@@ -7,7 +7,7 @@ import {
   HistoryIcon,
   PendingIcon,
   ClosedIcon,
-  TeamIcon,
+  DisplayNewTicketIcon,
 } from "../../../ReactIcons";
 
 function AdminSideBar() {
@@ -30,7 +30,7 @@ function AdminSideBar() {
       <TitleLbl>Tickets</TitleLbl>
       <SideLink strict to={"/support/portal/admin/newtickets"}>
         <IconImg>
-          <NewTicketIcon />
+          <DisplayNewTicketIcon />
         </IconImg>
         <LinkSelection>New</LinkSelection>
       </SideLink>

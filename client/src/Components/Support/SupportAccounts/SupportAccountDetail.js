@@ -4,7 +4,6 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import {useHistory} from "react-router-dom";
 import {SearchIcon} from "../../../ReactIcons";
-import Loading from "../../Loading";
 
 function SupportAccountDetail() {
   const [teams, setTeams] = React.useState(null);

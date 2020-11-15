@@ -3,9 +3,10 @@ import styled from "styled-components";
 import {NavLink, useHistory} from "react-router-dom";
 
 import {
-  AllSupportersIcon,
   WaitingSupportersIcon,
   TeamSupportersIcon,
+  VerifiedUserIcon,
+  DisplayNewTicketIcon,
 } from "../../../ReactIcons";
 
 function AccountSideBar() {
@@ -28,13 +29,13 @@ function AccountSideBar() {
       <TitleLbl>Accounts</TitleLbl>
       <SideLink strict to={"/support/portal/accounts/admin/newaccounts"}>
         <IconImg>
-          <WaitingSupportersIcon />
+          <DisplayNewTicketIcon />
         </IconImg>
         <LinkSelection>New</LinkSelection>
       </SideLink>
       <SideLink strict to={"/support/portal/accounts/admin/activeaccounts"}>
         <IconImg>
-          <AllSupportersIcon />
+          <VerifiedUserIcon />
         </IconImg>
         <LinkSelection>Active</LinkSelection>
       </SideLink>
