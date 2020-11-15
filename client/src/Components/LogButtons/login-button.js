@@ -13,7 +13,7 @@ const LoginButton = ({data}) => {
 
   return (
     <>
-      {data.userType == "Customer" ? (
+      {data.userType === "Customer" ? (
         <LogBtn
           onClick={() => loginWithRedirect()}
           id="qsLoginBtn"

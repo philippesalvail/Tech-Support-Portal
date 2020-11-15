@@ -12,7 +12,7 @@ const unlockAccountHandler = (account, setResetList, resetList) => {
   })
     .then((response) => response.json())
     .then((account) => {
-      setResetList(!account.isLocked);
+      setResetList(!resetList);
     })
     .catch((error) => console.log("error: ", error.message));
 };
