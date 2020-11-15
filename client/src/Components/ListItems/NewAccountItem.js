@@ -1,5 +1,4 @@
 import React from "react";
-import {user} from "react-icons-kit/ikons/user";
 import styled from "styled-components";
 
 function NewAccountItem(props) {

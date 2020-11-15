@@ -20,7 +20,7 @@ function SupportNewAccounts() {
         setAccounts(accounts.accounts);
       })
       .catch((error) => console.log("error: ", error));
-  }, [enableAccount, resetList]);
+  }, [enableAccount || resetList]);
 
   const logOut = () => {
     history.push("/");
