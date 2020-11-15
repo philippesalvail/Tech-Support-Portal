@@ -56,6 +56,7 @@ function SupportTeamAccounts() {
                       account={account}
                       setResetList={setResetList}
                       resetList={resetList}
+                      index={index}
                     />
                   );
                 })}
