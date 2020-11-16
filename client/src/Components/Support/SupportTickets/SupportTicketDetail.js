@@ -24,6 +24,7 @@ const SupportTicketDetail = () => {
   const [followUps, setFollowUps] = React.useState([]);
   const [updateNote, setUpdateNote] = React.useState("");
   const [isUpdated, setIsUpdated] = React.useState(false);
+  const [ownerShipChange, setOwnerShipChange] = React.useState(false);
 
   let {supporter, ticketId} = useParams();
 
@@ -60,7 +61,7 @@ const SupportTicketDetail = () => {
         });
       })
       .catch((error) => console.log("error: ", error));
-  }, [isUpdated]);
+  }, [isUpdated || ownerShipChange]);
 
   const addUpdateToTicket = (updateNote) => {
     let ticketUpdate = {};
@@ -123,6 +124,9 @@ const SupportTicketDetail = () => {
     if (risk === "Select Risk Level") {
       errorMessage += "Select Level of Risk\n";
     }
+    if (risk === "Select Risk Level") {
+      errorMessage += "Select Level of Risk\n";
+    }
 
     if (errorMessage !== "") {
       alert(errorMessage);
@@ -150,6 +154,22 @@ const SupportTicketDetail = () => {
       .then((response) => response.json())
       .then((update) => alert(update.message))
       .catch((error) => alert(error.message));
+  };
+
+  const changeOwnership = () => {
+    fetch(`/support/ticket/changeOwnership/${ticketId}`, {
+      method: "PATCH",
+      headers: {"Content-type": "application/json"},
+      body: JSON.stringify({
+        assignee: supportAccount.name,
+      }),
+    })
+      .then((response) => response.json())
+      .then((owner) => {
+        setOwnerShipChange(!ownerShipChange);
+        alert(owner.assignee + " has taken ownership of Ticket: " + ticketId);
+      })
+      .catch((error) => console.log(error.message));
   };
 
   return (
@@ -363,13 +383,19 @@ const SupportTicketDetail = () => {
                 </Description>
               </DescriptionRow>
               <ButtonRow>
-                <ButtonSubmit
-                  disabled={supporter !== "admin"}
-                  supporter={supporter !== "admin"}
-                  onClick={updateTicket}
-                >
-                  Submit
-                </ButtonSubmit>
+                {supporter === "admin" && (
+                  <ButtonSubmit onClick={updateTicket}>Submit</ButtonSubmit>
+                )}
+
+                {supportAccount && (
+                  <ButtonSubmit
+                    onClick={changeOwnership}
+                    disabled={assignee === supportAccount.name}
+                    supporter={assignee === supportAccount.name}
+                  >
+                    Take Ownership
+                  </ButtonSubmit>
+                )}
               </ButtonRow>
               {supporter == "admin" &&
                 followUps
@@ -485,7 +511,7 @@ const TicketForm = styled.div`
 `;
 const SupportTicketBanner = styled.div`
   display: flex;
-  background-color: #1d3557;
+  background-color: #457b9d;
   justify-content: space-between;
   color: white;
   font-weight: bold;

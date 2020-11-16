@@ -5,10 +5,9 @@ import {useHistory} from "react-router-dom";
 
 function ClientTicketItem(props) {
   let history = useHistory();
-  const {ticket, index, setResetList, resetList} = props;
+  const {ticket, index} = props;
   console.log("ticket: ", ticket);
   const clientTicketDetailHandler = (ticketId) => {
-    setResetList(!resetList);
     history.push(`/client/portal/ticket/${ticketId}`);
   };
   return (

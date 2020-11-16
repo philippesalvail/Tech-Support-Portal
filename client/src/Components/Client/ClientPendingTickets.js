@@ -7,6 +7,7 @@ import LogOutButton from "../LogButtons/logout-button";
 import ClientTicketSectionHeader from "../SectionHeaders/ClientTicketSectionHeader";
 import ClientTicketItem from "../ListItems/ClientTicketItem";
 import {useParams} from "react-router-dom";
+
 import {
   requestClientAccount,
   receiveClientAccount,
@@ -14,6 +15,7 @@ import {
 } from "../../actions";
 function ClientPendingTickets() {
   const {username} = useParams();
+  console.log("username: ", username);
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestClientAccount());
