@@ -473,6 +473,34 @@ const getAllTickets = async (req, res) => {
   }
 };
 
+const changeOwnership = async (req, res) => {
+  const {ticketId} = req.params;
+  const {assignee} = req.body;
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+    await client.connect();
+    const database = client.db("Tech_Support");
+    const ticket = await database.collection("Support_Tickets").updateOne(
+      {_id: objID(ticketId)},
+      {
+        $set: {
+          assignee: assignee,
+        },
+      }
+    );
+
+    res.status(200).json({
+      status: 200,
+      assignee: assignee,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      message: "Server Error",
+    });
+  }
+};
+
 const searchSupporter = async (req, res) => {
   const {username} = req.params;
   try {
@@ -889,4 +917,5 @@ module.exports = {
   createSupportAccount,
   getClientProfile,
   addNoteToTicket,
+  changeOwnership,
 };
