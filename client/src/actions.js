@@ -10,7 +10,7 @@ export const receiveClientAccountError = (error) => ({
   error,
 });
 
-export const requestSupporterProfile = () => ({
+export const requestProfile = () => ({
   type: "REQUEST_SUPPORT_PROFILE",
 });
 
@@ -25,5 +25,20 @@ export const receiveSupporterProfileError = (error) => ({
 
 export const destroySupporterProfileError = (setAccountToNull) => ({
   type: "DESTROY_SUPPORT_PROFILE",
+  setAccountToNull,
+});
+
+export const receiveAdminProfileError = (error) => ({
+  type: "REQUEST_ADMIN_PROFILE_ERROR",
+  error,
+});
+
+export const receiveAdminProfile = (supportData) => ({
+  type: "RECEIVE_ADMIN_PROFILE",
+  supportData,
+});
+
+export const destroyAdminProfileError = (setAccountToNull) => ({
+  type: "DESTROY_ADMIN_PROFILE",
   setAccountToNull,
 });

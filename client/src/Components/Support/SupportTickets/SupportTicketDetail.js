@@ -61,7 +61,7 @@ const SupportTicketDetail = () => {
         });
       })
       .catch((error) => console.log("error: ", error));
-  }, [isUpdated || ownerShipChange]);
+  }, [isUpdated, ownerShipChange]);
 
   const addUpdateToTicket = (updateNote) => {
     let ticketUpdate = {};

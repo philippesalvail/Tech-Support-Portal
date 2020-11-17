@@ -9,7 +9,7 @@ import {useHistory, useParams} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
 import {
-  requestSupporterProfile,
+  requestProfile,
   receiveSupporterProfile,
   receiveSupporterProfileError,
 } from "../../../actions";
@@ -23,13 +23,13 @@ function SupportResolvedTickets() {
     history.push("/");
   };
   React.useEffect(() => {
+    dispatch(requestProfile());
     fetch(`/support/tickets/getresolvedtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.username === "admin") {
           setTickets(supporter.data);
         } else {
-          dispatch(requestSupporterProfile());
           dispatch(receiveSupporterProfile(supporter));
         }
       })

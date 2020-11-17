@@ -8,22 +8,26 @@ import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectio
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 
+import {requestProfile, receiveAdminProfile} from "../../../actions";
+
 function SupportPendingTickets() {
   let history = useHistory();
-
+  const dispatch = useDispatch();
   let {supporter} = useParams();
   const [tickets, setTickets] = React.useState([]);
   const logOut = () => {
     history.push("/");
   };
   const agentProfile = useSelector((state) => state.supporter.agent);
+  const adminTickets = useSelector((state) => state.admin.tickets);
   console.log("agentProfile: ", agentProfile);
   React.useEffect(() => {
+    dispatch(requestProfile());
     fetch(`/support/tickets/getpendingtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.username === "admin") {
-          setTickets(supporter.data);
+          dispatch(receiveAdminProfile(supporter.data));
         } else {
           setTickets(supporter.getTeamTickets);
         }
@@ -33,7 +37,7 @@ function SupportPendingTickets() {
 
   return (
     <>
-      {supporter === "admin" ? (
+      {adminTickets ? (
         <AdminPage>
           <TicketDashBoard>
             <SideBar>
@@ -44,16 +48,16 @@ function SupportPendingTickets() {
               <SupportTicketBanner>
                 <BannerTitle>Pending Tickets</BannerTitle>
                 <BannerUserAccount>
-                  <Wrapper>Welcome: {supporter}&nbsp;</Wrapper>
+                  <Wrapper>Welcome: {supporter}</Wrapper>
                   <LogOutBtn onClick={logOut}>Log Out</LogOutBtn>
                 </BannerUserAccount>
               </SupportTicketBanner>
 
               <TicketItems>
                 <SupportTicketSectionHeader />
-                {tickets ? (
+                {adminTickets ? (
                   <TicketHeader>
-                    {tickets.map((ticket, index) => {
+                    {adminTickets.map((ticket, index) => {
                       return (
                         <TicketItem
                           key={ticket + index}

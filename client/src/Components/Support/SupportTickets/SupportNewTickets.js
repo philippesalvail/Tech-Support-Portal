@@ -6,12 +6,14 @@ import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {useSelector, useDispatch} from "react-redux";
-import {useHistory, useParams} from "react-router-dom";
-
+import {useHistory, useParams, Redirect} from "react-router-dom";
+import Loading from "../../Loading";
 import {
   requestSupporterProfile,
   receiveSupporterProfile,
   receiveSupporterProfileError,
+  requestProfile,
+  receiveAdminProfile,
 } from "../../../actions";
 
 function SupportNewTickets() {
@@ -19,21 +21,23 @@ function SupportNewTickets() {
   let history = useHistory();
   const agentProfile = useSelector((state) => state.supporter.agent);
   const agentTickets = useSelector((state) => state.supporter.agentTickets);
-
+  const adminTickets = useSelector((state) => state.admin.tickets);
+  const status = useSelector((state) => state.admin.status);
   let {supporter} = useParams();
   const [tickets, setTickets] = React.useState([]);
   const logOut = () => {
     history.push("/");
   };
   React.useEffect(() => {
+    dispatch(requestProfile());
     fetch(`/support/tickets/getnewtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.username === "admin") {
-          setTickets(supporter.data);
+          console.log("supporter: ", supporter);
+          dispatch(receiveAdminProfile(supporter.data));
         } else {
           console.log("supporter: ", supporter);
-          dispatch(requestSupporterProfile());
           dispatch(receiveSupporterProfile(supporter));
           setTickets(supporter.getAgentTickets);
         }
@@ -41,9 +45,12 @@ function SupportNewTickets() {
       .catch((error) => dispatch(receiveSupporterProfileError(error)));
   }, []);
 
+  if (status === "loading") {
+    return <Loading />;
+  }
   return (
     <>
-      {supporter === "admin" ? (
+      {adminTickets ? (
         <AdminPage>
           <TicketDashBoard>
             <SideBar>
@@ -58,12 +65,11 @@ function SupportNewTickets() {
                   <LogOutBtn onClick={logOut}>Log Out</LogOutBtn>
                 </BannerUserAccount>
               </SupportTicketBanner>
-
               <TicketItems>
                 <SupportTicketSectionHeader />
-                {tickets ? (
+                {adminTickets ? (
                   <TicketHeader>
-                    {tickets.map((ticket, index) => {
+                    {adminTickets.map((ticket, index) => {
                       return (
                         <TicketItem
                           key={ticket + index}
@@ -120,7 +126,7 @@ function SupportNewTickets() {
               </TicketDashBoard>
             </AdminPage>
           ) : (
-            <div></div>
+            <Loading />
           )}
         </>
       )}
