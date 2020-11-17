@@ -59,7 +59,7 @@ const Side = styled.div`
   flex-direction: column;
   color: #f1faee;
   background-color: #457b9d;
-  min-height: 100vh;
+  height: 100%;
 `;
 const TitleLbl = styled.h3`
   text-decoration: underline;
