@@ -5,14 +5,10 @@ import AccountSideBar from "../SideBars/AccountSideBar";
 import AgentSideBar from "../SideBars/AgentSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
-import {useHistory, useParams} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {Redirect, useHistory, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
-import {
-  requestProfile,
-  receiveSupporterProfile,
-  receiveSupporterProfileError,
-} from "../../../actions";
+import {requestProfile, receiveAdminProfile} from "../../../actions";
 
 function SupportResolvedTickets() {
   const dispatch = useDispatch();
@@ -27,62 +23,66 @@ function SupportResolvedTickets() {
     fetch(`/support/tickets/getresolvedtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
-        if (supporter.username === "admin") {
-          setTickets(supporter.data);
-        } else {
-          dispatch(receiveSupporterProfile(supporter));
-        }
+        dispatch(receiveAdminProfile(supporter.data));
       })
-      .catch((error) => dispatch(receiveSupporterProfileError(error)));
+      .catch((error) => console.log("error: ", error.message));
   }, []);
 
+  const adminTickets = useSelector((state) => state.admin.tickets);
+
   return (
-    <AdminPage>
-      <TicketDashBoard>
-        <SideBar>
-          <AdminSideBar />
-          <AccountSideBar />
-        </SideBar>
-        <TicketsDisplay>
-          {supporter !== "admin" ? (
-            <SupportTicketBanner>
-              <BannerTitle>Resolved Tickets</BannerTitle>
-              <BannerUserAccount>
-                <Wrapper>
-                  {/* {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`} */}
-                </Wrapper>
-              </BannerUserAccount>
-            </SupportTicketBanner>
-          ) : (
-            <SupportTicketBanner>
-              <BannerTitle>Resolved Tickets</BannerTitle>
-              <BannerUserAccount>
-                <Wrapper>Welcome: {supporter}</Wrapper>
-                <LogOutBtn
-                  onClick={() => {
-                    logOut();
-                  }}
-                >
-                  Log Out
-                </LogOutBtn>
-              </BannerUserAccount>
-            </SupportTicketBanner>
-          )}
-          <TicketItems>
-            <SupportTicketSectionHeader />
-            {tickets ? (
-              <TicketHeader>
-                {tickets.map((ticket) => {
-                  return <TicketItem ticket={ticket} />;
-                })}
-              </TicketHeader>
-            ) : (
-              <div></div>
-            )}
-          </TicketItems>
-        </TicketsDisplay>
-      </TicketDashBoard>
-    </AdminPage>
+    <>
+      {adminTickets ? (
+        <AdminPage>
+          <TicketDashBoard>
+            <SideBar>
+              <AdminSideBar />
+              <AccountSideBar />
+            </SideBar>
+            <TicketsDisplay>
+              {supporter !== "admin" ? (
+                <SupportTicketBanner>
+                  <BannerTitle>Resolved Tickets</BannerTitle>
+                  <BannerUserAccount>
+                    <Wrapper>
+                      {/* {`Welcome: ${clientAccount.loginInfo.given_name} ${clientAccount.loginInfo.family_name}`} */}
+                    </Wrapper>
+                  </BannerUserAccount>
+                </SupportTicketBanner>
+              ) : (
+                <SupportTicketBanner>
+                  <BannerTitle>Resolved Tickets</BannerTitle>
+                  <BannerUserAccount>
+                    <Wrapper>Welcome: {supporter}</Wrapper>
+                    <LogOutBtn
+                      onClick={() => {
+                        logOut();
+                      }}
+                    >
+                      Log Out
+                    </LogOutBtn>
+                  </BannerUserAccount>
+                </SupportTicketBanner>
+              )}
+              <TicketItems>
+                <SupportTicketSectionHeader />
+                {adminTickets ? (
+                  <TicketHeader>
+                    {adminTickets.map((ticket, index) => {
+                      return <TicketItem ticket={ticket} index={index} />;
+                    })}
+                  </TicketHeader>
+                ) : (
+                  <div></div>
+                )}
+              </TicketItems>
+            </TicketsDisplay>
+          </TicketDashBoard>
+        </AdminPage>
+      ) : (
+        <Redirect />
+      )}
+    </>
   );
 }
 const SideBar = styled.div`
