@@ -54,7 +54,6 @@ router.patch(
   "/support/accounts/changeAccountState/:username",
   changeAccountState
 );
-
 router.get("/support/supportteams/getSupportTeams", getSupportTeams);
 router.get("/support/supportteams/tickets/:getTeamTickets", getTeamTickets);
 router.get("/support/supportteams/accounts/:getTeamAccounts", getTeamAccounts);

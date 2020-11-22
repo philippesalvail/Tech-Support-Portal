@@ -6,13 +6,13 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
-
+import {ip} from "../../Constants";
 function SupportAllTickets() {
   let history = useHistory();
   let {supporter} = useParams();
   const [tickets, setTickets] = React.useState(null);
   React.useEffect(() => {
-    fetch(`/support/tickets/getalltickets/${supporter}`)
+    fetch(`${ip}/support/tickets/getalltickets/${supporter}`)
       .then((response) => response.json())
       .then((tickets) => setTickets(tickets.data))
       .catch((error) =>

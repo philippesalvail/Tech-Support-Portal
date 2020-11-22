@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import {useHistory} from "react-router-dom";
+import {ip} from "../Constants";
 
 const unlockAccountHandler = (account, setResetList, resetList) => {
-  fetch(`/support/accounts/lockAccount/${account.username}`, {
+  fetch(`${ip}/support/accounts/lockAccount/${account.username}`, {
     method: "PATCH",
     body: JSON.stringify({
       isLocked: !account.isLocked,
@@ -20,9 +21,9 @@ const unlockAccountHandler = (account, setResetList, resetList) => {
 function ActiveAccountItem(props) {
   console.log("props: ", props.index % 2 == 0);
   let history = useHistory();
-  const accountDetail = (account) => {
-    history.push(`/support/portal/accounts/accountdetail/${account}`);
-  };
+  // const accountDetail = (account) => {
+  //   history.push(`/support/portal/accounts/accountdetail/${account}`);
+  // };
 
   return (
     <>

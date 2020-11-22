@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 
 import {requestProfile, receiveAdminProfile} from "../../../actions";
+import {ip} from "../../Constants";
 
 function SupportPendingTickets() {
   let history = useHistory();
@@ -23,7 +24,7 @@ function SupportPendingTickets() {
   console.log("agentProfile: ", agentProfile);
   React.useEffect(() => {
     dispatch(requestProfile());
-    fetch(`/support/tickets/getpendingtickets/${supporter}`)
+    fetch(`${ip}/support/tickets/getpendingtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.username === "admin") {

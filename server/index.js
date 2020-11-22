@@ -12,7 +12,7 @@ const morgan = require("morgan");
 
 const {MONGO_URI} = process.env;
 
-const PORT = 5678;
+const PORT = process.env.PORT || 5678;
 
 const app = express();
 

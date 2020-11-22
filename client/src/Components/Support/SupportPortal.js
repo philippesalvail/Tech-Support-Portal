@@ -4,11 +4,12 @@ import styled from "styled-components";
 import Loading from "../Loading";
 import SupportSideBar from "./SupportSideBar";
 import ListItem from "../ListItem/ListItem";
+import {ip} from "../../../../server/Constants";
 
 function SupportPortal() {
   const [allTickets, setAllTickets] = React.useState([]);
   React.useEffect(() => {
-    fetch("/support/getalltickets")
+    fetch(`${ip}/support/getalltickets`)
       .then((response) => response.json())
       .then((tickets) => setAllTickets(tickets.data))
       .catch((error) =>

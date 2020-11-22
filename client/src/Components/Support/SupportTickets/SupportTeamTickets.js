@@ -6,7 +6,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
-
+import {ip} from "../../Constants";
 function SupportTeamTickets() {
   let history = useHistory();
   const [tickets, setTickets] = React.useState(null);
@@ -15,7 +15,7 @@ function SupportTeamTickets() {
     history.push("/");
   };
   React.useEffect(() => {
-    fetch(`/support/supportteams/tickets/${teamtickets}`)
+    fetch(`${ip}/support/supportteams/tickets/${teamtickets}`)
       .then((response) => response.json())
       .then((supportTeams) => setTickets(supportTeams.tickets))
       .catch((error) => console.log("error: ", error.message));

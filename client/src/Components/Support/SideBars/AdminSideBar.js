@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {NavLink, useHistory} from "react-router-dom";
+import {ip} from "../../Constants";
 
 import {
   NewTicketIcon,
@@ -15,38 +16,38 @@ function AdminSideBar() {
   const [teams, setTeams] = React.useState(null);
 
   React.useEffect(() => {
-    fetch("/support/supportteams/getSupportTeams")
+    fetch(`${ip}/support/supportteams/getSupportTeams`)
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
   }, []);
 
   const teamSelected = (team) => {
-    history.push(`/support/portal/admin/teamtickets/${team}`);
+    history.push(`${ip}/support/portal/admin/teamtickets/${team}`);
   };
 
   return (
     <Side>
       <TitleLbl>Tickets</TitleLbl>
-      <SideLink strict to={"/support/portal/admin/newtickets"}>
+      <SideLink strict to={`${ip}/support/portal/admin/newtickets`}>
         <IconImg>
           <DisplayNewTicketIcon />
         </IconImg>
         <LinkSelection>New</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/admin/pendingtickets"}>
+      <SideLink strict to={`${ip}/support/portal/admin/pendingtickets`}>
         <IconImg>
           <PendingIcon />
         </IconImg>
         <LinkSelection>Pending</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/admin/closedtickets"}>
+      <SideLink strict to={`${ip}/support/portal/admin/closedtickets`}>
         <IconImg>
           <HistoryIcon />
         </IconImg>
         <LinkSelection>Resolved</LinkSelection>
       </SideLink>
-      <SideLink strict to={"/support/portal/admin/alltickets"}>
+      <SideLink strict to={`${ip}/support/portal/admin/alltickets`}>
         <IconImg>
           <ClosedIcon />
         </IconImg>

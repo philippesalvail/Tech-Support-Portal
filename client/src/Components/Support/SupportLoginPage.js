@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {Link, useHistory} from "react-router-dom";
+import {ip} from "../Constants";
 
 function SupportLoginPage() {
   let history = useHistory();
@@ -14,7 +15,7 @@ function SupportLoginPage() {
   };
   const checkFailedAttempts = (failedAttempts, isLocked) => {
     if (failedAttempts > 1) {
-      fetch(`/support/accounts/lockAccount/${userNameTyped}`, {
+      fetch(`${ip}/support/accounts/lockAccount/${userNameTyped}`, {
         method: "PATCH",
         body: JSON.stringify({
           isLocked: !isLocked,
@@ -33,7 +34,7 @@ function SupportLoginPage() {
 
   const authenticateUser = (e) => {
     e.preventDefault();
-    fetch(`/support/supporter/${userNameTyped}`)
+    fetch(`${ip}/support/supporter/${userNameTyped}`)
       .then((response) => response.json())
       .then((userObj) => {
         if (!userObj.user) {

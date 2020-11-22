@@ -6,6 +6,7 @@ import styled from "styled-components";
 import ActiveAccountSectionHeader from "../../SectionHeaders/ActiveAccountSectionHeader";
 import Loading from "../../Loading";
 import {useParams, useHistory} from "react-router-dom";
+import {ip} from "../../Constants";
 
 function SupportTeamAccounts() {
   let history = useHistory();
@@ -14,7 +15,7 @@ function SupportTeamAccounts() {
   const [resetList, setResetList] = React.useState(false);
 
   React.useEffect(() => {
-    fetch(`/support/supportteams/accounts/${teamaccounts}`)
+    fetch(`${ip}/support/supportteams/accounts/${teamaccounts}`)
       .then((response) => response.json())
       .then((accounts) => setTeam(accounts.accounts))
       .catch((error) => console.log("error: ", error));

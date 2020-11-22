@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import {useHistory} from "react-router-dom";
+import {ip} from "../../Constants";
 
 function SupportCreateAccount() {
   let history = useHistory();
@@ -23,7 +24,7 @@ function SupportCreateAccount() {
   };
 
   React.useEffect(() => {
-    fetch("/support/supportteams/getSupportTeams")
+    fetch(`${ip}/support/supportteams/getSupportTeams`)
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
@@ -62,7 +63,7 @@ function SupportCreateAccount() {
       return;
     }
 
-    fetch("/support/accounts/createAccount", {
+    fetch(`${ip}/support/accounts/createAccount`, {
       method: "POST",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({

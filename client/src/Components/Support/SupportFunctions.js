@@ -1,5 +1,7 @@
+import {ip} from "../Constants";
+
 export const SupportSignUp = async (supporter) => {
-  fetch("/support/supporter/createSupportUser", {
+  fetch(`${ip}/support/supporter/createSupportUser`, {
     method: "POST",
     body: JSON.stringify({
       firstname: supporter.firstname,
