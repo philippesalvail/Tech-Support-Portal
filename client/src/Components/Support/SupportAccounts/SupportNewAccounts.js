@@ -6,6 +6,7 @@ import styled from "styled-components";
 import NewAccountSectionHeader from "../../SectionHeaders/NewAccountSectionHeader";
 import Loading from "../../Loading";
 import {useHistory} from "react-router-dom";
+import {ip} from "../../Constants";
 
 function SupportNewAccounts() {
   let history = useHistory();
@@ -14,7 +15,7 @@ function SupportNewAccounts() {
   const [resetList, setResetList] = React.useState(false);
 
   React.useEffect(() => {
-    fetch("/support/supporter/getNewSupportAccounts")
+    fetch(`${ip}/support/supporter/getNewSupportAccounts`)
       .then((response) => response.json())
       .then((accounts) => {
         setAccounts(accounts.accounts);

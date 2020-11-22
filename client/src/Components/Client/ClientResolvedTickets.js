@@ -7,6 +7,7 @@ import LogOutButton from "../LogButtons/logout-button";
 import ClientTicketSectionHeader from "../SectionHeaders/ClientTicketSectionHeader";
 import Loading from "../Loading";
 import ClientTicketItem from "../ListItems/ClientTicketItem";
+import {ip} from "../Constants";
 import {
   requestClientAccount,
   receiveClientAccount,
@@ -18,7 +19,7 @@ function ClientResolvedTickets() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestClientAccount());
-    fetch(`/client/getClientProfile/${username}`)
+    fetch(`${ip}/client/getClientProfile/${username}`)
       .then((response) => response.json())
       .then((clientAccount) => dispatch(receiveClientAccount(clientAccount)))
       .catch((error) => dispatch(receiveClientAccountError(error)));

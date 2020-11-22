@@ -8,6 +8,7 @@ import Loading from "../../Loading";
 import {useSelector, useDispatch} from "react-redux";
 import SupportTicketFollowUp from "./SupportTicketFollowUp";
 import {destroySupporterProfileError} from "../../../actions";
+import {ip} from "../../Constants";
 
 const SupportTicketDetail = () => {
   let dispatch = useDispatch();
@@ -41,7 +42,7 @@ const SupportTicketDetail = () => {
   console.log("supportAccount: ", supportAccount);
 
   React.useEffect(() => {
-    fetch(`/support/tickets/${ticketId}`)
+    fetch(`${ip}/support/tickets/${ticketId}`)
       .then((response) => response.json())
       .then((ticket) => {
         setTicketDetail(ticket.data);
@@ -86,7 +87,7 @@ const SupportTicketDetail = () => {
         }),
     };
 
-    fetch(`/support/tickets/addNoteToTicket/${ticketId}`, {
+    fetch(`${ip}/support/tickets/addNoteToTicket/${ticketId}`, {
       method: "PATCH",
       headers: {"content-type": "application/json; charset=UTF-8"},
       body: JSON.stringify({
@@ -133,7 +134,7 @@ const SupportTicketDetail = () => {
       return;
     }
 
-    fetch("/support/tickets/updateTicket", {
+    fetch(`${ip}/support/tickets/updateTicket`, {
       method: "PUT",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({
@@ -157,7 +158,7 @@ const SupportTicketDetail = () => {
   };
 
   const changeOwnership = () => {
-    fetch(`/support/ticket/changeOwnership/${ticketId}`, {
+    fetch(`${ip}/support/ticket/changeOwnership/${ticketId}`, {
       method: "PATCH",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({

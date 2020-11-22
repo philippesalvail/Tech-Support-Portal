@@ -4,6 +4,7 @@ import AdminSideBar from "../SideBars/AdminSideBar";
 import AccountSideBar from "../SideBars/AccountSideBar";
 import {useHistory} from "react-router-dom";
 import {SearchIcon} from "../../../ReactIcons";
+import {ip} from "../../Constants";
 
 function SupportAccountDetail() {
   const [teams, setTeams] = React.useState(null);
@@ -23,7 +24,7 @@ function SupportAccountDetail() {
   };
 
   const changeAccountState = () => {
-    fetch(`/support/accounts/changeAccountState/${username}`, {
+    fetch(`${ip}/support/accounts/changeAccountState/${username}`, {
       method: "PATCH",
       headers: {"Content-type": "application/json; charset=UTF-8"},
       body: JSON.stringify({
@@ -45,7 +46,7 @@ function SupportAccountDetail() {
   };
 
   const updateSupporterHandler = () => {
-    fetch(`/support/supporter/updateSupporter/${username}`, {
+    fetch(`${ip}/support/supporter/updateSupporter/${username}`, {
       method: "PATCH",
       headers: {"Content-type": "application/json; charset=UTF-8"},
       body: JSON.stringify({
@@ -70,7 +71,7 @@ function SupportAccountDetail() {
   };
 
   React.useEffect(() => {
-    fetch("/support/supportteams/getSupportTeams")
+    fetch(`${ip}/support/supportteams/getSupportTeams`)
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
@@ -82,7 +83,7 @@ function SupportAccountDetail() {
       return;
     }
 
-    fetch(`/support/supporter/searchSupporter/${userNameTyped}`)
+    fetch(`${ip}/support/supporter/searchSupporter/${userNameTyped}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.user === null) {

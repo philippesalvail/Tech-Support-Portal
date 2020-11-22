@@ -7,6 +7,7 @@ import LogOutButton from "../LogButtons/logout-button";
 import ClientTicketSectionHeader from "../SectionHeaders/ClientTicketSectionHeader";
 import ClientTicketItem from "../ListItems/ClientTicketItem";
 import {useParams} from "react-router-dom";
+import {ip} from "../Constants";
 
 import {
   requestClientAccount,
@@ -19,7 +20,7 @@ function ClientPendingTickets() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestClientAccount());
-    fetch(`/client/getClientProfile/${username}`)
+    fetch(`${ip}/client/getClientProfile/${username}`)
       .then((response) => response.json())
       .then((clientAccount) => dispatch(receiveClientAccount(clientAccount)))
       .catch((error) => dispatch(receiveClientAccountError(error)));

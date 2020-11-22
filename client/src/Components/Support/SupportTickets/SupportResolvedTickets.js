@@ -7,6 +7,7 @@ import TicketItem from "../../ListItems/TicketItem";
 import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectionHeader";
 import {Redirect, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import {ip} from "../../Constants";
 
 import {requestProfile, receiveAdminProfile} from "../../../actions";
 
@@ -20,7 +21,7 @@ function SupportResolvedTickets() {
   };
   React.useEffect(() => {
     dispatch(requestProfile());
-    fetch(`/support/tickets/getresolvedtickets/${supporter}`)
+    fetch(`${ip}/support/tickets/getresolvedtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
         dispatch(receiveAdminProfile(supporter.data));

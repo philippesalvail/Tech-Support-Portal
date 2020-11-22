@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {ip} from "../Constants";
 
 function NewAccountItem(props) {
   const {_id, name, team, isValidated} = props.account;
@@ -17,7 +18,7 @@ function NewAccountItem(props) {
   };
 
   React.useEffect(() => {
-    fetch("/support/supportteams/getSupportTeams")
+    fetch(`${ip}/support/supportteams/getSupportTeams`)
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
@@ -50,7 +51,7 @@ function NewAccountItem(props) {
       return;
     }
 
-    fetch("/support/accounts/enableAccount", {
+    fetch(`${ip}/support/accounts/enableAccount`, {
       method: "PUT",
       headers: {"Content-type": "application/json"},
       body: JSON.stringify({

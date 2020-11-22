@@ -5,6 +5,7 @@ import {useSelector, useDispatch} from "react-redux";
 import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import {useAuth0} from "@auth0/auth0-react";
 import {createTicket} from "./ClientFunctions";
+import {ip} from "../Constants";
 
 import Loading from "../Loading";
 import LogOutButton from "../LogButtons/logout-button";
@@ -18,7 +19,7 @@ const ClientNewTicket = () => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(requestClientAccount());
-    fetch(`/client/getClientProfile/${username}`)
+    fetch(`${ip}/client/getClientProfile/${username}`)
       .then((response) => response.json())
       .then((clientAccount) => dispatch(receiveClientAccount(clientAccount)))
       .catch((error) => dispatch(receiveClientAccountError(error)));

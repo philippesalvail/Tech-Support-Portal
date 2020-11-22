@@ -8,6 +8,7 @@ import SupportTicketSectionHeader from "../../SectionHeaders/SupportTicketSectio
 import {useSelector, useDispatch} from "react-redux";
 import {useHistory, useParams, Redirect} from "react-router-dom";
 import Loading from "../../Loading";
+import {ip} from "../../Constants";
 import {
   requestSupporterProfile,
   receiveSupporterProfile,
@@ -30,7 +31,7 @@ function SupportNewTickets() {
   };
   React.useEffect(() => {
     dispatch(requestProfile());
-    fetch(`/support/tickets/getnewtickets/${supporter}`)
+    fetch(`${ip}/support/tickets/getnewtickets/${supporter}`)
       .then((response) => response.json())
       .then((supporter) => {
         if (supporter.username === "admin") {

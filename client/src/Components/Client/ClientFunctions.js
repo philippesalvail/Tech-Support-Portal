@@ -1,3 +1,5 @@
+import {ip} from "../Constants";
+
 export const addressVerification = (address) => {
   if (address.target.value.length < 10) {
   }
@@ -44,7 +46,7 @@ export const expVerificationYear = (year) => {
 };
 
 export const createClient = async (signUp, billing) => {
-  return await fetch("/client/clientCreated", {
+  return await fetch(`${ip}/client/clientCreated`, {
     method: "POST",
     body: JSON.stringify({
       loginInfo: signUp,
@@ -59,7 +61,7 @@ export const createClient = async (signUp, billing) => {
 };
 
 export const createTicket = async (ticketInfo) => {
-  return await fetch("/client/tickets/ticketCreated", {
+  return await fetch(`${ip}/client/tickets/ticketCreated`, {
     method: "POST",
     body: JSON.stringify({
       ticketInfo: ticketInfo,

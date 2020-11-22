@@ -6,13 +6,14 @@ import styled from "styled-components";
 import ActiveAccountSectionHeader from "../../SectionHeaders/ActiveAccountSectionHeader";
 import Loading from "../../Loading";
 import {useHistory} from "react-router-dom";
+import {ip} from "../../Constants";
 
 function SupportActiveAccounts() {
   let history = useHistory();
   const [accounts, setAccounts] = React.useState(null);
   const [resetList, setResetList] = React.useState(false);
   React.useEffect(() => {
-    fetch("/support/supporter/getAllSupporters")
+    fetch(`${ip}/support/supporter/getAllSupporters`)
       .then((response) => response.json())
       .then((accounts) => setAccounts(accounts.accounts))
       .catch((error) => console.log("error: ", error));

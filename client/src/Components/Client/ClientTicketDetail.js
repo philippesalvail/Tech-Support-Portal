@@ -5,6 +5,7 @@ import ClientSideBar from "../Support/SideBars/ClientSideBar";
 import {useSelector} from "react-redux";
 import LogOutButton from "../LogButtons/logout-button";
 import Loading from "../Loading";
+import {ip} from "../Constants";
 import SupportTicketFollowUp from "../Support/SupportTickets/SupportTicketFollowUp";
 function ClientTicketDetail() {
   const [productTypeSelected, setProductTypeSelected] = React.useState(
@@ -29,7 +30,7 @@ function ClientTicketDetail() {
   const [supportAssignee, setSupportAssignee] = React.useState(null);
 
   React.useEffect(() => {
-    fetch(`/support/tickets/${ticketnumber}`)
+    fetch(`${ip}/support/tickets/${ticketnumber}`)
       .then((response) => response.json())
       .then((ticket) => {
         setProductTypeSelected(ticket.data.productType);
@@ -72,7 +73,7 @@ function ClientTicketDetail() {
       isCustomer: true,
     };
 
-    fetch(`/support/tickets/addNoteToTicket/${ticketnumber}`, {
+    fetch(`${ip}/support/tickets/addNoteToTicket/${ticketnumber}`, {
       method: "PATCH",
       headers: {"content-type": "application/json; charset=UTF-8"},
       body: JSON.stringify({

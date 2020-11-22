@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Loading from "../Loading";
 import {SupportSignUp} from "./SupportFunctions";
 import {useHistory} from "react-router-dom";
+import {ip} from "../Constants";
 
 function SupportSignUpPage() {
   let history = useHistory();
@@ -43,13 +44,11 @@ function SupportSignUpPage() {
   };
 
   React.useEffect(() => {
-    fetch("/support/supportteams/getSupportTeams")
+    fetch(`${ip}/support/supportteams/getSupportTeams`)
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
   }, []);
-
-  console.log("teams in SupportSignUpPage: ", teams);
 
   return (
     <>
