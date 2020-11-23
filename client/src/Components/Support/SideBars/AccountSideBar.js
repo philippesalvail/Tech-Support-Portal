@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {NavLink, useHistory} from "react-router-dom";
+import {ip} from "../../Constants";
 
 import {
   WaitingSupportersIcon,
@@ -14,7 +15,7 @@ function AccountSideBar() {
   const [teams, setTeams] = React.useState(null);
 
   React.useEffect(() => {
-    fetch("/support/supportteams/getSupportTeams")
+    fetch(`${ip}/support/supportteams/getSupportTeams`)
       .then((response) => response.json())
       .then((supportTeams) => setTeams(supportTeams.teams))
       .catch((error) => console.log("error: ", error.message));
