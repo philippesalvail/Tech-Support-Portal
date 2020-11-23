@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node index.js"
   },
-  "Access-Control-Allow-Origin": "https://backend-techsupport.herokuapp.com"
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,7 +18,6 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.16"
   },
-
   "devDependencies": {
     "nodemon": "^2.0.4"
   }
